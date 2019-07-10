@@ -1,6 +1,6 @@
-# Vue.js Dapp
+# janus.webapp.jns
 
-> A Vue.js project
+> Janus name service dapp
 
 ## Build Setup
 
@@ -16,24 +16,6 @@ npm run build
 
 # build for production and view the bundle analyzer report
 npm run build --report
-
-# run unit tests
-npm run unit
-
-# run e2e tests
-npm run e2e
-
-# run all tests
-npm test
-
-# run lint code highlight
-npm run lint
-
-# run lint fix code
-npm run fix
-
-# run build production and send the dist folder to another branch
-npm run deploy
 ```
 
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
