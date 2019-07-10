@@ -1,0 +1,35 @@
+{
+  "success": "Your search returned about { number } results.",
+  "errors": [
+    {
+      "type": "Forbidden",
+      "text": "An error happened during your search. Try again later." 
+    },
+    {
+      "type": "BadRequest",
+      "text": "Search failed due to technical problems. Try again later." 
+    },
+    {
+      "type": "NotFound",
+      "text": "Janus haven’t found this page. Return to our homepage to start searching."
+    },
+    {
+      "type": "invalid owner address",
+      "text": "The owner address is invalid. Configure your Metamask to use the search" 
+    }
+  ],
+  "exceptions": [
+    {
+      "type": "EmptyReturn",
+      "text": "Janus haven’t found any content about { keyword }. Try search for something different." 
+    },
+    {
+      "type": "EmptyField",
+      "text": "Field is empty! Type something to search." 
+    },
+    {
+      "type": "InvalidField",
+      "text": "Field is invalid! Type only alphanumeric characters to search." 
+    }
+  ]
+}
