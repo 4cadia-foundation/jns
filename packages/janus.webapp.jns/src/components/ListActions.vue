@@ -4,9 +4,6 @@
       <li class="menu-item">
         <button type="button" class="btn btn-primary" @click="handleStarted()">Get Started</button>
       </li>
-      <li class="menu-item">
-        <a href="#documentation">Take the tutorial</a>
-      </li>
     </ul>
   </div>
 </template>

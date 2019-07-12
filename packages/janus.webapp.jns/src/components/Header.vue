@@ -2,7 +2,7 @@
   <div class="header">
     <router-link to="/" class="header_logo">
       <img class="logo" src="../assets/images/logo_clear.png">
-      <h2 class="title">Janus Indexer</h2>
+      <h2 class="title">Janus</h2>
     </router-link>
     <div :class="`header_menu ${this.showMenu ? 'open' : ''}`">
       <button class="menu-hamburguer btn--icon" @click='toggleShowMenu()'></button>
