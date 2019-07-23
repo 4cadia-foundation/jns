@@ -24,27 +24,32 @@ export default class NameService implements INameService {
 
     @TimeTracking()
     @Throttle()
-    public async BuyTLD(topLevelDomainName: String) : Promise<RequestResult> {
+    public BuyTLD(topLevelDomainName: String) : Promise<RequestResult> {
         
-        let newTLD = new RequestResult();
+        return new Promise( async (resolve, reject) => {
 
-        try {
-            const tx = await this._smartContract.registerTopDomain(topLevelDomainName)
-            newTLD.TxHash = tx;
+            let newTLD = new RequestResult();
 
-            const receipt = await tx.wait();
-            const events = (<ContractReceipt>receipt).events;
+            try {
+                
+                const tx = await this._smartContract.registerTopDomain(topLevelDomainName)
+                const receipt = await tx.wait();
 
-            if(events){
-                newTLD.Success = true;
-                events.forEach(event => newTLD.Result.push(event));
+                const events = (<ContractReceipt>receipt).events;
+                if(events){
+                    newTLD.Success = true;
+                    newTLD.Result.push(...events);  
+                }
+                await resolve(newTLD)
+                
+            } catch (error) {
+                newTLD.Errors.push(error)
+                await reject(newTLD);                
             }
-            
-        } catch (error) {
-            newTLD.Errors.push(error.message)
-        }
-     
-        return newTLD;
+             
+        });
+        
+        
     }
     
     public async RenewTLD() {

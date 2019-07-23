@@ -1,62 +1,123 @@
 {
   "EthereumRpcHost": "http://rinkeby.caralabs.me:18575",
   "EthereumRpcPort": "443",
-  "SmartContractAddress": "0x1acd5517fde5e2b526e8c8ed1d46926cadb298f8",
+  "SmartContractAddress": "0x29c45c5c385e694d23d099bec867a40ad63c4b30",
     "SmartContractAbi": [
       {
-        "constant": true,
+        "constant": false,
         "inputs": [
           {
-            "name": "",
-            "type": "address"
+            "name": "_topDomainName",
+            "type": "string"
           },
           {
-            "name": "",
-            "type": "uint256"
-          }
-        ],
-        "name": "domainsOwnerMap",
-        "outputs": [
-          {
-            "name": "",
-            "type": "uint256"
-          }
-        ],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
-      },
-      {
-        "constant": true,
-        "inputs": [],
-        "name": "contractOwner",
-        "outputs": [
-          {
-            "name": "",
+            "name": "_newOwnerAddress",
             "type": "address"
           }
         ],
-        "payable": false,
-        "stateMutability": "view",
+        "name": "changeTopDomainOwnership",
+        "outputs": [],
+        "payable": true,
+        "stateMutability": "payable",
         "type": "function"
       },
       {
-        "constant": true,
+        "constant": false,
+        "inputs": [],
+        "name": "kill",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "constant": false,
         "inputs": [
           {
-            "name": "",
-            "type": "bytes32"
-          }
-        ],
-        "name": "domainsHashMap",
-        "outputs": [
+            "name": "_domainName",
+            "type": "string"
+          },
           {
-            "name": "",
-            "type": "uint256"
+            "name": "_topDomainName",
+            "type": "string"
+          },
+          {
+            "name": "_storageHash",
+            "type": "string"
           }
         ],
-        "payable": false,
-        "stateMutability": "view",
+        "name": "registerDomain",
+        "outputs": [],
+        "payable": true,
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [
+          {
+            "name": "_topDomainName",
+            "type": "string"
+          }
+        ],
+        "name": "registerTopDomain",
+        "outputs": [],
+        "payable": true,
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [
+          {
+            "name": "_domainName",
+            "type": "string"
+          },
+          {
+            "name": "_topDomainName",
+            "type": "string"
+          }
+        ],
+        "name": "renewDomain",
+        "outputs": [],
+        "payable": true,
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [
+          {
+            "name": "_topDomainName",
+            "type": "string"
+          }
+        ],
+        "name": "renewTopDomain",
+        "outputs": [],
+        "payable": true,
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [
+          {
+            "name": "_domainName",
+            "type": "string"
+          },
+          {
+            "name": "_topDomainName",
+            "type": "string"
+          },
+          {
+            "name": "_storageHash",
+            "type": "string"
+          }
+        ],
+        "name": "updateDomainStorageHash",
+        "outputs": [],
+        "payable": true,
+        "stateMutability": "payable",
         "type": "function"
       },
       {
@@ -173,26 +234,108 @@
         "type": "event"
       },
       {
-        "constant": false,
+        "constant": true,
         "inputs": [],
-        "name": "kill",
-        "outputs": [],
+        "name": "contractOwner",
+        "outputs": [
+          {
+            "name": "",
+            "type": "address"
+          }
+        ],
         "payable": false,
-        "stateMutability": "nonpayable",
+        "stateMutability": "view",
         "type": "function"
       },
       {
-        "constant": false,
+        "constant": true,
         "inputs": [
+          {
+            "name": "_domainName",
+            "type": "string"
+          },
           {
             "name": "_topDomainName",
             "type": "string"
           }
         ],
-        "name": "registerTopDomain",
-        "outputs": [],
-        "payable": true,
-        "stateMutability": "payable",
+        "name": "domainAlreadyRegistered",
+        "outputs": [
+          {
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "name": "",
+            "type": "bytes32"
+          }
+        ],
+        "name": "domainsHashMap",
+        "outputs": [
+          {
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "name": "",
+            "type": "address"
+          },
+          {
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "name": "domainsOwnerMap",
+        "outputs": [
+          {
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [],
+        "name": "getAllDomainsByOwner",
+        "outputs": [
+          {
+            "name": "name",
+            "type": "string[]"
+          },
+          {
+            "name": "topDomain",
+            "type": "string[]"
+          },
+          {
+            "name": "storageHash",
+            "type": "string[]"
+          },
+          {
+            "name": "expires",
+            "type": "uint256[]"
+          }
+        ],
+        "payable": false,
+        "stateMutability": "view",
         "type": "function"
       },
       {
@@ -207,6 +350,101 @@
           {
             "name": "expires",
             "type": "uint256[]"
+          }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "name": "_domainName",
+            "type": "string"
+          },
+          {
+            "name": "_topDomainName",
+            "type": "string"
+          }
+        ],
+        "name": "getCompleteDomainHash",
+        "outputs": [
+          {
+            "name": "",
+            "type": "bytes32"
+          }
+        ],
+        "payable": false,
+        "stateMutability": "pure",
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "name": "_hash",
+            "type": "bytes32"
+          }
+        ],
+        "name": "getDomainByHash",
+        "outputs": [
+          {
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "name": "topDomain",
+            "type": "string"
+          },
+          {
+            "name": "storageHash",
+            "type": "string"
+          },
+          {
+            "name": "expires",
+            "type": "uint256"
+          },
+          {
+            "name": "owner",
+            "type": "address"
+          }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [],
+        "name": "getDomainsLength",
+        "outputs": [
+          {
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "name": "_domainName",
+            "type": "string"
+          },
+          {
+            "name": "_topDomainName",
+            "type": "string"
+          }
+        ],
+        "name": "getStorageHashByDomain",
+        "outputs": [
+          {
+            "name": "",
+            "type": "string"
           }
         ],
         "payable": false,
@@ -260,35 +498,17 @@
         "type": "function"
       },
       {
-        "constant": false,
-        "inputs": [
+        "constant": true,
+        "inputs": [],
+        "name": "getTopDomainsLength",
+        "outputs": [
           {
-            "name": "_topDomainName",
-            "type": "string"
-          },
-          {
-            "name": "_newOwnerAddress",
-            "type": "address"
+            "name": "",
+            "type": "uint256"
           }
         ],
-        "name": "changeTopDomainOwnership",
-        "outputs": [],
-        "payable": true,
-        "stateMutability": "payable",
-        "type": "function"
-      },
-      {
-        "constant": false,
-        "inputs": [
-          {
-            "name": "_topDomainName",
-            "type": "string"
-          }
-        ],
-        "name": "renewTopDomain",
-        "outputs": [],
-        "payable": true,
-        "stateMutability": "payable",
+        "payable": false,
+        "stateMutability": "view",
         "type": "function"
       },
       {
@@ -304,226 +524,6 @@
           {
             "name": "",
             "type": "bool"
-          }
-        ],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
-      },
-      {
-        "constant": true,
-        "inputs": [],
-        "name": "getTopDomainsLength",
-        "outputs": [
-          {
-            "name": "",
-            "type": "uint256"
-          }
-        ],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
-      },
-      {
-        "constant": false,
-        "inputs": [
-          {
-            "name": "_domainName",
-            "type": "string"
-          },
-          {
-            "name": "_topDomainName",
-            "type": "string"
-          },
-          {
-            "name": "_storageHash",
-            "type": "string"
-          }
-        ],
-        "name": "registerDomain",
-        "outputs": [],
-        "payable": true,
-        "stateMutability": "payable",
-        "type": "function"
-      },
-      {
-        "constant": true,
-        "inputs": [
-          {
-            "name": "_domainName",
-            "type": "string"
-          },
-          {
-            "name": "_topDomainName",
-            "type": "string"
-          }
-        ],
-        "name": "getStorageHashByDomain",
-        "outputs": [
-          {
-            "name": "",
-            "type": "string"
-          }
-        ],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
-      },
-      {
-        "constant": false,
-        "inputs": [
-          {
-            "name": "_domainName",
-            "type": "string"
-          },
-          {
-            "name": "_topDomainName",
-            "type": "string"
-          },
-          {
-            "name": "_storageHash",
-            "type": "string"
-          }
-        ],
-        "name": "updateDomainStorageHash",
-        "outputs": [],
-        "payable": true,
-        "stateMutability": "payable",
-        "type": "function"
-      },
-      {
-        "constant": false,
-        "inputs": [
-          {
-            "name": "_domainName",
-            "type": "string"
-          },
-          {
-            "name": "_topDomainName",
-            "type": "string"
-          }
-        ],
-        "name": "renewDomain",
-        "outputs": [],
-        "payable": true,
-        "stateMutability": "payable",
-        "type": "function"
-      },
-      {
-        "constant": true,
-        "inputs": [
-          {
-            "name": "_hash",
-            "type": "bytes32"
-          }
-        ],
-        "name": "getDomainByHash",
-        "outputs": [
-          {
-            "name": "name",
-            "type": "string"
-          },
-          {
-            "name": "topDomain",
-            "type": "string"
-          },
-          {
-            "name": "storageHash",
-            "type": "string"
-          },
-          {
-            "name": "expires",
-            "type": "uint256"
-          },
-          {
-            "name": "owner",
-            "type": "address"
-          }
-        ],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
-      },
-      {
-        "constant": true,
-        "inputs": [
-          {
-            "name": "_domainName",
-            "type": "string"
-          },
-          {
-            "name": "_topDomainName",
-            "type": "string"
-          }
-        ],
-        "name": "domainAlreadyRegistered",
-        "outputs": [
-          {
-            "name": "",
-            "type": "bool"
-          }
-        ],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
-      },
-      {
-        "constant": true,
-        "inputs": [],
-        "name": "getDomainsLength",
-        "outputs": [
-          {
-            "name": "",
-            "type": "uint256"
-          }
-        ],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
-      },
-      {
-        "constant": true,
-        "inputs": [
-          {
-            "name": "_domainName",
-            "type": "string"
-          },
-          {
-            "name": "_topDomainName",
-            "type": "string"
-          }
-        ],
-        "name": "getCompleteDomainHash",
-        "outputs": [
-          {
-            "name": "",
-            "type": "bytes32"
-          }
-        ],
-        "payable": false,
-        "stateMutability": "pure",
-        "type": "function"
-      },
-      {
-        "constant": true,
-        "inputs": [],
-        "name": "getAllDomainsByOwner",
-        "outputs": [
-          {
-            "name": "name",
-            "type": "string[]"
-          },
-          {
-            "name": "topDomain",
-            "type": "string[]"
-          },
-          {
-            "name": "storageHash",
-            "type": "string[]"
-          },
-          {
-            "name": "expires",
-            "type": "uint256[]"
           }
         ],
         "payable": false,
