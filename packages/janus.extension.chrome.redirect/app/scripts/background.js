@@ -43,9 +43,6 @@ import SmartContract from './core/SmartContract';
 
                     domain = domains[1];
                     topDomain = domains[2];
-
-                    console.log(domain);
-                    console.log(topDomain);
                 }
 
                 let result;
@@ -53,18 +50,14 @@ import SmartContract from './core/SmartContract';
                 try {
                     result = await contract.getStorageHashByDomain(domain, topDomain);
                 } catch (e) {
-                    console.log(e.errorArgs);
+                    console.log(e);
                 }
-
-                console.log(result);
 
                 if (result) {
                     chrome.tabs.update(activeTab.id, { url: 'http://ipfs.caralabs.me/ipfs/' + result + '/' });
                 } else {
                     console.log(404);
                 }
-
-                window.history.pushState('page', 'title', 'jns.' + domain + '.' + topDomain);
             }
         });
     });
