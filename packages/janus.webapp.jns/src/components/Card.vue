@@ -5,7 +5,7 @@
       <li class="item" :style="`width: ${width}%`" v-for="(item, index) in list.data" :key="index">
         <div class="item_icon" v-if="item.icon">
           <img class="icon" :src="item.icon">
-          <img class="icon shadow" :src="item.icon">
+          <!-- <img class="icon shadow" :src="item.icon"> -->
         </div>
         <div class="content">
           <div class="item_title" v-if="item.title">

@@ -29,6 +29,8 @@ export default {
 
 <style>
 @import './assets/styles/variables.css';
+@import './assets/styles/fonts.css';
+@import './assets/styles/typography.css';
 @import './assets/styles/base.css';
 @import './assets/styles/utils.css';
 #app {
