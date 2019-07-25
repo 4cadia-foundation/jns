@@ -6,7 +6,6 @@ import SmartContract from './core/SmartContract';
     const jnsContract = new SmartContract();
     const contract = jnsContract.contract();
     const notFoundHash = 'QmNoBEYtzFmUEoHQrQvmwsSg8fRMh3M1xzHb17LMw5tQwv';
-    let executed = false;
 
     chrome.webNavigation.onBeforeNavigate.addListener((details) => {
 
@@ -86,7 +85,6 @@ import SmartContract from './core/SmartContract';
                     }
 
                     if (result) {
-                        executed = true;
                         chrome.tabs.update(activeTab.id, { url: 'http://ipfs.caralabs.me/ipfs/' + result + '/' });
                     } else {
                         chrome.tabs.update(activeTab.id, { url: 'http://ipfs.caralabs.me/ipfs/' + notFoundHash + '/' });
