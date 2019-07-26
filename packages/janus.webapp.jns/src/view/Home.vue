@@ -3,7 +3,7 @@
     <div class="col" v-for="(block, index) in this.content" :key="index">
       <v-hero v-if="block['type']=='list_hero'" :hero="block['content'][0]" float="right" classes="full-content">
       </v-hero>
-      <v-card v-if="block['type']=='list_card'" :list="block['content'][0]"/>
+      <v-cards-list v-if="block['type']=='list_card'" :list="block['content'][0]" cardStyle="square" />
     </div>
   </div>
 </template>
@@ -12,7 +12,7 @@
 import contentService from '../api/contentService'
 import Hero from '@/components/Hero'
 import BaseParagraph from '@/components/BaseParagraph'
-import BaseCard from '@/components/BaseCard'
+import CardListBlock from '@/components/CardListBlock'
 
 export default {
   name: 'Home',
@@ -25,7 +25,7 @@ export default {
   components: {
     'v-hero': Hero,
     'v-paragraph': BaseParagraph,
-    'v-card': BaseCard
+    'v-cards-list': CardListBlock
   },
   mounted: function () {
     contentService('home').then((response) => {

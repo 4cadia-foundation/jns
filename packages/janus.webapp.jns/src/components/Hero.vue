@@ -80,7 +80,7 @@ export default {
 }
 
 .hero.colapsed .hero_content {
-  background-size: cover;
+  padding: 30px 0;
 }
 
 .hero .content--text {
