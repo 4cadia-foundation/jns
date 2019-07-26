@@ -46,7 +46,6 @@ import SmartContract from './core/SmartContract';
                     }
 
                     if (result) {
-                        executed = true;
                         chrome.tabs.update(activeTab.id, { url: 'http://ipfs.caralabs.me/ipfs/' + result + '/' });
                     } else {
                         chrome.tabs.update(activeTab.id, { url: 'http://ipfs.caralabs.me/ipfs/' + notFoundHash + '/' });
