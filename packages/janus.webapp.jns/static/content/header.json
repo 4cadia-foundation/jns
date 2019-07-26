@@ -1,0 +1,31 @@
+{
+  "menu": [
+    {
+      "title": "Home",
+      "path": "/" 
+    },
+    {
+      "title": "Indexer",
+      "submenu": [
+        {
+          "title": "Teste1",
+          "path": "/about" 
+        },
+        {
+          "title": "Teste2",
+          "path": "/about" 
+        }
+      ]
+    },
+    {
+      "title": "About",
+      "path": "/about" 
+    },
+    {
+      "title": "Identity",
+      "href": "https://janusproj.atlassian.net/wiki/spaces/PAP/pages/126320921/What+s+Identity"
+    }
+  ],
+  "logo": "/static/images/logo.png",
+  "title": "Janus"
+}

@@ -5,8 +5,8 @@
 
 .container {
   background: white;
-  width: 90vw;
-  margin: auto;
+  /* width: 90vw; */
+  margin: auto 30px;
 }
 
 .col {
@@ -19,7 +19,7 @@
 }
 
 .col:not(:first-child) {
-  padding: 3vw 0;
+  padding: 3vw 30px;
 }
 
 .logo {
@@ -90,23 +90,13 @@
   text-align: left;
   padding: 0 0 0 5px;
   margin-top: 10px;
-  font-size: .875rem;
-  color: var(--color-red);
   list-style: none;
 }
 
-.invalid {
-  color: var(--color-red);
-  border-color: var(--color-red);
-}
-
-.subtitle {
-  color: var(--color-gray);
-  max-width: 60%;
-  margin: 0 auto 3vw;
-}
-
-.router-link-exact-active {
-  color: var(--color-primary) !important;
-  font-weight: bold;
+.shadow {
+  border: 1px solid var(--color-gray-lighter);
+  box-sizing: border-box;
+  box-shadow: 0px 7px 14px rgba(0, 0, 0, 0.10);
+  border-radius: 4px;
+  background: white;
 }

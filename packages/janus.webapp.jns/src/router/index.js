@@ -3,7 +3,6 @@ import Router from 'vue-router'
 import Home from '@/view/Home'
 // import Domain from '@/view/Domain'
 // import TopLevel from '@/view/TopLevel'
-import About from '@/view/About'
 import Profile from '@/view/Profile'
 import NotFound from '@/view/NotFound'
 
@@ -15,11 +14,6 @@ export default new Router({
       path: '/',
       name: 'Home',
       component: Home
-    },
-    {
-      path: '/about',
-      name: 'About',
-      component: About
     },
     // {
     //   path: '/tld',

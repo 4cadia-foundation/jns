@@ -13,29 +13,6 @@ ul {
   list-style: none;
 }
 
-h1 {
-  margin: 0.67em 0;
-  color: var(--color-white);
-  font-weight: 600;
-  line-height: 1.5;
-}
-
-h2 {
-  color: var(--color-gray);
-}
-
-h3 {
-  color: var(--color-gray-darker);
-}
-
-p {
-  margin-block-start: 1em;
-  margin-block-end: 1em;
-  margin-inline-start: 0px;
-  margin-inline-end: 0px;
-  font-size: 1.2em;
-}
-
 a {
   color: var(--color-primary);
   cursor: pointer;
