@@ -1,5 +1,5 @@
 <template>
-  <div class="container container--home">
+  <div class="container container--domain">
     <div class="col" v-for="(block, index) in this.content" :key="index">
       <v-hero v-if="block['type']=='list_hero'" :hero="block['content'][0]" float="right" classes="full-content">
       </v-hero>
@@ -15,11 +15,10 @@ import BaseParagraph from '@/components/BaseParagraph'
 import BaseCard from '@/components/BaseCard'
 
 export default {
-  name: 'Home',
+  name: 'Domain',
   data () {
     return {
       content: [],
-      title: 'Janus Indexer'
     }
   },
   components: {
@@ -28,7 +27,7 @@ export default {
     'v-card': BaseCard
   },
   mounted: function () {
-    contentService('home').then((response) => {
+    contentService('domain').then((response) => {
       this.content = response.data
     })
   }

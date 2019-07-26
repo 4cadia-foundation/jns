@@ -5,25 +5,16 @@
       "path": "/" 
     },
     {
-      "title": "Indexer",
-      "submenu": [
-        {
-          "title": "Teste1",
-          "path": "/about" 
-        },
-        {
-          "title": "Teste2",
-          "path": "/about" 
-        }
-      ]
+      "title": "Buy TLD",
+      "path": "/tld" 
     },
     {
-      "title": "About",
-      "path": "/about" 
+      "title": "Buy Domain",
+      "path": "/domain" 
     },
     {
-      "title": "Identity",
-      "href": "https://janusproj.atlassian.net/wiki/spaces/PAP/pages/126320921/What+s+Identity"
+      "title": "Account",
+      "path": "/account"
     }
   ],
   "logo": "/static/images/logo.png",

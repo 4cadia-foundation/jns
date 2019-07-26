@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <v-modal ref="modal"></v-modal>
+    <!-- <v-modal ref="modal"></v-modal> -->
     <v-header/>
     <div class="main">
       <router-view/>
@@ -12,14 +12,14 @@
 
 /* eslint-disable */ 
 import Header from '@/components/Header'
-import Modal from '@/components/Modal'
+// import Modal from '@/components/Modal'
 
 export default {
   name: 'App',
 
   components: {
     'v-header': Header,
-    'v-modal': Modal
+    // 'v-modal': Modal
   },
   created(){ 
     // this.$store.dispatch('web3/registerWeb3')

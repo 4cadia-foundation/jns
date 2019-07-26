@@ -6,20 +6,20 @@
     </router-link>
     <div :class="`header_menu ${this.showMenu ? 'open' : ''}`">
       <v-menu :menu="this.menu"/>
-      <account />
+      <!-- <identity /> -->
     </div>
   </div>
 </template>
 
 <script>
 import contentService from '../api/contentService'
-import Account from '@/components/Account'
-import Menu from '@/components/Menu'
+import Identity from '@/components/Identity'
+import BaseMenu from '@/components/BaseMenu'
 export default {
   name: 'Header',
   components: {
-    'account': Account,
-    'v-menu': Menu
+    'identity': Identity,
+    'v-menu': BaseMenu
   },
   data () {
     return {
@@ -64,5 +64,8 @@ export default {
 }
 .header_logo .title {
   margin: 0 0 0 10px;
+}
+.header_menu {
+  display: flex;
 }
 </style>

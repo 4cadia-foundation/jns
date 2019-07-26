@@ -10,7 +10,7 @@
 
 <script>
 export default {
-  name: 'Paragraph',
+  name: 'BaseParagraph',
   data () {
     return {}
   },

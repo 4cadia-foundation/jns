@@ -6,7 +6,7 @@
 <script>
 
 export default {
-  name: 'ScoreProfile',
+  name: 'IdentityProfile',
   props: {
     profileData: {
       type: Array,

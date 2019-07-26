@@ -45,6 +45,11 @@ export default {
   min-height: 50vw;
 }
 
+.hero.colapsed {
+  max-height: 15vw;
+  min-height: auto;
+}
+
 .hero .hero_background {
   content: '';
   display: block;
@@ -58,6 +63,10 @@ export default {
   background-repeat: no-repeat;
 }
 
+.hero.colapsed .hero_background {
+  background-size: cover;
+}
+
 .hero_content {
   height: 100%;
   display: flex;
@@ -68,6 +77,10 @@ export default {
   padding: 8% 0;
   position: relative;
   z-index: 1;
+}
+
+.hero.colapsed .hero_content {
+  background-size: cover;
 }
 
 .hero .content--text {

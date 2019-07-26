@@ -22,7 +22,7 @@
 
 <script>
 export default {
-  name: 'Menu',
+  name: 'BaseMenu',
   components: {
   },
   data () {

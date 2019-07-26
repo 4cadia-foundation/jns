@@ -21,7 +21,7 @@
 
 <script>
 export default {
-  name: 'Card',
+  name: 'BaseCard',
   data () {
     return {
       width: 100/(this.list.data.length)

@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: 'Loader',
+  name: 'BaseLoader',
   components: {
   },
   props: {

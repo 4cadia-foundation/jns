@@ -1,7 +1,8 @@
 <template>
-  <div class="account">
-    <button @click="handleClick()" type="submit" :class="`account-icon menu-toggle ${ isAuthenticated ? 'authenticated' : ''}`"></button>
-    <div class="account-menu dropdown-menu shadow">
+  <div class="identity">
+    <identity-modal ref="identityModal"/>
+    <button type="submit" :class="`identity-icon menu-toggle ${ isAuthenticated ? 'authenticated' : ''}`"></button>
+    <div class="identity-menu dropdown-menu shadow">
       <div class="dropdown-content" v-if="isAuthenticated">
         <button class="dropdown-item" @click="handleProfile()"> Profile </button>
         <button class="dropdown-item" @click="handleSignOut()"> Sign Out </button>
@@ -15,10 +16,12 @@
 
 <script>
 import { mapState } from 'vuex'
+import IdentityModal from '@/components/IdentityModal'
 
 export default {
-  name: 'MenuAccount',
+  name: 'Identity',
   components: {
+    'identity-modal': IdentityModal
   },
   computed: {
     ...mapState({
@@ -33,14 +36,11 @@ export default {
     }
   },
   methods: {
-    handleClick: function (value) {
-      this.$refs.dropdown.openDropDown()
-    },
     handleProfile: function () {
       this.$router.push({ name: 'Profile' })
     },
     handleOpenModalAuth: function () {
-      this.$root.$emit('openModal')
+      this.$refs.identityModal.openModal()
     },
     handleSignOut: function () {
       document.cookie = 'janusToken='
@@ -53,7 +53,7 @@ export default {
 </script>
 
 <style scoped>
-.account {
+.identity {
   text-align: right;
   -webkit-align-items: center;
   display: inline-block;
@@ -62,13 +62,13 @@ export default {
   position: relative;
 }
 
-.account:hover .account-menu {
+.identity:hover .identity-menu {
   display: block;
   right: 0;
   left: initial;
 }
 
-.account-icon {
+.identity-icon {
   width: 40px;
   height: 40px;
   box-shadow: none;
@@ -77,6 +77,7 @@ export default {
   font-size: 0;
   background: url("../assets/images/account.png");
   filter: grayscale(100%);
+  vertical-align: middle;
 }
 
 .dropdown-content button {
@@ -101,7 +102,7 @@ export default {
 
 /* Media Mobile */
 @media (max-width: 768px) {
-  .account {
+  .identity {
     display: block;
   }
   .dropdown-content {
@@ -114,7 +115,7 @@ export default {
 
 /* Media Mobile */
 @media (max-width: 768px) {
-  .account {
+  .identity {
     display: block;
   }
 }

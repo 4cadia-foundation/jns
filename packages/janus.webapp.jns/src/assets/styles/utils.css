@@ -4,18 +4,10 @@
 }
 
 .container {
-  background: white;
-  /* width: 90vw; */
-  margin: auto 30px;
 }
 
 .col {
   position: relative;
-}
-
-.col:first-child {
-  width: 100vw;
-  margin-left: -5vw;
 }
 
 .col:not(:first-child) {

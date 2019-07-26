@@ -11,19 +11,19 @@
                   <p>{{item.value}}</p>
               </li>
             </ul>
-            <v-score-profile :profile-data="data" class="score"></v-score-profile>
+            <v-account-profile :profile-data="data" class="score"></v-account-profile>
         </div>
     </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
-import ScoreProfile from '../components/ScoreProfile'
+import IdentityProfile from '../components/IdentityProfile'
 
 export default {
   name: 'Profile',
   components: {
-    'v-score-profile': ScoreProfile
+    'v-account-profile': IdentityProfile
   },
   computed: {
     ...mapState({

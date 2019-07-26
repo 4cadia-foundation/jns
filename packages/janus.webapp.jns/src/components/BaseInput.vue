@@ -23,7 +23,7 @@
 import { mapGetters } from 'vuex'
 
 export default {
-  name: 'Input',
+  name: 'BaseInput',
   components: {
   },
   data () {

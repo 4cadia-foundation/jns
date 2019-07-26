@@ -4,7 +4,7 @@
 }
 
 body {
-  background: var(--color-gray-darker);
+  /* background: var(--color-gray-darker); */
   position: relative;
   height: 100vh;
 }
