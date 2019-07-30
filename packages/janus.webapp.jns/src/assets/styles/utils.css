@@ -26,13 +26,9 @@
   text-align: left;
   color: var(--color-white);
   background: var(--color-primary);
-  padding-top: 0px;
-  padding-bottom: 0px;
-  padding-left: 32px;
-  padding-right: 32px;
+  padding: 10px 32px;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 4px;
   text-transform: uppercase;
-  height: 30px;
   min-width: 50px;
   margin: 0px;
   border-width: initial;
@@ -54,12 +50,29 @@
   color: var(--color-primary);
 }
 
+.btn--clear {
+  box-shadow: none;
+  background: none;
+  border: none;
+  color: var(--color-gray);
+  width: 100%;
+  text-align: center;
+}
+
+.btn--clear:hover {
+  color: var(--color-blue);
+}
+
 .btn--alert {
   background: var(--color-red);
 }
 
 .btn--success {
   background: var(--color-green);
+}
+
+.btn--warn {
+  background: var(--color-yellow);
 }
 
 .btn--icon {

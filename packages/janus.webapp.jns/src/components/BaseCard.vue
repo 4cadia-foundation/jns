@@ -1,15 +1,15 @@
 <template>
   <div :class="`card shadow ${this.cardType}`">
-    <div class="card_header">
+    <div v-if="this.$slots.header" class="card_content card_header">
       <slot name="header"></slot>
     </div>
-    <div class="card_title">
+    <div v-if="this.$slots.title" class="card_content card_title">
       <slot name="title"></slot>
     </div>
-    <div class="card_body">
+    <div v-if="this.$slots.body" class="card_content card_body">
       <slot name="body"></slot>
     </div>
-    <div class="card_footer">
+    <div v-if="this.$slots.footer" class="card_content card_footer">
       <slot name="footer"></slot>
     </div>
   </div>
@@ -35,6 +35,7 @@ export default {
   components: {
   },
   mounted () {
+    console.log(this.$slots)
   }
 }
 </script>
@@ -44,5 +45,39 @@ export default {
   padding: 40px 30px;
   text-align: center;
   height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+.card.full {
+  display: flex;
+  justify-content: space-between;
+  padding: 30px 60px;
+  border-radius: 8px;
+}
+.card.full .card_content {
+  margin: auto 0;
+  height: auto;
+}
+.card.full .card_title .title {
+  margin: auto 0;
+}
+.card.full::before {
+  display: block;
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 10px;
+  height: 100%;
+  background: var(--color-gray);
+}
+.card.full.success::before {
+  background: var(--color-green);
+}
+.card.full.alert::before {
+  background: var(--color-red);
+}
+.card.full.warn::before {
+  background: var(--color-yellow);
 }
 </style>

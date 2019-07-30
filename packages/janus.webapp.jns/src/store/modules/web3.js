@@ -20,7 +20,7 @@ const actions = {
 // mutations
 const mutations = {
   registerWeb3Instance (state, payload) {
-    // console.log('[registerWeb3instance] Mutation being executed')
+    // console.log('[registerWeb3instance] Mutation being executed', payload)
     state.instance = payload
     state.account = payload.accounts['0']
   }

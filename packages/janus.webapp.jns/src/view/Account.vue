@@ -5,36 +5,28 @@
       </v-hero>
       <v-cards-list v-if="block['type']=='list_card'" :list="block['content'][0]" cardStyle="list" />
     </div>
+    
     <div class="list-domains">
       <ul class="list">
         <li class="item" v-for="(list, index) in this.list" :key="index">
-          <v-card ref="card" cardType="full" :class="list.status">
+          <v-card ref="card" cardType="full" :class="checkStatus(list.due)">
             <template v-slot:title>
               <h3 class="title">{{list.title}}</h3>
             </template>
 
             <template v-slot:body>
               <div class="due">
-                <span>Due Date: </span>
-                <span>
+                <p class="due-title tooltip">Due Date: </p>
+                <p class="due-value tooltip">
                   {{list.due | moment}}
-                </span>
+                </p>
               </div>
-            </template>
-
-            <template v-slot:body>
-              <div class="due">
-                <span>Due Date: </span>
-                <span>
-                  {{list.due | moment}}
-                </span> 
+              <div class="actions">
+                <v-action-dropdown title="actions" :id="list.id"/>
               </div>
             </template>
 
             <template v-slot:footer>
-              <div class="actions">
-                <v-actions-menu />
-              </div>
             </template>
           </v-card>
         </li>
@@ -48,7 +40,7 @@ import contentService from '../api/contentService'
 import Hero from '@/components/Hero'
 import BaseParagraph from '@/components/BaseParagraph'
 import BaseCard from '@/components/BaseCard'
-import ActionsMenu from '@/components/ActionsMenu'
+import ActionDropdown from '@/components/ActionDropdown'
 import moment from 'moment'
 
 export default {
@@ -60,17 +52,20 @@ export default {
         {
           title: "eth",
           status: "active",
-          due: 1564172616000
+          due: 1598746311000,
+          id: 1
         },
         {
           title: "janus.eth",
           status: "expired",
-          due: 1560630216000
+          due: 1560630216000,
+          id: 2
         },
         {
           title: "4CADI4.eth",
           status: "warn",
-          due: 1560630216000
+          due: 1569802311000,
+          id: 3
         }
       ]
     }
@@ -79,7 +74,7 @@ export default {
     'v-hero': Hero,
     'v-paragraph': BaseParagraph,
     'v-card': BaseCard,
-    'v-actions-menu': ActionsMenu
+    'v-action-dropdown': ActionDropdown
   },
   mounted: function () {
     contentService('account').then((response) => {
@@ -88,7 +83,20 @@ export default {
   },
   filters: {
     moment: function (date) {
-      return moment(date).format("LL");
+      return moment(date).toDate().toLocaleDateString()
+    }
+  },
+  methods: {
+    checkStatus: function (due) {
+      let now = Date.now()
+      let differenceDate = moment(due).diff(moment(now), 'months')
+      let status = 'success'
+      if (differenceDate < 0) {
+        status = 'alert'
+      } else if (differenceDate <= 2) {
+        status = 'warn'
+      } 
+      return status
     }
   }
 }
@@ -98,9 +106,21 @@ export default {
 .list {
   display: flex;
   flex-direction: column;
-  padding: 120px 50px 70px;
+  margin: 50px 50px 140px;
 }
 .item {
   margin: 10px 0;
+}
+.due,
+.actions {
+  display: inline-block;
+  vertical-align: middle;
+}
+.due {
+  margin-right: 30px; 
+  text-align: left;
+}
+.due .tooltip {
+  margin: 5px 0;
 }
 </style>

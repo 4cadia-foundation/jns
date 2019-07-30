@@ -6,24 +6,19 @@
     <li class="menu-item actions" v-for="(link, index) in this.menu" :key="index">
       <router-link v-if="link.path" :to="link.path">{{link.title}}</router-link>
       <a target="_blank" v-else-if="link.href" :href="link.href">{{link.title}}</a>
-      <div class="submenu dropdown" v-else-if="link.submenu">
-        <a class="dropdown-toggle" href="#" role="button" aria-haspopup="true" aria-expanded="false">{{link.title}}</a>
-        <ul class="dropdown-menu shadow">
-          <li class="dropdown-item" v-for="(link, index) in link.submenu" :key="index">
-            <router-link v-if="link.path" :to="link.path">{{link.title}}</router-link>
-            <a target="_blank" v-else-if="link.href" :href="link.href">{{link.title}}</a>
-          </li>
-        </ul>
-      </div>
+      <v-dropdown-menu v-else-if="link.sublinks" :dropdown="link"/>
       <span v-else>{{link.title}}</span>
     </li>
   </ul>
 </template>
 
 <script>
+import BaseDropdown from '@/components/BaseDropdown'
+
 export default {
   name: 'BaseMenu',
   components: {
+    'v-dropdown-menu': BaseDropdown
   },
   data () {
     return {
@@ -37,7 +32,6 @@ export default {
     }
   },
   mounted: function () {
-    console.log(this.menu)
   }
 }
 </script>
@@ -62,36 +56,6 @@ export default {
 }
 .menu-item a:hover {
   color: var(--color-blue);
-}
-.dropdown {
-  position: relative;
-}
-.dropdown-menu {
-  position: absolute;
-  z-index: 5;
-  left: -50%;
-  right: -50%;
-  margin: auto;
-  display: none;
-  text-align: center;
-  min-width: 140px;
-}
-.dropdown:hover .dropdown-menu {
-  display: block;
-}
-.dropdown-item {
-  border-bottom: 1px solid var(--color-gray-lighter);
-  display: block;
-}
-.dropdown-item:last-of-type {
-  border-bottom: none;
-}
-.dropdown-item a {
-  width: 100%;
-  display: block;
-  height: 100%;
-  padding: 15px 10px;
-  box-sizing: border-box;
 }
 .menu-hamburguer {
   display: none;
