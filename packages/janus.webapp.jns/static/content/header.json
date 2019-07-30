@@ -14,21 +14,7 @@
     },
     {
       "title": "Account",
-      "type": "dropdown",
-      "sublinks": [
-        {
-          "title": "Teste 1",
-          "path": "/1" 
-        },
-        {
-          "title": "Teste 2",
-          "path": "/2" 
-        },
-        {
-          "title": "Teste 3",
-          "path": "/3"
-        }
-      ]
+      "path": "/account"
     }
   ],
   "logo": "/static/images/logo.png",

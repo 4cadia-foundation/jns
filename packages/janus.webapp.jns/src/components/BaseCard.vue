@@ -35,7 +35,6 @@ export default {
   components: {
   },
   mounted () {
-    console.log(this.$slots)
   }
 }
 </script>
@@ -46,13 +45,14 @@ export default {
   text-align: center;
   height: 100%;
   position: relative;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 .card.full {
   display: flex;
   justify-content: space-between;
   padding: 30px 60px;
   border-radius: 8px;
+  border-left-width: 10px;
 }
 .card.full .card_content {
   margin: auto 0;
@@ -61,23 +61,13 @@ export default {
 .card.full .card_title .title {
   margin: auto 0;
 }
-.card.full::before {
-  display: block;
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 10px;
-  height: 100%;
-  background: var(--color-gray);
+.card.full.success {
+  border-left-color: var(--color-green);
 }
-.card.full.success::before {
-  background: var(--color-green);
+.card.full.alert {
+  border-left-color: var(--color-red);
 }
-.card.full.alert::before {
-  background: var(--color-red);
-}
-.card.full.warn::before {
-  background: var(--color-yellow);
+.card.full.warn {
+  border-left-color: var(--color-yellow);
 }
 </style>

@@ -22,7 +22,7 @@
                 </p>
               </div>
               <div class="actions">
-                <v-action-dropdown title="actions" :id="list.id"/>
+                <v-action-dropdown title="actions" :id="list.id" :actions="actions"/>
               </div>
             </template>
 
@@ -48,25 +48,11 @@ export default {
   data () {
     return {
       content: [],
-      list: [
-        {
-          title: "eth",
-          status: "active",
-          due: 1598746311000,
-          id: 1
-        },
-        {
-          title: "janus.eth",
-          status: "expired",
-          due: 1560630216000,
-          id: 2
-        },
-        {
-          title: "4CADI4.eth",
-          status: "warn",
-          due: 1569802311000,
-          id: 3
-        }
+      list: [],
+      actions: [
+        { title: "Transfer"},
+        { title: "Renew"},
+        { title: "Update"}
       ]
     }
   },
@@ -79,6 +65,10 @@ export default {
   mounted: function () {
     contentService('account').then((response) => {
       this.content = response.data
+      this.list = response.data[1].list
+    })
+    this.$root.$on('ClickAction', function (action) {
+      console.log('action', action)
     })
   },
   filters: {

@@ -31,7 +31,7 @@ export default {
 }
 </script>
 
-<style lang="css">
+<style>
 .dropdown {
   position: relative;
   width: auto;
