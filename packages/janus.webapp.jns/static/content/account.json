@@ -8,45 +8,5 @@
         "image": ""
       }
     ]
-  },
-  {
-    "type": "list_domain",
-    "list": [
-      {
-        "title": "atlas.eth",
-        "due": 1598746311000,
-        "id": 1
-      },
-      {
-        "title": "janus.eth",
-        "due": 1560630216000,
-        "id": 2
-      },
-      {
-        "title": "4CADI4.eth",
-        "due": 1569802311000,
-        "id": 3
-      }
-    ]
-  },
-  {
-    "type": "list_tld",
-    "list": [
-      {
-        "title": "eth",
-        "due": 1598746311000,
-        "id": 1
-      },
-      {
-        "title": "ethereum",
-        "due": 1560630216000,
-        "id": 2
-      },
-      {
-        "title": "com",
-        "due": 1569802311000,
-        "id": 3
-      }
-    ]
   }
 ]

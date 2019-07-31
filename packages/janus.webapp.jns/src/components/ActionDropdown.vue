@@ -1,36 +1,35 @@
 <template>
   <div class="submenu dropdown">
     <button class="dropdown-toggle btn btn--outline">{{ title }}</button>
-    <ul class="dropdown-menu shadow">
-      <li class="dropdown-item" v-for="(action, index) in actions" :key="index">
-        <button v-on:click="handleClick(id, action)" class="btn btn--clear">{{action.title}}</button>
-      </li>
-    </ul>
+    <v-actions-menu
+      :actions="actions"
+      :element="element"
+      :listClasses="`dropdown-menu shadow`"
+    />
   </div>
 </template>
 
 <script>
 import BaseDropdown from '@/components/BaseDropdown'
+import BaseActionsMenu from '@/components/BaseActionsMenu'
 export default {
   name: 'BaseDropdown',
   extends: BaseDropdown,
   components: {
+    'v-actions-menu': BaseActionsMenu
   },
   data () {
     return {
     }
   },
   methods: {
-    handleClick: function (id, action) {
-      this.$root.$emit('ClickAction', [id, action.title] )
-    }
   },
   props: {
     title: {
       type: String
     },
-    id: {
-      type: Number
+    element: {
+      type: Object
     },
     actions: {
       type: Array

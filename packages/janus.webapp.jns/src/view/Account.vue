@@ -1,28 +1,32 @@
 <template>
   <div class="container container--account">
-    <div class="col" v-for="(block, index) in this.content" :key="index">
+    <div class="row" v-for="(block, index) in this.content" :key="index">
       <v-hero v-if="block['type']=='list_hero'" :hero="block['content'][0]" float="right" classes="colapsed">
       </v-hero>
-      <v-cards-list v-if="block['type']=='list_card'" :list="block['content'][0]" cardStyle="list" />
+      <v-cards-list v-else-if="block['type']=='list_card'" :list="block['content'][0]" cardStyle="list" />
     </div>
     
     <div class="list-domains">
+      <v-actions-menu
+        :actions="menuTabs"
+        @send-message="handleSendMessage()"
+      />
       <ul class="list">
-        <li class="item" v-for="(list, index) in this.list" :key="index">
-          <v-card ref="card" cardType="full" :class="checkStatus(list.due)">
+        <li class="item" v-for="(item, index) in this.list" :key="index">
+          <v-card ref="card" cardType="full" :class="checkStatus(item.due)">
             <template v-slot:title>
-              <h3 class="title">{{list.title}}</h3>
+              <h3 class="title">{{item.title}}</h3>
             </template>
 
             <template v-slot:body>
               <div class="due">
                 <p class="due-title tooltip">Due Date: </p>
                 <p class="due-value tooltip">
-                  {{list.due | moment}}
+                  {{item.due | moment}}
                 </p>
               </div>
               <div class="actions">
-                <v-action-dropdown title="actions" :id="list.id" :actions="actions"/>
+                <v-action-dropdown title="actions" :element="item" :actions="actions"/>
               </div>
             </template>
 
@@ -41,6 +45,8 @@ import Hero from '@/components/Hero'
 import BaseParagraph from '@/components/BaseParagraph'
 import BaseCard from '@/components/BaseCard'
 import ActionDropdown from '@/components/ActionDropdown'
+import BaseActionsMenu from '@/components/BaseActionsMenu'
+import domainsList from '@/utils/domainsList'
 import moment from 'moment'
 
 export default {
@@ -50,9 +56,16 @@ export default {
       content: [],
       list: [],
       actions: [
-        { title: "Transfer"},
+        {
+          title: "Transfer"
+        },
         { title: "Renew"},
         { title: "Update"}
+      ],
+      menuTabs: [
+        { title: "Domain"},
+        { title: "TLD"},
+        { title: "Subdomain"}
       ]
     }
   },
@@ -60,16 +73,14 @@ export default {
     'v-hero': Hero,
     'v-paragraph': BaseParagraph,
     'v-card': BaseCard,
-    'v-action-dropdown': ActionDropdown
+    'v-action-dropdown': ActionDropdown,
+    'v-actions-menu': BaseActionsMenu
   },
   mounted: function () {
     contentService('account').then((response) => {
       this.content = response.data
-      this.list = response.data[1].list
     })
-    this.$root.$on('ClickAction', function (action) {
-      console.log('action', action)
-    })
+    this.initDomainsList()
   },
   filters: {
     moment: function (date) {
@@ -87,6 +98,14 @@ export default {
         status = 'warn'
       } 
       return status
+    },
+    initDomainsList: function () {
+      this.list = domainsList.domain
+    },
+    handleSendMessage(event, value) {
+      // Our event handler gets the event, as well as any
+      // arguments the child passes to the event
+      console.log('From the child:', value);
     }
   }
 }

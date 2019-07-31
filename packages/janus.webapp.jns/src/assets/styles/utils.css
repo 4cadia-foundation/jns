@@ -6,11 +6,11 @@
 .container {
 }
 
-.col {
+.row {
   position: relative;
 }
 
-.col:not(:first-child) {
+.row:not(:first-child) {
   padding: 3vw 30px;
 }
 

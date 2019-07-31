@@ -1,6 +1,6 @@
 <template>
   <div class="container container--tld">
-    <div class="col" v-for="(block, index) in this.content" :key="index">
+    <div class="row" v-for="(block, index) in this.content" :key="index">
       <v-hero v-if="block['type']=='list_hero'" :hero="block['content'][0]" float="right" classes="full-content">
       </v-hero>
       <v-card v-if="block['type']=='list_card'" :list="block['content'][0]"/>

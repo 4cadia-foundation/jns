@@ -57,26 +57,26 @@ export default {
 .dropdown:hover .dropdown-menu {
   display: block;
 }
-.dropdown-item {
+.dropdown-menu li {
   border-bottom: 1px solid var(--color-gray-lighter);
   display: block;
 }
-.dropdown-item:last-of-type {
+.dropdown-menu li:last-of-type {
   border-bottom: none;
 }
 .dropdown a,
-.dropdown-item a {
+.dropdown-menu li a {
   color: var(--color-gray);
   text-decoration: none;
 }
-.dropdown-item a {
+.dropdown-menu li a {
   width: 100%;
   display: block;
   height: 100%;
   box-sizing: border-box;
   padding: 10px;
 }
-.dropdown-item a:hover {
+.dropdown-menu li a:hover {
   color: var(--color-blue);
 }
 </style>
