@@ -1,94 +1,83 @@
 import SmartContract from './core/SmartContract';
 
 (async() => {
-    console.log('---------- backgound running');
+
+    console.log('-----background runing');
 
     const jnsContract = new SmartContract();
     const contract = jnsContract.contract();
     const notFoundHash = 'QmNoBEYtzFmUEoHQrQvmwsSg8fRMh3M1xzHb17LMw5tQwv';
 
     chrome.webNavigation.onBeforeNavigate.addListener((details) => {
-
         chrome.tabs.query({ 'active': true, 'currentWindow': true }, async(tabs) => {
 
-            let activeTab = tabs[0];
+            try {
+                let activeTab = tabs[0];
+                let web3Url = '';
 
-            if (activeTab && activeTab.url) {
+                if (activeTab && activeTab.url) {
+                    let domain;
+                    let topDomain;
 
-                console.log(activeTab.url);
+                    if (activeTab.url.startsWith('http://w3.') ||
+                        activeTab.url.startsWith('http://web3.') ||
+                        activeTab.url.startsWith('http://jns.')) {
 
-                let domain;
-                let topDomain;
+                        console.log('starts jns');
 
-                if (activeTab.url.startsWith('http://w3.') ||
-                    activeTab.url.startsWith('http://web3.') ||
-                    activeTab.url.startsWith('http://jns.')) {
+                        const splitedUrl = activeTab.url.split('.');
 
-                    console.log('starts jns');
-                    const splitedUrl = activeTab.url.split('.');
+                        domain = splitedUrl[1];
+                        topDomain = splitedUrl[2];
 
-                    domain = splitedUrl[1];
-                    topDomain = splitedUrl[2];
+                        domain = domain.replace('/', '');
+                        topDomain = topDomain.replace('/', '');
 
-                    domain = domain.replace('/', '');
-                    topDomain = topDomain.replace('/', '');
+                        web3Url = domain + '.' + topDomain;
 
-                    console.log(domain);
-                    console.log(topDomain);
+                    } else if (activeTab.url.startsWith('https://www.google.com/search') &&
+                        activeTab.url.includes('?q=w3.') || activeTab.url.includes('?q=web3.') ||
+                        activeTab.url.includes('?q=jns.')) {
 
-                    let result;
+                        console.log('google redirect');
 
-                    try {
+                        const params = activeTab.url.split('?');
+                        const param = params[1].split('&');
+                        const qparam = param[0].split('=');
+                        const domains = qparam[1].split('.');
+
+                        domain = domains[1];
+                        topDomain = domains[2];
+
+                        domain = domain.replace('/', '');
+                        topDomain = topDomain.replace('/', '');
+
+                        web3Url = domain + '.' + topDomain;
+                    }
+
+                    if (topDomain && domain) {
+                        let result;
+
                         result = await contract.getStorageHashByDomain(domain, topDomain);
                         console.log('result: ' + result);
-                    } catch (e) {
-                        console.log(e);
-                    }
 
-                    if (result) {
-                        chrome.tabs.update(activeTab.id, { url: 'http://ipfs.caralabs.me/ipfs/' + result + '/' });
-                    } else {
-                        chrome.tabs.update(activeTab.id, { url: 'http://ipfs.caralabs.me/ipfs/' + notFoundHash + '/' });
-                    }
+                        if (result) {
+                            chrome.tabs.update(activeTab.id, { url: 'http://ipfs.caralabs.me/ipfs/' + result + '/' });
+                        } else {
+                            chrome.tabs.update(activeTab.id, { url: 'http://ipfs.caralabs.me/ipfs/' + notFoundHash + '/' });
+                        }
 
-                } else if (activeTab.url.startsWith('https://www.google.com/search') &&
-                    activeTab.url.includes('?q=w3.') || activeTab.url.includes('?q=web3.') ||
-                    activeTab.url.includes('?q=jns.')) {
+                        if (web3Url) {
+                            console.log('send message');
 
-                    console.log('google redirect');
-
-                    const params = activeTab.url.split('?');
-
-                    const param = params[1].split('&');
-
-                    const qparam = param[0].split('=');
-
-                    const domains = qparam[1].split('.');
-
-                    domain = domains[1];
-                    topDomain = domains[2];
-
-                    domain = domain.replace('/', '');
-                    topDomain = topDomain.replace('/', '');
-
-                    console.log(domain);
-                    console.log(topDomain);
-
-                    let result;
-
-                    try {
-                        result = await contract.getStorageHashByDomain(domain, topDomain);
-                        console.log('result: ' + result);
-                    } catch (e) {
-                        console.log(e);
-                    }
-
-                    if (result) {
-                        chrome.tabs.update(activeTab.id, { url: 'http://ipfs.caralabs.me/ipfs/' + result + '/' });
-                    } else {
-                        chrome.tabs.update(activeTab.id, { url: 'http://ipfs.caralabs.me/ipfs/' + notFoundHash + '/' });
+                            setTimeout(function() {
+                                chrome.tabs.sendMessage(tabs[0].id, web3Url);
+                            }, 1000);
+                        }
                     }
                 }
+            } catch (e) {
+                console.log(e);
             }
         });
     });

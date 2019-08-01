@@ -14,6 +14,12 @@
         ],
         "persistent": true
     },
+    "content_scripts": [{
+        "matches": [
+            "<all_urls>"
+        ],
+        "js": ["content.extension.bundle.js"]
+    }],
     "permissions": [
         "clipboardWrite",
         "unlimitedStorage",
@@ -22,10 +28,6 @@
         "activeTab",
         "storage",
         "webRequest",
-        "*://*.eth/",
-        "*://*.google.com/",
-        "http://localhost:8545/",
-        "https://*.infura.io/",
         "webNavigation"
     ],
     "browser_action": {
