@@ -22,8 +22,7 @@
         "react-bootstrap": "^0.32.4",
         "react-dom": "^16.8.6",
         "react-redux": "^7.1.0",
-        "redux": "^4.0.3",
-        "web3": "^1.0.0-beta.55"
+        "redux": "^4.0.3"
     },
     "devDependencies": {
         "@babel/core": "^7.4.5",
