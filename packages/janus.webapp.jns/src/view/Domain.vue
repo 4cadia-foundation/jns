@@ -23,7 +23,7 @@
         </template>
 
         <template v-slot:footer>
-          <button class="btn btn--success btn-lua">Confirm transaction</button>
+          <button class="btn btn--success btn-confirm">Confirm transaction</button>
         </template>
       </v-modal>
 
@@ -94,7 +94,7 @@ export default {
   margin: 7px 0px;
 }
 
-.btn--success .btn-lua {
+.btn--success .btn-confirm {
   font-family: Montserrat;
   font-style: normal;
   font-weight: 500;
