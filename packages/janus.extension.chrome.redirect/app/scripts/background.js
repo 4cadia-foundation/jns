@@ -7,6 +7,7 @@ import SmartContract from './core/SmartContract';
     const jnsContract = new SmartContract();
     const contract = jnsContract.contract();
     const notFoundHash = 'QmNoBEYtzFmUEoHQrQvmwsSg8fRMh3M1xzHb17LMw5tQwv';
+    const storagePrefix = 'http://ipfs.caralabs.me/ipfs/';
 
     chrome.webNavigation.onBeforeNavigate.addListener((details) => {
         chrome.tabs.query({ 'active': true, 'currentWindow': true }, async(tabs) => {
@@ -62,9 +63,9 @@ import SmartContract from './core/SmartContract';
                         console.log('result: ' + result);
 
                         if (result) {
-                            chrome.tabs.update(activeTab.id, { url: 'http://ipfs.caralabs.me/ipfs/' + result + '/' });
+                            chrome.tabs.update(activeTab.id, { url: storagePrefix + result + '/' });
                         } else {
-                            chrome.tabs.update(activeTab.id, { url: 'http://ipfs.caralabs.me/ipfs/' + notFoundHash + '/' });
+                            chrome.tabs.update(activeTab.id, { url: storagePrefix + notFoundHash + '/' });
                         }
 
                         if (web3Url) {
@@ -72,7 +73,7 @@ import SmartContract from './core/SmartContract';
 
                             setTimeout(function() {
                                 chrome.tabs.sendMessage(tabs[0].id, web3Url);
-                            }, 1000);
+                            }, 2000);
                         }
                     }
                 }
