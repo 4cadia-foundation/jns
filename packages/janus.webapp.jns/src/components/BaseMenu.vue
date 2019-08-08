@@ -1,15 +1,16 @@
 <template>
-  <div>
-    <ul class="menu">
-      <li class="menu-item actions" v-for="(link, index) in this.menu" :key="index">
-        <router-link v-if="link.path" :to="link.path">{{link.title}}</router-link>
-        <a target="_blank" v-else-if="link.href" :href="link.href">{{link.title}}</a>
-        <v-dropdown-menu v-else-if="link.sublinks" :dropdown="link"/>
-        <span v-else>{{link.title}}</span>
-      </li>
-    </ul>
-        <button class="btn--icon menu-hamburguer" @click='toggleShowMenu()'></button>
-  </div>
+  <ul class="menu">
+    <li class="menu-item actions" v-for="(link, index) in this.menu" :key="index">
+      <router-link v-if="link.path" :to="link.path">
+        <span v-on:click="handleMenuClick(link)">{{link.title}}</span>
+      </router-link>
+      <a target="_blank" v-else-if="link.href" :href="link.href">
+        <span v-on:click="handleMenuClick(link)">{{link.title}}</span>
+      </a>
+      <v-dropdown-menu v-else-if="link.sublinks" :dropdown="link"/>
+      <span v-else v-on:click="handleMenuClick(link)">{{link.title}}</span>
+    </li>
+  </ul>
 </template>
 
 <script>
@@ -22,12 +23,11 @@ export default {
   },
   data () {
     return {
-      showMenu: false
     }
   },
   methods: {
-    toggleShowMenu: function (value) {
-      this.showMenu = !this.showMenu
+    handleMenuClick: function (link) {
+      this.$emit('handleMenuClick', {'link': link})
     }
   },
   props: {
@@ -36,9 +36,9 @@ export default {
     }
   }
 }
-</script scoped>
+</script>
 
-<style lang="css">
+<style>
 .menu {
   position: relative;
   text-align: right;
@@ -58,9 +58,6 @@ export default {
 }
 .menu-item a:hover {
   color: var(--color-blue);
-}
-.menu-hamburguer {
-  display: none;
 }
 
 /* Media Mobile */
@@ -83,22 +80,6 @@ export default {
     text-align: center;
     padding: 20px 0;
     display: block;
-  }
-  .menu-hamburguer {
-    display: block;
-  }
-  .header_menu.open .menu {
-    right: 0;
-  }
-  .menu-hamburguer {
-    z-index: 3;
-    position: absolute;
-    top: 14px;
-    right: 20px;
-    background-image: url('../assets/images/hamburguer.png');
-  }
-  .header_menu.open .menu-hamburguer {
-    background-image: url('../assets/images/close.png');
   }
 }
 </style>

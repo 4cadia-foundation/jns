@@ -1,30 +1,15 @@
 <template>
-<div class="header">
+  <div class="header">
     <router-link to="/" class="header_logo">
       <img class="logo" :src="`${this.logo}`">
       <span class="title logo">{{ this.title }}</span>
     </router-link>
-  <div :class="`header_menu ${this.showMenu ? 'open' : ''}`">
-    <button class="menu-hamburguer btn--icon" @click='toggleShowMenu()'></button>
-    <ul class="menu">
-      <li class="menu-item" @click='toggleShowMenu()'>
-        <router-link to="/">Home</router-link>
-      </li>
-      <li class="menu-item" @click='toggleShowMenu()'>
-        <router-link to="/tld">Buy TLD</router-link>
-      </li>
-      <li class="menu-item" @click='toggleShowMenu()'>
-        <router-link to="/domain">Buy Domain</router-link>
-      </li>
-      <li class="menu-item" @click='toggleShowMenu()'>
-        <router-link to="/account">Account</router-link>
-      </li>
-      <li class="menu-item" @click='toggleShowMenu()'>
-        <menu-account />
-      </li>
-    </ul>
+    <div :class="`header_menu ${this.showMenu ? 'open' : ''}`">
+      <v-menu :menu="this.menu" v-on:handleMenuClick="handleMenuClick"/>
+      <button class="btn--icon menu-hamburguer" @click='toggleShowMenu()'></button>
+      <!-- <identity /> -->
+    </div>
   </div>
-</div>
 </template>
 
 <script>
@@ -49,6 +34,9 @@ export default {
   methods: {
     toggleShowMenu: function (value) {
       this.showMenu = !this.showMenu
+    },
+    handleMenuClick: function (link) {
+      if (this.showMenu) this.toggleShowMenu()
     }
   },
   mounted: function () {
@@ -85,5 +73,26 @@ export default {
 }
 .header_menu {
   display: flex;
+}
+.header_menu .menu-hamburguer {
+  display: none;
+}
+
+/* Media Mobile */
+@media (max-width: 768px) {
+  .header_menu .menu-hamburguer {
+    display: block;
+    z-index: 3;
+    position: absolute;
+    top: 14px;
+    right: 20px;
+    background-image: url('../assets/images/hamburguer.png');
+  }
+  .header_menu.open .menu {
+    right: 0;
+  }
+  .header_menu.open .menu-hamburguer {
+    background-image: url('../assets/images/close.png');
+  }
 }
 </style>
