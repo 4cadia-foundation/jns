@@ -62,27 +62,21 @@ import SmartContract from './core/SmartContract';
                         result = await contract.getStorageHashByDomain(domain, topDomain);
                         console.log('result: ' + result);
 
-                        if (result) {
-                            chrome.tabs.update(activeTab.id, { url: storagePrefix + result + '/' });
-                        } else {
-                            chrome.tabs.update(activeTab.id, { url: storagePrefix + notFoundHash + '/' });
-                        }
+                        const url = result ? `${storagePrefix}${result}/` : `${storagePrefix}${notFoundHash}/`
 
-                        if (web3Url) {
-                            console.log('send message');
-
-                            setTimeout(function() {
-                                chrome.tabs.sendMessage(tabs[0].id, web3Url);
-                            }, 2000);
-                        }
+                        chrome.tabs.update(activeTab.id, { url }, (tab) => {
+                            chrome.tabs.onUpdated.addListener(function listener(tabId, changeInfo) {
+                                if (tabId === tab.id && changeInfo.status == 'complete') {
+                                    chrome.tabs.onUpdated.removeListener(listener);
+                                    chrome.tabs.sendMessage(tabId, web3Url);
+                                }
+                            });
+                        });
                     }
                 }
             } catch (e) {
                 console.log(e);
-                chrome.tabs.update(tabs[0].id, { url: storagePrefix + notFoundHash + '/' });
-                setTimeout(function() {
-                    chrome.tabs.sendMessage(tabs[0].id, 'notFound');
-                }, 2000);
+                chrome.tabs.update(tabs[0].id, { url: storagePrefix + notFoundHash + '/' }, onUpdateTab);
             }
         });
     });

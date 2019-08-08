@@ -10,11 +10,11 @@ export default class SmartContract {
      * create instance for smart contrat
      * @param {object} opts - option to initiate a smart contract
      */
-    constructor(opts = new Object()) {
+    constructor(opts = {}) {
 
         this._instance = null;
         this._provider = null;
-        this._options = new Object();
+        this._options = {};
         this._options.host = Settings.host || '127.0.0.1';
         this._options.port = Settings.port || '8545';
         this._options.provider = Settings.provider || 'https';
