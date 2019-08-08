@@ -65,9 +65,8 @@ import SmartContract from './core/SmartContract';
                         const url = result ? `${storagePrefix}${result}/` : `${storagePrefix}${notFoundHash}/`
 
                         chrome.tabs.update(activeTab.id, { url }, (tab) => {
-                            chrome.tabs.onUpdated.addListener(function listener(tabId, changeInfo) {
+                            chrome.tabs.onUpdated.addListener((tabId, changeInfo) => {
                                 if (tabId === tab.id && changeInfo.status == 'complete') {
-                                    chrome.tabs.onUpdated.removeListener(listener);
                                     chrome.tabs.sendMessage(tabId, web3Url);
                                 }
                             });
