@@ -1,15 +1,15 @@
 <template>
-  <ul class="menu">
-    <li class="menu-hamburguer">
-      <button class="btn--icon" @click='toggleShowMenu()'></button>
-    </li>
-    <li class="menu-item actions" v-for="(link, index) in this.menu" :key="index">
-      <router-link v-if="link.path" :to="link.path">{{link.title}}</router-link>
-      <a target="_blank" v-else-if="link.href" :href="link.href">{{link.title}}</a>
-      <v-dropdown-menu v-else-if="link.sublinks" :dropdown="link"/>
-      <span v-else>{{link.title}}</span>
-    </li>
-  </ul>
+  <div>
+    <ul class="menu">
+      <li class="menu-item actions" v-for="(link, index) in this.menu" :key="index">
+        <router-link v-if="link.path" :to="link.path">{{link.title}}</router-link>
+        <a target="_blank" v-else-if="link.href" :href="link.href">{{link.title}}</a>
+        <v-dropdown-menu v-else-if="link.sublinks" :dropdown="link"/>
+        <span v-else>{{link.title}}</span>
+      </li>
+    </ul>
+        <button class="btn--icon menu-hamburguer" @click='toggleShowMenu()'></button>
+  </div>
 </template>
 
 <script>
@@ -22,9 +22,13 @@ export default {
   },
   data () {
     return {
+      showMenu: false
     }
   },
   methods: {
+    toggleShowMenu: function (value) {
+      this.showMenu = !this.showMenu
+    }
   },
   props: {
     menu: {
@@ -34,7 +38,7 @@ export default {
   mounted: function () {
   }
 }
-</script>
+</script scoped>
 
 <style lang="css">
 .menu {

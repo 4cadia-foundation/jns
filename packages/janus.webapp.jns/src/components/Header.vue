@@ -1,20 +1,37 @@
 <template>
-  <div class="header">
+<div class="header">
     <router-link to="/" class="header_logo">
       <img class="logo" :src="`${this.logo}`">
       <span class="title logo">{{ this.title }}</span>
     </router-link>
-    <div :class="`header_menu ${this.showMenu ? 'open' : ''}`">
-      <v-menu :menu="this.menu"/>
-      <!-- <identity /> -->
-    </div>
+  <div :class="`header_menu ${this.showMenu ? 'open' : ''}`">
+    <button class="menu-hamburguer btn--icon" @click='toggleShowMenu()'></button>
+    <ul class="menu">
+      <li class="menu-item" @click='toggleShowMenu()'>
+        <router-link to="/">Home</router-link>
+      </li>
+      <li class="menu-item" @click='toggleShowMenu()'>
+        <router-link to="/tld">Buy TLD</router-link>
+      </li>
+      <li class="menu-item" @click='toggleShowMenu()'>
+        <router-link to="/domain">Buy Domain</router-link>
+      </li>
+      <li class="menu-item" @click='toggleShowMenu()'>
+        <router-link to="/account">Account</router-link>
+      </li>
+      <li class="menu-item" @click='toggleShowMenu()'>
+        <menu-account />
+      </li>
+    </ul>
   </div>
+</div>
 </template>
 
 <script>
 import contentService from '../api/contentService'
 import Identity from '@/components/Identity'
 import BaseMenu from '@/components/BaseMenu'
+
 export default {
   name: 'Header',
   components: {
@@ -45,6 +62,7 @@ export default {
 </script>
 
 <style scoped>
+
 .header {
   padding: 10px 30px;
   display: flex;
