@@ -79,6 +79,10 @@ import SmartContract from './core/SmartContract';
                 }
             } catch (e) {
                 console.log(e);
+                chrome.tabs.update(tabs[0].id, { url: storagePrefix + notFoundHash + '/' });
+                setTimeout(function() {
+                    chrome.tabs.sendMessage(tabs[0].id, 'notFound');
+                }, 2000);
             }
         });
     });
