@@ -1,32 +1,31 @@
 <template>
-  <div class="container container--domain">
-    <div class="row" v-for="(block, index) in this.content" :key="index">
-      <v-hero v-if="block['type']=='list_hero'" :hero="block['content'][0]" float="right" classes="full-content">
+  <div class="container container--domain" ref="formContainer">
+    <div class="row row--full">
+      <v-hero v-if="content.list_hero" :hero="content.list_hero" float="right" classes="full-content">
+        <v-form-domain ref="formDomain" v-on:handleSearchDomain="onSearchDomain"/>
       </v-hero>
-      <v-card v-if="block['type']=='list_card'" :list="block['content'][0]"/>
     </div>
-    
-    <div class="modal-domain">
-      
-      <v-modal ref="domainModal">
-        <template v-slot:header class="modal-header">
-          <h3> You are almost done </h3>
-          
+    <div class="row">
+      <v-card ref="card" cardType="full" :class="checkStatus(data.isDomainAvaliable, data.isTldAvaliable)" v-if="data.domainValue && data.tldValue">
+        <template v-slot:header>
+          <div class="title">
+            <h3 class="name inline">{{data.domainValue}}.{{data.tldValue}}</h3>
+          </div>
+          <div class="errors">
+            <p>{{msg}}</p>
+          </div>
         </template>
 
         <template v-slot:body>
-          <p class="modal-body">To finish the transaction, please check the informations above to ensure all itens are completed.</p>
-          <h4>Will be added to your due date:</h4>
-          <p><img src="../assets/images/check.png" width="21px" height="21px" class="img-check">365</p>
-          <h4>Your new due date is:</h4>
-          <p><img src="../assets/images/check.png" width="21px" height="21px" class="img-check">15.06.2020</p>
+          <div class="actions">
+            <button v-if="checkStatus(data.isDomainAvaliable, data.isTldAvaliable) == 'success'" class="btn btn--success btn-confirm" @click="handleConfirmModal">Confirm transaction</button>
+            <router-link v-else-if="checkStatus(data.isDomainAvaliable, data.isTldAvaliable) == 'warn'" class="btn btn--outline btn--link" to="/tld">Buy TLD</router-link>
+          </div>
         </template>
-
-        <template v-slot:footer>
-          <button class="btn btn--success btn-confirm">Confirm transaction</button>
-        </template>
-      </v-modal>
-
+      </v-card>
+    </div>    
+    <div class="modal-domain">
+      <v-domain-modal ref="modalDomain" :tldValue="data.tldValue" :domainValue="data.domainValue"/>
     </div>
   </div>
 </template>
@@ -36,32 +35,58 @@ import contentService from '../api/contentService'
 import Hero from '@/components/Hero'
 import BaseParagraph from '@/components/BaseParagraph'
 import BaseCard from '@/components/BaseCard'
-import BaseModal from '@/components/BaseModal'
+import BuyDomainModal from '@/components/BuyDomainModal'
+import FormDomain from '@/components/FormDomain'
 
 export default {
   name: 'Domain',
   data () {
     return {
       content: [],
+      data: {},
+      status: '',
+      msg: ''
     }
   },
   components: {
     'v-hero': Hero,
     'v-paragraph': BaseParagraph,
     'v-card': BaseCard,
-    'v-modal': BaseModal
+    'v-domain-modal': BuyDomainModal,
+    'v-form-domain': FormDomain
   },
-  mounted: function () {
+  beforeMount: function () {
     contentService('domain').then((response) => {
       this.content = response.data
     })
-    this.$refs.domainModal.openModal()
+  },
+  methods: {
+    onSearchDomain (data) {
+      this.data = data
+    },
+    handleConfirmModal () {
+      this.$refs.modalDomain.openModal()
+    },
+    checkStatus (domain, tld) {
+      if (domain == true && tld == false) {
+        this.status = 'success'
+        this.msg = ''
+        return this.status
+      } else if (domain == true && tld == true) {
+        this.status = 'warn'
+        this.msg = 'This TLD has no owner. You need to buy this TLD first!'
+        return this.status
+      } else {
+        this.status = 'alert'
+        this.msg = 'This domain is not avaliable. Change the Domain or TLD name to purchase!'
+        return this.status
+      }
+    }
   }
 }
 </script>
 
-<style>
-
+<style scoped>
 .modal-domain .modal-header h3 {
   font-family: Montserrat;
   font-style: normal;

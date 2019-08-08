@@ -3,9 +3,6 @@
     <div v-if="this.$slots.header" class="card_content card_header">
       <slot name="header"></slot>
     </div>
-    <div v-if="this.$slots.title" class="card_content card_title">
-      <slot name="title"></slot>
-    </div>
     <div v-if="this.$slots.body" class="card_content card_body">
       <slot name="body"></slot>
     </div>
@@ -47,16 +44,35 @@ export default {
   position: relative;
   /* overflow: hidden; */
 }
+.card h3 {
+  margin: 1em auto;
+}
 .card.full {
   display: flex;
   justify-content: space-between;
   padding: 30px 60px;
   border-radius: 8px;
   border-left-width: 10px;
+  flex-flow: row wrap;
 }
 .card.full .card_content {
   margin: auto 0;
   height: auto;
+}
+.card.full .card_header {
+  text-align: left;
+  max-width: 70%;
+  word-break: break-all;
+}
+.card.full .card_body {
+  text-align: right;
+}
+.card.full .card_footer {
+  text-align: left;
+  flex: 1 100%;
+}
+.card.full .card_footer p {
+  margin: 10px 0 0 0;
 }
 .card.full .card_title .title {
   margin: auto 0;

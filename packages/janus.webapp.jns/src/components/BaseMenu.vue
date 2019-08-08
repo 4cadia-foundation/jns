@@ -34,8 +34,6 @@ export default {
     menu: {
       type: Array
     }
-  },
-  mounted: function () {
   }
 }
 </script scoped>

@@ -1,12 +1,7 @@
-[
-  {
-    "type": "list_hero",
-    "content": [
-      {
-        "title": "My Domains",
-        "text": "",
-        "image": ""
-      }
-    ]
+{
+  "list_hero": {
+    "title": "My Domains",
+    "text": "",
+    "image": ""
   }
-]
+}

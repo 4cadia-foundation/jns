@@ -2,6 +2,7 @@
   <div class="submenu dropdown">
     <button class="dropdown-toggle btn btn--outline">{{ title }}</button>
     <v-actions-menu
+      ref="actions"
       :actions="actions"
       :element="element"
       :listClasses="`dropdown-menu shadow`"
@@ -23,6 +24,9 @@ export default {
     }
   },
   methods: {
+    handleEmit: function (data) {
+      this.$emit(this.callToAction, data)
+    }
   },
   props: {
     title: {
@@ -33,15 +37,21 @@ export default {
     },
     actions: {
       type: Array
+    },
+    callToAction: {
+      type: String
     }
   },
   mounted: function () {
+    this.$refs.actions.$on(this.callToAction, (data) => {
+      this.handleEmit(data)
+    })
   }
 }
 </script>
 
-<style scoped>
-.btn--clear {
-  padding: 20px 30px;
+<style>
+.dropdown .btn--clear {
+  padding: 10px 0;
 }
 </style>

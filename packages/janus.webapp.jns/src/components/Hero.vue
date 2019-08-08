@@ -4,10 +4,12 @@
       <div class="content content--text">
         <h1 class="title" v-if="hero.title" v-html="hero.title"></h1>
         <div class="text subtitle" v-if="hero.text" v-html="hero.text"></div>
-        <slot></slot>
       </div>
       <div class="content content--image" v-if="hero.image">
         <img :src="hero.image" alt="">
+      </div>
+      <div class="content content--slot">
+        <slot></slot>
       </div>
     </div>
     <div class="hero_background"></div>
@@ -61,6 +63,7 @@ export default {
   background-image: url('../assets/images/hero.png');
   background-size: 100% 100%;
   background-repeat: no-repeat;
+  z-index: -1;
 }
 
 .hero.colapsed .hero_background {
@@ -112,8 +115,18 @@ export default {
   width: 100%;
 }
 
+.hero.full-content .hero_content {
+  flex-direction: column;
+}
+
 .hero.full-content .content--text {
   width: 80%;
+  margin: auto;
+  text-align: center;
+}
+
+.hero.full-content .content--slot {
+  width: 100%;
   margin: auto;
   text-align: center;
 }
@@ -122,7 +135,6 @@ export default {
   .hero {
     max-height: 100%;
     height: auto;
-    margin-bottom: 40px;
   }
   .hero .hero_background {
     -webkit-transform: skew(0deg, -3deg) translateY(-20px);
@@ -132,8 +144,9 @@ export default {
     padding: 40px 0 80px;
     display: block;
   }
-  .hero .content--text {
+  .hero.full-content .content--text {
     width: 90%;
+    min-width: 304px;
   }
   .hero .content--image {
     margin: auto;

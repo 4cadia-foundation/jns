@@ -11,20 +11,20 @@ import BaseMenu from '@/components/BaseMenu'
 
 export default {
   name: 'BaseActionsMenu',
+  extends: BaseMenu,
   components: {
   },
   data () {
     return {
-      value: 'I am the child.'
     }
   },
   methods: {
-    // handleClick: function (element, action) {
-    //   const emitValue = {}
-    //   emitValue.action = action
-    //   emitValue.element = element
-    //   this.$emit('ClickAction' + action.title, emitValue )
-    // }
+    handleClick: function (element, action) {
+      const emitValue = {}
+      emitValue.action = action
+      emitValue.element = element
+      this.$emit(action.callToAction, emitValue )
+    }
   },
   props: {
     actions: {
@@ -35,12 +35,9 @@ export default {
     },
     listClasses: {
       type: String
-    },
-    method: { type: Function }
+    }
   },
   mounted: function () {
-    // Instead of calling the method we emit an event
-    this.$emit('send-message', this.value)
   }
 }
 </script>

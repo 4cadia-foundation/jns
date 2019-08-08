@@ -34,7 +34,6 @@ const mutations = {
     } else {
       state.authenticated = false
     }
-    console.log('setResponse ', state.data)
   }
 }
 

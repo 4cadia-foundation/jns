@@ -1,12 +1,7 @@
-[
-  {
-    "type": "list_hero",
-    "content": [
-      {
-        "title": "Domain Registration",
-        "text": "<p>We provide the better domain name registration on the web 3.0</p><p><em>The future is here</em></p>",
-        "image": ""
-      }
-    ]
+{
+  "list_hero":  {
+    "title": "Domain Registration",
+    "text": "<p>We provide the better domain name registration on the web 3.0</p><p><em>The future is here</em></p>",
+    "image": ""
   }
-]
+}

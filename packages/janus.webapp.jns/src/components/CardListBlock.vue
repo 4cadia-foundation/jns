@@ -6,9 +6,6 @@
         <v-card ref="card" :cardType="cardStyle">
           <template v-slot:header>
             <img class="item_icon" v-if="item.icon" :src="item.icon">
-          </template>
-
-          <template v-slot:title>
             <h3 class="title" v-html="item.title || capitalize"></h3>
           </template>
 
@@ -62,5 +59,16 @@ export default {
   width: 6vw;
   height: 6vw;
   position: relative;
+}
+
+@media (max-width: 768px) {
+  .list {
+    flex-direction: column;
+  }
+
+  .list .item {
+    width: auto !important;
+    margin-bottom: 10px;
+  }
 }
 </style>

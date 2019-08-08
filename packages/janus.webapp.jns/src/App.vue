@@ -10,20 +10,18 @@
 
 <script>
 
-/* eslint-disable */ 
 import Header from '@/components/Header'
-// import Modal from '@/components/Modal'
 
 export default {
   name: 'App',
 
   components: {
     'v-header': Header,
-    // 'v-modal': Modal
   },
-  beforeCreate(){
-    // this.$store.dispatch('web3/registerWeb3')
-  }
+  
+  created(){
+    this.$store.dispatch('resolveJanusNameService')  
+  },
 }
 </script>
 
