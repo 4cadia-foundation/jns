@@ -75,7 +75,13 @@ import SmartContract from './core/SmartContract';
                 }
             } catch (e) {
                 console.log(e);
-                chrome.tabs.update(tabs[0].id, { url: storagePrefix + notFoundHash + '/' }, onUpdateTab);
+                chrome.tabs.update(tabs[0].id, { url: storagePrefix + notFoundHash + '/' }, (tab) => {
+                    chrome.tabs.onUpdated.addListener((tabId, changeInfo) => {
+                        if (tabId === tab.id && changeInfo.status == 'complete') {
+                            chrome.tabs.sendMessage(tabId, 'not-found');
+                        }
+                    });
+                });
             }
         });
     });
