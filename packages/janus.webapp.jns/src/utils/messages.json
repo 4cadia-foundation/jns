@@ -14,8 +14,8 @@
       "text": "Janus haven’t found this page. Return to our homepage to start searching."
     },
     {
-      "type": "invalid owner address",
-      "text": "The owner address is invalid. Configure your Metamask to use the search" 
+      "type": "InstallMetamask",
+      "text": "We couldn't find Metamask in your browser. Please install it first." 
     }
   ],
   "exceptions": [
@@ -30,6 +30,38 @@
     {
       "type": "InvalidField",
       "text": "Field is invalid! Type only alphanumeric characters to search." 
+    },
+    {
+      "type": "MaxLength",
+      "text": "The field must be a maximum of { keyword } characters. Try lowering or using another word." 
+    },
+    {
+      "type": "MinLength",
+      "text": "Field must be at least { keyword } characters. Try increasing or use another word." 
+    },
+    {
+      "type": "OwnedTLD",
+      "text": "This TLD  already has an owner. Do you want to buy a Domain instead?" 
+    },
+    {
+      "type": "OwnedDomain",
+      "text": "This Domain  already has an owner. Change the Domain or TLD name to purchase" 
+    },
+    {
+      "type": "WarnBuyDomain",
+      "text": "This TLD has no owner. Click the button to buy this TLD first" 
+    },
+    {
+      "type": "OwnedTLD",
+      "text": "This TLD  already has an owner. Do you want to buy a Domain instead?" 
+    },
+    {
+      "type": "ExpiratedDomain",
+      "text": "This Domain has expired! Click in Renew to activate it" 
+    },
+    {
+      "type": "WarnExpirateDomain",
+      "text": "This Domain is about to expired! Click in Renew to prevent it from disable" 
     }
   ]
 }

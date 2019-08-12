@@ -14,7 +14,7 @@
 import BaseDropdown from '@/components/BaseDropdown'
 import BaseActionsMenu from '@/components/BaseActionsMenu'
 export default {
-  name: 'BaseDropdown',
+  name: 'ActionDropdown',
   extends: BaseDropdown,
   components: {
     'v-actions-menu': BaseActionsMenu

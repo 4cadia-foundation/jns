@@ -44,12 +44,21 @@ export default {
 .hero {
   position: relative;
   overflow: hidden;
-  min-height: 50vw;
+  min-height: 90vh;
+  display: flex;
 }
 
 .hero.colapsed {
-  max-height: 15vw;
   min-height: auto;
+  transition: all linear .1s;
+}
+
+.hero.colapsed .hero_background {
+  background-size: cover;
+}
+
+.hero.colapsed .subtitle {
+  display: none;
 }
 
 .hero .hero_background {
@@ -63,11 +72,8 @@ export default {
   background-image: url('../assets/images/hero.png');
   background-size: 100% 100%;
   background-repeat: no-repeat;
+  filter: brightness(70%);
   z-index: -1;
-}
-
-.hero.colapsed .hero_background {
-  background-size: cover;
 }
 
 .hero_content {
@@ -75,9 +81,8 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  max-width: 90%;
+  width: 90%;
   margin: auto;
-  padding: 8% 0;
   position: relative;
   z-index: 1;
 }
@@ -89,7 +94,6 @@ export default {
 .hero .content--text {
   color: white;
   text-align: left;
-  width: 50%;
 }
 
 .hero .content--text .title {
@@ -115,8 +119,14 @@ export default {
   width: 100%;
 }
 
-.hero.full-content .hero_content {
+.hero.full-content .hero_content,
+.hero.colapsed .hero_content {
   flex-direction: column;
+}
+
+.hero.colapsed .hero_content {
+  text-align: left;
+  align-items: flex-start;
 }
 
 .hero.full-content .content--text {
@@ -125,7 +135,7 @@ export default {
   text-align: center;
 }
 
-.hero.full-content .content--slot {
+.hero .content--slot {
   width: 100%;
   margin: auto;
   text-align: center;

@@ -3,7 +3,9 @@
     <!-- <v-modal ref="modal"></v-modal> -->
     <v-header/>
     <div class="main">
-      <router-view/>
+      <transition name="fade">
+        <router-view/>
+      </transition>
     </div>
   </div>
 </template>

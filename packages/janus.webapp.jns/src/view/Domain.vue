@@ -1,25 +1,25 @@
 <template>
-  <div class="container container--domain" ref="formContainer">
+  <div class="container container--domain">
     <div class="row row--full">
-      <v-hero v-if="content.list_hero" :hero="content.list_hero" float="right" classes="full-content">
-        <v-form-domain ref="formDomain" v-on:handleSearchDomain="onSearchDomain"/>
+      <v-hero v-if="content.list_hero" :hero="content.list_hero" float="right" :classes="heroClass">
+        <v-form-domain ref="formDomain" :class="heroClass" v-on:handleSearchDomain="onSearchDomain"/>
       </v-hero>
     </div>
-    <div class="row">
-      <v-card ref="card" cardType="full" :class="checkStatus(data.isDomainAvaliable, data.isTldAvaliable)" v-if="data.domainValue && data.tldValue">
+    <div class="row" v-if="data.domainValue && data.tldValue">
+      <v-card ref="cardDomain" cardType="full" :class="checkStatus(data.isDomainAvaliable, data.isTldAvaliable)">
         <template v-slot:header>
           <div class="title">
             <h3 class="name inline">{{data.domainValue}}.{{data.tldValue}}</h3>
           </div>
           <div class="errors">
-            <p>{{msg}}</p>
+            <p>{{exceptionMessage}}</p>
           </div>
         </template>
 
         <template v-slot:body>
           <div class="actions">
-            <button v-if="checkStatus(data.isDomainAvaliable, data.isTldAvaliable) == 'success'" class="btn btn--success btn-confirm" @click="handleConfirmModal">Confirm transaction</button>
-            <router-link v-else-if="checkStatus(data.isDomainAvaliable, data.isTldAvaliable) == 'warn'" class="btn btn--outline btn--link" to="/tld">Buy TLD</router-link>
+            <button v-if="cardStatus == 'success'" class="btn btn--success btn-confirm" @click="handleConfirmModal">Buy Domain</button>
+            <router-link v-else-if="cardStatus == 'warn'" class="btn btn--outline btn--link" to="/tld">Go Buy TLD</router-link>
           </div>
         </template>
       </v-card>
@@ -31,6 +31,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import contentService from '../api/contentService'
 import Hero from '@/components/Hero'
 import BaseParagraph from '@/components/BaseParagraph'
@@ -44,9 +45,15 @@ export default {
     return {
       content: [],
       data: {},
-      status: '',
-      msg: ''
+      cardStatus: '',
+      exceptionMessage: '',
+      heroClass: 'full-content'
     }
+  },
+  computed: {
+    ...mapGetters('validation', [
+      'getExceptionByType'
+    ])
   },
   components: {
     'v-hero': Hero,
@@ -63,23 +70,24 @@ export default {
   methods: {
     onSearchDomain (data) {
       this.data = data
+      this.heroClass = 'colapsed'
     },
     handleConfirmModal () {
       this.$refs.modalDomain.openModal()
     },
     checkStatus (domain, tld) {
       if (domain == true && tld == false) {
-        this.status = 'success'
-        this.msg = ''
-        return this.status
+        this.cardStatus = 'success'
+        this.exceptionMessage = ''
+        return this.cardStatus
       } else if (domain == true && tld == true) {
-        this.status = 'warn'
-        this.msg = 'This TLD has no owner. You need to buy this TLD first!'
-        return this.status
+        this.cardStatus = 'warn'
+        this.exceptionMessage = this.getExceptionByType('WarnBuyDomain')
+        return this.cardStatus
       } else {
-        this.status = 'alert'
-        this.msg = 'This domain is not avaliable. Change the Domain or TLD name to purchase!'
-        return this.status
+        this.cardStatus = 'alert'
+        this.exceptionMessage = this.getExceptionByType('OwnedDomain')
+        return this.cardStatus
       }
     }
   }

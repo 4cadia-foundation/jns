@@ -1,13 +1,13 @@
 <template>
   <div class="action-modal">
-    <v-modal ref="modal">
+    <v-modal ref="confirmBuyModal">
       <template v-slot:header>
-        <h3> You are almost done </h3>
+        <h3> You're almost done </h3>
       </template>
 
       <template v-slot:body>
         <div class="modal-subtitle">
-          <p>To finish the transaction, please check the informations above to ensure all itens are completed.</p>
+          <p>To finish the transaction, please check the informations above to ensure all itens are correct and confirm the transaction in Metamask</p>
         </div>
         <div class="modal-content">
           <div class="modal-row">
@@ -30,6 +30,8 @@
               placeholderTxt="eg.: QmYbs8fHzYaXufL5gMyWB1XgnvbLRSqv9bb58LJHX3ziVv"
               inputType="text"
               inputName="IpfsHash"
+              minlength="46"
+              maxlength="46"
               v-model="IpfsHash"
               :required="true"
               :alphaNumeric="true"
@@ -51,16 +53,17 @@ import BaseModal from '@/components/BaseModal'
 import BaseInput from '@/components/BaseInput'
 
 export default { 
-  name: 'ActionModal',
-  extends: BaseModal,
+  name: 'BuyDomainModal',
   data () {
     return {
-      IpfsHash: '0xC3d0137306e41e59D8314d958CE77d3210323es8DB4a'
+      IpfsHash: '',
     }
   },
   components: {
     'v-modal': BaseModal,
     'v-input': BaseInput
+  },
+  computed: {
   },
   props: {
     domainValue: {
@@ -72,35 +75,32 @@ export default {
   },
   methods: {
     openModal: function () {
-      console.log('Open')
-      this.$refs.modal.openModal()
+      this.$refs.confirmBuyModal.openModal()
     },
     handleConfirm: function () {
-      console.log('Confirm', { 'domainValue': this.domainValue, 'tldValue': this.tldValue })
       this.buyDomain(this.domainValue, this.tldValue, this.IpfsHash)
     },
     buyDomain (domain, tld, storageHash) {
-      console.log('domain', domain)
-      console.log('tld', tld)
-      console.log('storageHash', storageHash)
-     
-     this.loader = this.$loading.show({
+      
+      this.loader = this.$loading.show({
         container: this.fullPage ? null : this.$refs.formContainer
       })
 
       this.$store.getters.jnsInstance().BuyDomain(domain, tld, storageHash)
         .then(newDomain => {
           if(newDomain.Success && newDomain.Result[0].event === 'DomainRegistered')
-          console.log('sucesso')
-            // this.$refs.modalDomain.openModalDomain()
+            this.$notification.success(`Success! Thank you for register a domain in Web3!`)
+            this.$emit('handleSearchTLD', { "isAvaliable": false, 'tldSearchValue': topLevelDomain })
+            // console.log('BuyDomain', newDomain)
         })
-        .catch(err => this.$notification.error(err))
-        .finally(() => this.loader.hide())
-      
-    }
-  },
-  data () {
-    return {
+        .catch((err) => {
+          this.$notification.error(err)
+          console.error('BuyDomain', err)
+        })
+        .finally(() => {
+          this.$refs.confirmBuyModal.closeModal()
+          this.loader.hide()
+        })
     }
   },
   mounted: function () {

@@ -29,7 +29,15 @@
 import BaseLoader from '@/components/BaseLoader'
 
 export default { 
-  name: 'AccountModal',
+  name: 'BaseModal',
+  data () {
+    return {
+      showModal: false,
+      isLoading: false
+    }
+  },
+  props: {
+  },
   components: {
     'loader': BaseLoader
   },
@@ -41,12 +49,6 @@ export default {
     },
     openModal: function () {
       this.showModal = true
-    }
-  },
-  data () {
-    return {
-      showModal: false,
-      isLoading: false
     }
   },
   mounted: function () {

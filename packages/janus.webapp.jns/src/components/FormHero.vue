@@ -1,5 +1,5 @@
 <template>
-  <form class="form form--hero" @submit.prevent="handleSubmit">
+  <form class="form form--hero shadow--dark" @submit.prevent="handleSubmit">
     <div class="form_content form_content--body">
       <slot></slot>
     </div>
@@ -52,8 +52,9 @@ export default {
 .form--hero .form_content .field_content {
   margin: 0;
 }
-.form--hero .form_content .field_content .field_label {
-  color: black;
+.form--hero .form_content .field_label {
+  color: var(--color-gray);
+  font-weight: 500;
 }
 .form--hero .form_content--body {
   flex-grow: 1;
@@ -67,5 +68,14 @@ export default {
 }
 .form--hero .errors p {
   margin-bottom: 0;
+}
+.form--hero.colapsed {
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+}
+.form--hero.colapsed .field_label,
+.form--hero.colapsed .errors p {
+  color: white;
 }
 </style>

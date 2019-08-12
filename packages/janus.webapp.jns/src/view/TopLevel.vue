@@ -1,36 +1,39 @@
 <template>
-  <div class="container container--tld" ref="formContainer">
+  <div class="container container--tld">
     <div class="row row--full">
-      <v-hero v-if="content.list_hero" :hero="content.list_hero" float="right" classes="full-content">
-        <v-form-tld ref="formTld" v-on:handleSearchTLD="onSearchTLD"/>
-      </v-hero>
+      <transition>
+        <v-hero v-if="content.list_hero" :hero="content.list_hero" float="right" :classes="heroClass">
+          <v-form-tld ref="formTld" :class="heroClass" v-on:handleSearchTLD="onSearchTLD"/>
+        </v-hero>
+      </transition>
     </div>
-    <div class="row">
-      <v-card ref="card" cardType="full" :class="status ? 'success' : 'alert'" v-if="searchValue">
+    <div class="row row--cards" v-if="data.tldValue">
+      <v-card ref="cardTLD" cardType="full" :class="checkStatus(data.isTldAvaliable)">
         <template v-slot:header>
           <div class="title">
-            <h3 class="name inline">{{searchValue}}</h3>
+            <h3 class="name inline">{{data.tldValue}}</h3>
           </div>
           <div class="errors">
-            <p v-if="!status">This TLD already has an owner. Do you want to buy a Domain instead?</p>
+            <p>{{exceptionMessage}}</p>
           </div>
         </template>
 
         <template v-slot:body>
           <div class="actions">
-            <button v-if="status" class="btn btn--success btn-confirm" @click="handleBuy">Buy This TLD</button>
-            <router-link class="btn btn--outline btn--link" v-else to="/domain">Buy domain</router-link>
+            <button v-if="data.isTldAvaliable" class="btn btn--success btn-confirm" @click="handleBuy">Buy This TLD</button>
+            <router-link v-else class="btn btn--outline btn--link" to="/domain">Buy domain</router-link>
           </div>
         </template>
       </v-card>
     </div>
     <div class="modal-tld">
-      <v-tld-modal ref="modalTLD" v-on:handleSearchTLD="onSearchTLD" :tldValue="searchValue"/>
+      <v-tld-modal ref="modalTLD" v-on:handleSearchTLD="onSearchTLD" :tldValue="data.tldValue"/>
     </div>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import contentService from '../api/contentService'
 import Hero from '@/components/Hero'
 import BaseParagraph from '@/components/BaseParagraph'
@@ -43,8 +46,10 @@ export default {
   data () {
     return {
       content: [],
-      status: '',
-      searchValue: ''
+      data: {},
+      cardStatus: '',
+      exceptionMessage: '',
+      heroClass: 'full-content'
     }
   },
   components: {
@@ -53,6 +58,12 @@ export default {
     'v-card': BaseCard,
     'v-form-tld': FormTLD,
     'v-tld-modal': BuyTLDModal
+  },
+  computed: {
+    ...mapGetters('validation', [
+      'getErrorByType',
+      'getExceptionByType'
+    ])
   },
   beforeMount: function () {
     contentService('tld').then((response) => {
@@ -63,8 +74,19 @@ export default {
   },
   methods: {
     onSearchTLD (data) {
-      this.status = data.isAvaliable
-      this.searchValue = data.tldSearchValue
+      this.data = data
+      this.heroClass = 'colapsed'
+    },
+    checkStatus (isTldAvaliable) {
+      if (isTldAvaliable) {
+        this.cardStatus = 'success'
+        this.exceptionMessage = ''
+        return this.cardStatus
+      } else {
+        this.cardStatus = 'alert'
+        this.exceptionMessage = this.getExceptionByType('OwnedTLD')
+        return this.cardStatus
+      }
     },
     handleBuy () {
       this.$refs.modalTLD.openModal()

@@ -47,6 +47,9 @@ export default {
 .card h3 {
   margin: 1em auto;
 }
+.card.square {
+  border-color: var(--color-primary);
+}
 .card.full {
   display: flex;
   justify-content: space-between;

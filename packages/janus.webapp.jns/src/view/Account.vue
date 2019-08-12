@@ -1,6 +1,6 @@
 <template>
   <div class="container container--account">
-    <div class="row">
+    <div class="row row--full">
       <v-hero
         v-if="content.list_hero"
         :hero="content.list_hero"
@@ -12,11 +12,23 @@
       <v-actions-menu
         :actions="menuTabs"
         listClasses="tabs"
+        :activeTab="activeTab"
         v-on:accountTabAction="handleTabChange"
       />
     </div>
     <div class="list-domains">
       <ul class="list">
+        
+        <div v-if="!list[0] && activeTab == 'domain'">
+          <h3>You don't have any domain. Try buying one first!</h3>
+          <router-link to="/domain" class="btn btn--link btn--hero">get your new domain</router-link>
+        </div>
+        
+        <div v-if="!list[0]  && activeTab == 'tld'">
+          <h3>You don't have any Top Level Domain. Try buying one first!</h3>
+          <router-link to="/tld" class="btn btn--link btn--hero">get your new TLD</router-link>
+        </div>
+
         <li class="item" v-for="(item, index) in this.list" :key="index">
           <v-card ref="card" cardType="full" :class="checkStatus(item.Expires)" >
             <template v-slot:header>
@@ -66,7 +78,7 @@ export default {
   data() {
     return {
       content: [],
-      tab: 'domain',
+      activeTab: 'domain',
       listaTLD: [],
       availableActions: [
         {
@@ -115,10 +127,10 @@ export default {
   },
   computed: {
     list () {
-      switch (this.tab) {
+      switch (this.activeTab) {
         case "tld":
           this.cardActions = this.availableActions.find(el => el.type == "tld").actions
-          return this.listTopLevelDomains  
+          return this.listTopLevelDomains
           break;
         case "domain":
           this.cardActions = this.availableActions.find(el => el.type == "domain").actions
@@ -138,7 +150,6 @@ export default {
       listDomains: state => state.jns.domains 
     })
   },
-
   components: {
     "v-hero": Hero,
     "v-paragraph": BaseParagraph,
@@ -176,17 +187,18 @@ export default {
       return status;
     },
     handleTabChange(event) {
-      this.tab = event.action.handler
+      this.activeTab = event.action.handler
     },
     handleActions(event) {
       //console.log(event.action.callToAction, event)
     }
   },
-
   beforeMount: function () {
     contentService('account').then((response) => {
       this.content = response.data
     })
+
+    this.$store.dispatch('resolveJanusNameService') 
   }
 };
 </script>

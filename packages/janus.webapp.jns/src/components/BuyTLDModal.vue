@@ -2,12 +2,12 @@
   <div class="action-modal">
     <v-modal ref="modal">
       <template v-slot:header>
-        <h3> You are almost done </h3>
+        <h3> You're almost done </h3>
       </template>
 
       <template v-slot:body>
         <div class="modal-subtitle">
-          <p>To finish the transaction, please check the informations above to ensure all itens are completed.</p>
+          <p>To finish the transaction, please check the informations above to ensure all itens are correct and confirm the transaction in Metamask</p>
         </div>
         <div class="modal-content">
           <div class="modal-row">
@@ -31,7 +31,7 @@
 import BaseModal from '@/components/BaseModal'
 
 export default { 
-  name: 'ActionModal',
+  name: 'BuyTLDModal',
   extends: BaseModal,
   components: {
     'v-modal': BaseModal
@@ -59,8 +59,12 @@ export default {
           if(response.Success && response.Result[0].event === 'TopDomainRegistered')
             this.$notification.success(`Success! Thank you for register a top level domain in Web3!`)
             this.$emit('handleSearchTLD', { "isAvaliable": false, 'tldSearchValue': topLevelDomain })
+            // console.log('buyTopLevelDomain', response)
         })
-        .catch(err => this.$notification.error(err))
+        .catch((err) => {
+          this.$notification.error(err)
+          console.error('buyTopLevelDomain', err)
+        })
         .finally(() => {
           this.$refs.modal.closeModal()
           this.loader.hide()
