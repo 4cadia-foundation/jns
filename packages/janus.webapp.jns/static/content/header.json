@@ -17,6 +17,6 @@
       "path": "/account"
     }
   ],
-  "logo": "/static/images/logo.png",
+  "logo": "./static/images/logo.png",
   "title": "Janus"
 }

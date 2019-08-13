@@ -12,7 +12,7 @@
         <slot></slot>
       </div>
     </div>
-    <div class="hero_background"></div>
+    <img class="hero_background" src="../../static/images/hero.png" alt="background color">
   </div>
 </template>
 
@@ -69,9 +69,9 @@ export default {
   position: absolute;
   top: 0;
   left: 0;
-  background-image: url('../assets/images/hero.png');
-  background-size: 100% 100%;
-  background-repeat: no-repeat;
+  /* background-image: url('/static/images/hero.png'); */
+  /* background-size: 100% 100%; */
+  /* background-repeat: no-repeat; */
   filter: brightness(70%);
   z-index: -1;
 }

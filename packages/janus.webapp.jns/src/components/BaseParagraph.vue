@@ -32,7 +32,7 @@ export default {
   text-align: left;
 }
 .text{
-  text-align: left;
+  /* text-align: left; */
 }
 @media (min-width: 1920px) {
   .paragraph .subtitle {
