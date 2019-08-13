@@ -20,64 +20,69 @@ import SmartContract from './core/SmartContract';
                     let domain;
                     let topDomain;
 
-                    if (activeTab.url.startsWith('http://w3.') ||
-                        activeTab.url.startsWith('http://web3.') ||
-                        activeTab.url.startsWith('http://jns.')) {
+                    if (!activeTab.url.startsWith('http://ipfs.caralabs.me')) {
 
-                        console.log('starts jns');
+                        if (activeTab.url.startsWith('http://w3.') ||
+                            activeTab.url.startsWith('http://web3.') ||
+                            activeTab.url.startsWith('http://jns.')) {
 
-                        const splitedUrl = activeTab.url.split('.');
+                            console.log('starts jns');
 
-                        domain = splitedUrl[1];
-                        topDomain = splitedUrl[2];
+                            const splitedUrl = activeTab.url.split('.');
 
-                        domain = domain.replace('/', '');
-                        topDomain = topDomain.replace('/', '');
+                            domain = splitedUrl[1];
+                            topDomain = splitedUrl[2];
 
-                        web3Url = domain + '.' + topDomain;
+                            domain = domain.replace('/', '');
+                            topDomain = topDomain.replace('/', '');
 
-                    } else if (activeTab.url.startsWith('https://www.google.com/search') &&
-                        activeTab.url.includes('?q=w3.') || activeTab.url.includes('?q=web3.') ||
-                        activeTab.url.includes('?q=jns.')) {
+                            web3Url = domain + '.' + topDomain;
 
-                        console.log('google redirect');
+                        } else if (activeTab.url.startsWith('https://www.google.com/search') &&
+                            activeTab.url.includes('?q=w3.') || activeTab.url.includes('?q=web3.') ||
+                            activeTab.url.includes('?q=jns.')) {
 
-                        const params = activeTab.url.split('?');
-                        const param = params[1].split('&');
-                        const qparam = param[0].split('=');
-                        const domains = qparam[1].split('.');
+                            console.log('google redirect');
 
-                        domain = domains[1];
-                        topDomain = domains[2];
+                            const params = activeTab.url.split('?');
+                            const param = params[1].split('&');
+                            const qparam = param[0].split('=');
+                            const domains = qparam[1].split('.');
 
-                        domain = domain.replace('/', '');
-                        topDomain = topDomain.replace('/', '');
+                            domain = domains[1];
+                            topDomain = domains[2];
 
-                        web3Url = domain + '.' + topDomain;
-                    }
+                            domain = domain.replace('/', '');
+                            topDomain = topDomain.replace('/', '');
 
-                    if (topDomain && domain) {
-                        let result;
+                            web3Url = domain + '.' + topDomain;
+                        }
 
-                        result = await contract.getStorageHashByDomain(domain, topDomain);
-                        console.log('result: ' + result);
+                        if (topDomain && domain) {
+                            let result;
 
-                        const url = result ? `${storagePrefix}${result}/` : `${storagePrefix}${notFoundHash}/`
+                            result = await contract.getStorageHashByDomain(domain, topDomain);
+                            console.log('result: ' + result);
 
-                        chrome.tabs.update(activeTab.id, { url }, (tab) => {
-                            chrome.tabs.onUpdated.addListener((tabId, changeInfo) => {
-                                if (tabId === tab.id && changeInfo.status == 'complete') {
-                                    chrome.tabs.sendMessage(tabId, web3Url);
-                                }
+                            const url = result ? `${storagePrefix}${result}/` : `${storagePrefix}${notFoundHash}/`
+
+                            chrome.tabs.update(activeTab.id, { url }, (tab) => {
+                                // chrome.tabs.onUpdated.addListener(function listener(tabId, changeInfo) {
+                                //     if (tabId === tab.id && changeInfo.status == 'complete') {
+                                //         chrome.tabs.onUpdated.removeListener(listener);
+                                //         chrome.tabs.sendMessage(tabId, web3Url + '/');
+                                //     }
+                                // });
                             });
-                        });
+                        }
                     }
                 }
             } catch (e) {
                 console.log(e);
                 chrome.tabs.update(tabs[0].id, { url: storagePrefix + notFoundHash + '/' }, (tab) => {
-                    chrome.tabs.onUpdated.addListener((tabId, changeInfo) => {
+                    chrome.tabs.onUpdated.addListener(function listener(tabId, changeInfo) {
                         if (tabId === tab.id && changeInfo.status == 'complete') {
+                            chrome.tabs.onUpdated.removeListener(listener);
                             chrome.tabs.sendMessage(tabId, 'not-found');
                         }
                     });
