@@ -1,31 +1,30 @@
 {
-  "name": "janus.jns",
-  "version": "1.0.0",
-  "description": "Janus name service",
-  "main": "truffle-config.js",
-  "directories": {
-    "test": "test"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+ssh://git@bitbucket.org/janusplatform/janus.jns.git"
-  },
-  "keywords": [
-    "jns",
-    "name",
-    "service"
-  ],
-  "author": "Rodrigo Oliveira",
-  "license": "ISC",
-  "homepage": "https://bitbucket.org/janusplatform/janus.jns#readme",
-  "dependencies": {
-    "web3": "^1.0.0-beta.55"
-  },
-  "devDependencies": {
-    "mocha": "^6.1.4",
-    "truffle-assertions": "^0.9.1"
-  }
+    "name": "janus.jns",
+    "version": "1.0.0",
+    "description": "Janus name service",
+    "main": "truffle-config.js",
+    "directories": {
+        "test": "test"
+    },
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+ssh://git@bitbucket.org/janusplatform/janus.jns.git"
+    },
+    "keywords": [
+        "jns",
+        "name",
+        "service"
+    ],
+    "author": "Rodrigo Oliveira",
+    "license": "ISC",
+    "homepage": "https://bitbucket.org/janusplatform/janus.jns#readme",
+    "dependencies": {
+        "web3": "^1.0.0-beta.55"
+    },
+    "devDependencies": {
+        "truffle-assertions": "^0.9.1"
+    }
 }
