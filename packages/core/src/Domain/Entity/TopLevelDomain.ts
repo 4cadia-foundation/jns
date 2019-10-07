@@ -1,10 +1,9 @@
 export class TopLevelDomain {
-    public Name: String;
-    public Expires: Number;
+  public Name: string;
+  public Expires: number;
 
-    constructor(name: String , expires: Number){
-        this.Name = name;
-        this.Expires = expires;
-    }
-
-};
+  constructor(name: string, expires: number) {
+    this.Name = name;
+    this.Expires = expires;
+  }
+}

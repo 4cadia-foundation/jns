@@ -1,6 +1,3 @@
 export class DomainExistsRequest {
-    constructor(
-        public Name: String,
-        public TLD: String
-    ) { }
+  constructor(public Name: string, public TLD: string) {}
 }

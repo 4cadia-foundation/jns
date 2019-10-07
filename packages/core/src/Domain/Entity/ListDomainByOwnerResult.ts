@@ -1,8 +1,8 @@
 export class ListDomainByOwnerResult {
-    constructor(
-        public Name: String,
-        public TLD: String,
-        public StorageHash: String,
-        public Expires: Number
-    ) { }
-};
+  constructor(
+    public Name: string,
+    public TLD: string,
+    public StorageHash: string,
+    public Expires: number
+  ) {}
+}

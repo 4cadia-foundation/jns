@@ -1,70 +1,82 @@
-import { AbstractValidator, ValidationResult } from "fluent-ts-validator";
-import INameService from "../Interface/INameService";
-import { inject } from "tsyringe";
-import NameServiceConfig from "../../Domain/Entity/NameServiceConfig";
-import Bootstrapper from "../../Infra/Bootstrapper";
-import { BuyDomainRequest } from "../../Domain/Entity/BuyDomainRequest";
-import { DomainExistsRequest } from "../../Domain/Entity/DomainExistsRequest";
+import { AbstractValidator, ValidationResult } from 'fluent-ts-validator';
+import INameService from '../Interface/INameService';
+import { inject } from 'tsyringe';
+import NameServiceConfig from '../../Domain/Entity/NameServiceConfig';
+import Bootstrapper from '../../Infra/Bootstrapper';
+import { BuyDomainRequest } from '../../Domain/Entity/BuyDomainRequest';
+import { DomainExistsRequest } from '../../Domain/Entity/DomainExistsRequest';
 
-export default class DomainValidator extends AbstractValidator<BuyDomainRequest> {
+export default class DomainValidator extends AbstractValidator<
+  BuyDomainRequest
+> {
+  _jnsService: INameService;
 
-    _jnsService: INameService
+  constructor(@inject('NameServiceConfig') _jnsconfig: NameServiceConfig) {
+    super();
+    this._jnsService = Bootstrapper.Resolve<INameService>('INameService');
+  }
 
-    constructor(@inject("NameServiceConfig") _jnsconfig: NameServiceConfig) {
-        super();
-        this._jnsService = Bootstrapper.Resolve<INameService>("INameService");
-    }
+  public async ValidateNewDomainRequest(
+    request: BuyDomainRequest
+  ): Promise<ValidationResult> {
+    this.validateIf(a => a.TLD)
+      .isNotEmpty()
+      .isNotNull()
+      .withFailureMessage("Top Level Domain can't be empty");
 
-    public async ValidateNewDomainRequest(request: BuyDomainRequest): Promise<ValidationResult> {
+    this.validateIfString(i => i.TLD.toString())
+      .hasMinLength(2)
+      .hasMaxLength(5)
+      .withFailureMessage(
+        'Top level Domain must be between two and five characters'
+      );
 
-        this.validateIf(a => a.TLD)
-            .isNotEmpty()
-            .isNotNull()
-            .withFailureMessage("Top Level Domain can't be empty");
+    this.validateIfString(i => i.TLD.toString())
+      .isAlphanumeric()
+      .isLowercase()
+      .withFailureMessage(
+        'Top level domain must be alphanumeric characters and lower case'
+      );
 
-        this.validateIfString(i => i.TLD.toString())
-            .hasMinLength(2)
-            .hasMaxLength(5)
-            .withFailureMessage("Top level Domain must be between two and five characters")
+    this.validateIf(a => a.Name)
+      .isNotEmpty()
+      .isNotNull()
+      .withFailureMessage("Domain can't be empty");
 
-        this.validateIfString(i => i.TLD.toString())
-            .isAlphanumeric()
-            .isLowercase()
-            .withFailureMessage("Top level domain must be alphanumeric characters and lower case")
+    this.validateIfString(i => i.Name.toString())
+      .hasMinLength(3)
+      .withFailureMessage('Domain must be greater than three characters');
 
-        this.validateIf(a => a.Name)
-            .isNotEmpty()
-            .isNotNull()
-            .withFailureMessage("Domain can't be empty");
+    this.validateIfString(i => i.Name.toString())
+      .isAlphanumeric()
+      .isLowercase()
+      .withFailureMessage(
+        'Domain must be alphanumeric characters and lower case'
+      );
 
-        this.validateIfString(i => i.Name.toString())
-            .hasMinLength(3)
-            .withFailureMessage("Domain must be greater than three characters")
+    this.validateIf(a => a.StorageHash)
+      .isNotEmpty()
+      .isNotNull()
+      .withFailureMessage("Storage hash can't be empty");
 
-        this.validateIfString(i => i.Name.toString())
-            .isAlphanumeric()
-            .isLowercase()
-            .withFailureMessage("Domain must be alphanumeric characters and lower case")
+    this.validateIfString(i => i.StorageHash.toString())
+      .hasLength(46)
+      .withFailureMessage('Storage hash must be forty-six characters');
 
-        this.validateIf(a => a.StorageHash)
-            .isNotEmpty()
-            .isNotNull()
-            .withFailureMessage("Storage hash can't be empty");
+    const tldExists = await this._jnsService.IsTopDomainRegistered(request.TLD);
+    this.validateIf(() => tldExists)
+      .isEqualTo(true)
+      .withFailureMessage(`Top Level Domain "${request.TLD}" not registered`);
 
-        this.validateIfString(i => i.StorageHash.toString())
-            .hasLength(46)
-            .withFailureMessage("Storage hash must be forty-six characters")
+    const domainExists = await this._jnsService.IsDomainRegisteredSync(
+      new DomainExistsRequest(request.Name, request.TLD)
+    );
+    this.validateIf(() => domainExists)
+      .isEqualTo(false)
+      .withFailureMessage(
+        `Domain "${request.Name}"."${request.TLD}" has already registered`
+      );
 
-        const tldExists = await this._jnsService.IsTopDomainRegistered(request.TLD)
-        this.validateIf(_ => tldExists)
-            .isEqualTo(true)
-            .withFailureMessage(`Top Level Domain "${request.TLD}" not registered`);
-
-        const domainExists = await this._jnsService.IsDomainRegisteredSync(new DomainExistsRequest(request.Name, request.TLD));
-        this.validateIf(_ => domainExists)
-            .isEqualTo(false)
-            .withFailureMessage(`Domain "${request.Name}"."${request.TLD}" has already registered`);
-
-        return this.validate(request);
-    }
+    return this.validate(request);
+  }
 }

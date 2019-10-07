@@ -1,7 +1,7 @@
 export class BuyDomainRequest {
-    constructor(
-        public Name: String,
-        public TLD: String,
-        public StorageHash: String,
-    ) { }
-};
+  constructor(
+    public Name: string,
+    public TLD: string,
+    public StorageHash: string
+  ) {}
+}
