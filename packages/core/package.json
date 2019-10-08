@@ -11,6 +11,7 @@
     "build-watch": "tsc -p . --watch",
     "lint": "eslint src/ test/ --ext ts,js",
     "lint-fix": "eslint --fix src/ --ext ts,js",
+    "precommit": "lint-staged",
     "test": "jest",
     "test:unit": "jest -t '#unit'",
     "test:integration": "jest -t '#integration'"
@@ -21,6 +22,10 @@
   },
   "author": "JC Bombardelli",
   "license": "MIT",
+  "lint-staged": {
+    "*.{js,ts}": ["eslint --fix", "git add"],
+    "*.json": ["prettier --write", "git add"]
+  },
   "dependencies": {
     "@types/web3": "^1.0.18",
     "chalk": "^2.4.2",
@@ -55,6 +60,7 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
     "jest": "^24.8.0",
+    "lint-staged": "^9.4.2",
     "mocha": "^6.1.4",
     "node-metamask": "^1.1.2",
     "nodemon": "^1.19.0",
