@@ -1,0 +1,5 @@
+node_modules/
+*.log
+
+# Must be checked into git
+!build/

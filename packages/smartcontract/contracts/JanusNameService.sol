@@ -44,7 +44,7 @@ contract JanusNameService {
     }
 
     function kill() external {
-        require(msg.sender == contractOwner, "only the contract owner can kill this contract");
+        require(msg.sender == contractOwner, 'only the contract owner can kill this contract');
         selfdestruct(contractOwner);
     }
 
@@ -104,7 +104,7 @@ contract JanusNameService {
         _;
     }
 
-     modifier isTopDomainDateExpirationValid(
+    modifier isTopDomainDateExpirationValid(
         string memory _topDomainName
     )
     {
@@ -367,7 +367,7 @@ contract JanusNameService {
         emit DomainRenewed(_domainName, _topDomainName, newExpireDate);
     }
 
-     function getDomainByHash(
+    function getDomainByHash(
         bytes32 _hash
     ) public view returns (string memory name, string memory topDomain, string memory storageHash, uint expires, address owner)
     {

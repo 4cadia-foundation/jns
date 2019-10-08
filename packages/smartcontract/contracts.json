@@ -1,0 +1,714 @@
+{
+  "JanusNameService": {
+    "abi": [
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "internalType": "string",
+            "name": "",
+            "type": "string"
+          }
+        ],
+        "name": "domainsStorageHash",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "name": "domainsOwnerMap",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [],
+        "name": "contractOwner",
+        "outputs": [
+          {
+            "internalType": "address payable",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "",
+            "type": "bytes32"
+          }
+        ],
+        "name": "domainsHashMap",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "string",
+            "name": "_topDomainName",
+            "type": "string"
+          }
+        ],
+        "name": "TopDomainRegistered",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "string",
+            "name": "_topDomainName",
+            "type": "string"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "_newOwnerAddress",
+            "type": "address"
+          }
+        ],
+        "name": "TopDomainOwnershipChanged",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "string",
+            "name": "_topDomainName",
+            "type": "string"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "_newExpire",
+            "type": "uint256"
+          }
+        ],
+        "name": "TopDomainRenewed",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "string",
+            "name": "_domainName",
+            "type": "string"
+          },
+          {
+            "indexed": false,
+            "internalType": "string",
+            "name": "_topDomainName",
+            "type": "string"
+          }
+        ],
+        "name": "DomainRegistered",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "string",
+            "name": "_domainName",
+            "type": "string"
+          },
+          {
+            "indexed": false,
+            "internalType": "string",
+            "name": "_topDomainName",
+            "type": "string"
+          },
+          {
+            "indexed": false,
+            "internalType": "string",
+            "name": "_storageHash",
+            "type": "string"
+          }
+        ],
+        "name": "DomainStorageHashUpdated",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "string",
+            "name": "_domainName",
+            "type": "string"
+          },
+          {
+            "indexed": false,
+            "internalType": "string",
+            "name": "_topDomainName",
+            "type": "string"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "_newExpire",
+            "type": "uint256"
+          }
+        ],
+        "name": "DomainRenewed",
+        "type": "event"
+      },
+      {
+        "constant": false,
+        "inputs": [],
+        "name": "kill",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [
+          {
+            "internalType": "string",
+            "name": "_topDomainName",
+            "type": "string"
+          }
+        ],
+        "name": "registerTopDomain",
+        "outputs": [],
+        "payable": true,
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [],
+        "name": "getAllTopDomainsByOwner",
+        "outputs": [
+          {
+            "internalType": "string[]",
+            "name": "name",
+            "type": "string[]"
+          },
+          {
+            "internalType": "uint256[]",
+            "name": "expires",
+            "type": "uint256[]"
+          }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "_hash",
+            "type": "bytes32"
+          }
+        ],
+        "name": "getTopDomainByHash",
+        "outputs": [
+          {
+            "internalType": "string",
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "internalType": "uint256",
+            "name": "expires",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "owner",
+            "type": "address"
+          }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "internalType": "string",
+            "name": "_topDomainName",
+            "type": "string"
+          }
+        ],
+        "name": "getTopDomainHash",
+        "outputs": [
+          {
+            "internalType": "bytes32",
+            "name": "",
+            "type": "bytes32"
+          }
+        ],
+        "payable": false,
+        "stateMutability": "pure",
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [
+          {
+            "internalType": "string",
+            "name": "_topDomainName",
+            "type": "string"
+          },
+          {
+            "internalType": "address",
+            "name": "_newOwnerAddress",
+            "type": "address"
+          }
+        ],
+        "name": "changeTopDomainOwnership",
+        "outputs": [],
+        "payable": true,
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [
+          {
+            "internalType": "string",
+            "name": "_topDomainName",
+            "type": "string"
+          }
+        ],
+        "name": "renewTopDomain",
+        "outputs": [],
+        "payable": true,
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "internalType": "string",
+            "name": "_topDomainName",
+            "type": "string"
+          }
+        ],
+        "name": "topDomainAlreadyRegistered",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [],
+        "name": "getTopDomainsLength",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [
+          {
+            "internalType": "string",
+            "name": "_domainName",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "_topDomainName",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "_storageHash",
+            "type": "string"
+          }
+        ],
+        "name": "registerDomain",
+        "outputs": [],
+        "payable": true,
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "internalType": "string",
+            "name": "_domainName",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "_topDomainName",
+            "type": "string"
+          }
+        ],
+        "name": "getStorageHashByDomain",
+        "outputs": [
+          {
+            "internalType": "string",
+            "name": "",
+            "type": "string"
+          }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [
+          {
+            "internalType": "string",
+            "name": "_domainName",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "_topDomainName",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "_storageHash",
+            "type": "string"
+          }
+        ],
+        "name": "updateDomainStorageHash",
+        "outputs": [],
+        "payable": true,
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [
+          {
+            "internalType": "string",
+            "name": "_domainName",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "_topDomainName",
+            "type": "string"
+          }
+        ],
+        "name": "renewDomain",
+        "outputs": [],
+        "payable": true,
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "_hash",
+            "type": "bytes32"
+          }
+        ],
+        "name": "getDomainByHash",
+        "outputs": [
+          {
+            "internalType": "string",
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "topDomain",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "storageHash",
+            "type": "string"
+          },
+          {
+            "internalType": "uint256",
+            "name": "expires",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "owner",
+            "type": "address"
+          }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "internalType": "string",
+            "name": "_domainName",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "_topDomainName",
+            "type": "string"
+          }
+        ],
+        "name": "domainAlreadyRegistered",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [],
+        "name": "getDomainsLength",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "internalType": "string",
+            "name": "_domainName",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "_topDomainName",
+            "type": "string"
+          }
+        ],
+        "name": "getCompleteDomainHash",
+        "outputs": [
+          {
+            "internalType": "bytes32",
+            "name": "",
+            "type": "bytes32"
+          }
+        ],
+        "payable": false,
+        "stateMutability": "pure",
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [],
+        "name": "getAllDomainsByOwner",
+        "outputs": [
+          {
+            "internalType": "string[]",
+            "name": "name",
+            "type": "string[]"
+          },
+          {
+            "internalType": "string[]",
+            "name": "topDomain",
+            "type": "string[]"
+          },
+          {
+            "internalType": "string[]",
+            "name": "storageHash",
+            "type": "string[]"
+          },
+          {
+            "internalType": "uint256[]",
+            "name": "expires",
+            "type": "uint256[]"
+          }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "internalType": "string",
+            "name": "storageHash",
+            "type": "string"
+          }
+        ],
+        "name": "getDomainByStorageHash",
+        "outputs": [
+          {
+            "internalType": "string",
+            "name": "topDomain",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "domain",
+            "type": "string"
+          }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+      }
+    ],
+    "addresses": {}
+  },
+  "Migrations": {
+    "abi": [
+      {
+        "constant": true,
+        "inputs": [],
+        "name": "last_completed_migration",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [],
+        "name": "owner",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+      },
+      {
+        "constant": false,
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "completed",
+            "type": "uint256"
+          }
+        ],
+        "name": "setCompleted",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "new_address",
+            "type": "address"
+          }
+        ],
+        "name": "upgrade",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+      }
+    ],
+    "addresses": {}
+  }
+}
