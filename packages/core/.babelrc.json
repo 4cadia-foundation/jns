@@ -1,4 +1,3 @@
 {
-  "extends": "../../.babelrc.json",
-  "presets": ["@babel/preset-typescript"]
+  "extends": "../../.babelrc.json"
 }

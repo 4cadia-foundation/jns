@@ -1,11 +1,11 @@
 {
-  "name": "janus.jns",
+  "name": "@4cadia/jns-smartcontract",
   "version": "1.0.0",
   "description": "Janus name service",
   "main": "contracts.json",
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@bitbucket.org/janusplatform/janus.jns.git"
+    "url": "https://github.com/4cadia-foundation/jns"
   },
   "keywords": ["jns", "name service", "ethereum", "smart contract"],
   "author": "Rodrigo Oliveira",
@@ -40,6 +40,7 @@
   "devDependencies": {
     "concurrently": "^4.1.2",
     "ganache-cli": "^6.7.0",
+    "shx": "^0.3.2",
     "solc": "^0.5.11",
     "solium": "^1.2.4",
     "solium-plugin-security": "^0.1.1",
