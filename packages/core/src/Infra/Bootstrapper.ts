@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import { container, InjectionToken, DependencyContainer } from 'tsyringe';
-import jnsConfig from '../../jns-config.json';
+import jnsConfig from '../jns-config.json';
 import JanusNameServiceConfig from '../Domain/Entity/NameServiceConfig';
 import NameService from '../Application/Service/NameService';
 import { Web3Provider } from 'ethers/providers';

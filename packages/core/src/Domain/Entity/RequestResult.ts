@@ -1,6 +1,6 @@
 export class RequestResult {
-  public TxHash: string;
+  public TxHash = '';
   public Result: Record<string, any>[] = [];
-  public Errors: Record<string, any>[] = [];
+  public Errors: string[] = [];
   public Success = false;
 }

@@ -8,4 +8,4 @@ module.exports = {
       tsConfig: resolve(__dirname, 'tsconfig.json'),
     },
   },
-}
+};

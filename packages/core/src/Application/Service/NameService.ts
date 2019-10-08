@@ -17,8 +17,12 @@ export default class NameService implements INameService {
   private _smartContract: Contract;
 
   constructor(
-    @inject('NameServiceConfig') private _jnsConfig: NameServiceConfig
+    @inject('NameServiceConfig') private _jnsConfig: Required<NameServiceConfig>
   ) {
+    if (!_jnsConfig.Web3Provider) {
+      throw new Error('Missing Web3Provider');
+    }
+
     this._web3Provider = new ethers.providers.Web3Provider(
       _jnsConfig.Web3Provider
     );
@@ -45,19 +49,14 @@ export default class NameService implements INameService {
   }
 
   public IsTopDomainRegistered(topLevelDomainName: string): Promise<boolean> {
-    return new Promise((resolve, reject) => {
-      this._smartContract
-        .topDomainAlreadyRegistered(topLevelDomainName)
-        .then(result => resolve(result))
-        .catch(error => reject(error));
-    });
+    return this._smartContract.topDomainAlreadyRegistered(topLevelDomainName);
   }
 
   // TODO: this is not sync!!! Check what it should do
   public IsTopDomainRegisteredSync(topLevelDomainName: string): any {
     this._smartContract
       .topDomainAlreadyRegistered(topLevelDomainName)
-      .then(resp => {
+      .then((resp: boolean) => {
         return resp as boolean;
       });
     // return result;
@@ -74,7 +73,7 @@ export default class NameService implements INameService {
   public async ListTLDByOwner(): Promise<TopLevelDomain[]> {
     const listTLDByContract = await this._smartContract.getAllTopDomainsByOwner();
     const listTopLevelDomains = listTLDByContract[0].map(
-      (tld, index) =>
+      (tld: string, index: number) =>
         new TopLevelDomain(tld, parseInt(listTLDByContract[1][index], 10))
     );
     return listTopLevelDomains;
@@ -83,12 +82,10 @@ export default class NameService implements INameService {
   public async IsDomainRegisteredSync(
     request: DomainExistsRequest
   ): Promise<boolean> {
-    return new Promise((resolve, reject) => {
-      this._smartContract
-        .domainAlreadyRegistered(request.Name, request.TLD)
-        .then(result => resolve(result))
-        .catch(error => reject(error));
-    });
+    return this._smartContract.domainAlreadyRegistered(
+      request.Name,
+      request.TLD
+    );
   }
 
   public async BuyDomain(request: BuyDomainRequest): Promise<RequestResult> {
@@ -122,7 +119,7 @@ export default class NameService implements INameService {
   public async ListDomainByOwner(): Promise<ListDomainByOwnerResult[]> {
     const tx = await this._smartContract.getAllDomainsByOwner();
     const result = tx[0].map(
-      (name, index) =>
+      (name: string, index: number) =>
         new ListDomainByOwnerResult(
           name,
           tx[1][index],

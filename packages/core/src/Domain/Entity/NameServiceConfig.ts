@@ -5,9 +5,9 @@ import { Contract } from 'ethers';
 
 @singleton()
 export default class NameServiceConfig {
-  public RpcHost: string;
-  public RpcPort: string;
-  public SmartContractAddress: string;
-  public SmartcontractAbi: any;
-  public Web3Provider: Web3Provider;
+  public RpcHost = '';
+  public RpcPort = '';
+  public SmartContractAddress = '';
+  public SmartcontractAbi: any = [];
+  public Web3Provider: Web3Provider | undefined = undefined;
 }
