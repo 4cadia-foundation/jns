@@ -18,12 +18,12 @@ export default {
   name: 'App',
 
   components: {
-    'v-header': Header,
+    'v-header': Header
   },
-  
-  created(){
-    this.$store.dispatch('resolveJanusNameService')  
-  },
+
+  created () {
+    this.$store.dispatch('resolveJanusNameService')
+  }
 }
 </script>
 

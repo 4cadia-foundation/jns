@@ -10,31 +10,24 @@
 </template>
 
 <script>
-import BaseInput from '@/components/BaseInput'
-
 export default {
   name: 'FormHero',
-  components: {
-    'v-input': BaseInput
-  },
+  components: {},
   data () {
-    return {
-    }
+    return {}
   },
   props: {
     action: {
       type: Object
     }
   },
-  computed: {
-  },
+  computed: {},
   methods: {
     handleSubmit: function (event) {
-      this.$emit(this.action.handler, { 'action': this.action, 'event': event })
+      this.$emit(this.action.handler, { action: this.action, event: event })
     }
   },
-  mounted () {
-  }
+  mounted () {}
 }
 </script>
 

@@ -28,7 +28,7 @@
 <script>
 import BaseLoader from '@/components/BaseLoader'
 
-export default { 
+export default {
   name: 'BaseModal',
   data () {
     return {
@@ -39,7 +39,7 @@ export default {
   props: {
   },
   components: {
-    'loader': BaseLoader
+    loader: BaseLoader
   },
   computed: {
   },

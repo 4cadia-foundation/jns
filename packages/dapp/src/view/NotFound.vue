@@ -53,7 +53,7 @@ export default {
 .notfound .notfound-404 {
     height: 280px;
     position: relative;
-    z-index: -1; 
+    z-index: -1;
 }
 
 .notfound .notfound-404 h1 {

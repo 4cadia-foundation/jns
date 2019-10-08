@@ -55,7 +55,7 @@ export default {
       return this.hasExceptions
     },
     fieldIsValid: function (exception, type) {
-      let exceptionType = this.filterExceptionByType(type)
+      const exceptionType = this.filterExceptionByType(type)
       if (exception) {
         exceptionType['0'].show = true
       } else {
@@ -112,10 +112,10 @@ export default {
   },
   mounted () {
     this.exceptions.push(
-      {type: 'EmptyField', message: this.getExceptionByType('EmptyField'), show: false},
-      {type: 'InvalidField', message: this.getExceptionByType('InvalidField'), show: false},
-      {type: 'MaxLength', message: this.getExceptionByType('MaxLength').replace('{ keyword }', this.maxlength), show: false},
-      {type: 'MinLength', message: this.getExceptionByType('MinLength').replace('{ keyword }', this.minlength), show: false}
+      { type: 'EmptyField', message: this.getExceptionByType('EmptyField'), show: false },
+      { type: 'InvalidField', message: this.getExceptionByType('InvalidField'), show: false },
+      { type: 'MaxLength', message: this.getExceptionByType('MaxLength').replace('{ keyword }', this.maxlength), show: false },
+      { type: 'MinLength', message: this.getExceptionByType('MinLength').replace('{ keyword }', this.minlength), show: false }
     )
   }
 }
@@ -174,8 +174,8 @@ export default {
 }
 
 .field:-webkit-autofill,
-.field:-webkit-autofill:hover, 
-.field:-webkit-autofill:focus, 
+.field:-webkit-autofill:hover,
+.field:-webkit-autofill:focus,
 .field:-webkit-autofill:active  {
     -webkit-box-shadow: 0 0 0 30px white inset !important;
     -webkit-text-fill-color: black !important;

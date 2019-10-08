@@ -41,7 +41,7 @@ export default {
 .dropdown:hover .btn--outline {
   color: white;
   background: var(--color-primary);
-  transition: all ease-out .3s; 
+  transition: all ease-out .3s;
 }
 .dropdown-menu {
   position: absolute;

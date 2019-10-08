@@ -23,7 +23,7 @@
           </div>
         </template>
       </v-card>
-    </div>    
+    </div>
     <div class="modal-domain">
       <v-domain-modal ref="modalDomain" :tldValue="data.tldValue" :domainValue="data.domainValue"/>
     </div>
@@ -34,7 +34,6 @@
 import { mapGetters } from 'vuex'
 import contentService from '../api/contentService'
 import Hero from '@/components/Hero'
-import BaseParagraph from '@/components/BaseParagraph'
 import BaseCard from '@/components/BaseCard'
 import BuyDomainModal from '@/components/BuyDomainModal'
 import FormDomain from '@/components/FormDomain'
@@ -57,7 +56,6 @@ export default {
   },
   components: {
     'v-hero': Hero,
-    'v-paragraph': BaseParagraph,
     'v-card': BaseCard,
     'v-domain-modal': BuyDomainModal,
     'v-form-domain': FormDomain
@@ -76,11 +74,11 @@ export default {
       this.$refs.modalDomain.openModal()
     },
     checkStatus (domain, tld) {
-      if (domain == true && tld == false) {
+      if (domain === true && tld === false) {
         this.cardStatus = 'success'
         this.exceptionMessage = ''
         return this.cardStatus
-      } else if (domain == true && tld == true) {
+      } else if (domain === true && tld === true) {
         this.cardStatus = 'warn'
         this.exceptionMessage = this.getExceptionByType('WarnBuyDomain')
         return this.cardStatus
@@ -121,7 +119,7 @@ export default {
 
 .img-check {
   margin-right: 9px;
-} 
+}
 
 .modal-domain .modal-header .p {
   margin: 7px 0px;

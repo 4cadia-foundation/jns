@@ -25,7 +25,7 @@ export default {
   name: 'CardListBlock',
   data () {
     return {
-      width: 100/(this.list.data.length)-2
+      width: 100 / (this.list.data.length) - 2
     }
   },
   filters: {

@@ -16,7 +16,6 @@
 <script>
 import contentService from '../api/contentService'
 import Hero from '@/components/Hero'
-import BaseParagraph from '@/components/BaseParagraph'
 import CardListBlock from '@/components/CardListBlock'
 // import FormDomain from '@/components/FormDomain'
 
@@ -30,8 +29,7 @@ export default {
   },
   components: {
     'v-hero': Hero,
-    'v-paragraph': BaseParagraph,
-    'v-cards-list': CardListBlock,
+    'v-cards-list': CardListBlock
     // 'v-form-domain': FormDomain
   },
   methods: {

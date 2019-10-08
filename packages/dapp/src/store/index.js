@@ -13,11 +13,11 @@ const debug = process.env.NODE_ENV !== 'production'
 
 const vuexStore = new Vuex.Store({
   state: {
-    logged_in: false
+    loggedIn: false
   },
   mutations: {
-    logged_in (state, value) {
-      state.logged_in = value
+    loggedIn (state, value) {
+      state.loggedIn = value
     }
   },
   modules: {
@@ -29,8 +29,7 @@ const vuexStore = new Vuex.Store({
   strict: debug
 })
 
-registerWeb3(vuexStore, "w3")
-registerSmartContract(vuexStore, "jns")
-
+registerWeb3(vuexStore, 'w3')
+registerSmartContract(vuexStore, 'jns')
 
 export default vuexStore

@@ -9,6 +9,6 @@ export default (store, moduleName = 'JanusNameService') => {
     state,
     getters,
     mutations,
-    actions,
+    actions
   })
 }

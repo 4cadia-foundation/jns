@@ -45,18 +45,16 @@ export default {
   },
   methods: {
     handleSearch: function (event) {
-      
-      if(this.isSearchAvaliable()) {
-
+      if (this.isSearchAvaliable()) {
         this.loader = this.$loading.show({
           container: this.fullPage ? null : this.$refs.formContainer
         })
 
         this.$store.getters.jnsInstance().IsTldRegistered(this.tld)
           .then(response => {
-            if(response.Success && response.Result[0]){
+            if (response.Success && response.Result[0]) {
               this.isTldAvaliable = !response.Result[0].IsTldRegistered
-              this.$emit('handleSearchTLD', { "isTldAvaliable": this.isTldAvaliable, 'tldValue': this.tld })
+              this.$emit('handleSearchTLD', { isTldAvaliable: this.isTldAvaliable, tldValue: this.tld })
             }
           })
           .catch(error => this.$notification.error(error))
@@ -78,7 +76,7 @@ export default {
       }
     },
     hasInstance () {
-      if (this.$store.getters.jnsInstance()._jnsService != undefined) {
+      if (this.$store.getters.jnsInstance()._jnsService !== undefined) {
         return true
       } else {
         // TODO: Validate JNS errors on initiate Janus Service
@@ -87,7 +85,7 @@ export default {
       }
     },
     isEmptyField () {
-      if (this.tld.length == 0) this.$refs.tldInput.fieldIsValid(true, 'EmptyField')
+      if (this.tld.length === 0) this.$refs.tldInput.fieldIsValid(true, 'EmptyField')
     },
     formHasExceptions () {
       return this.$refs.tldInput.hasExceptions

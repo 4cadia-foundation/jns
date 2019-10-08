@@ -27,7 +27,7 @@ export default {
   },
   methods: {
     handleMenuClick: function (link) {
-      this.$emit('handleMenuClick', {'link': link})
+      this.$emit('handleMenuClick', { link: link })
     }
   },
   props: {

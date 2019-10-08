@@ -30,7 +30,7 @@
 <script>
 import BaseModal from '@/components/BaseModal'
 
-export default { 
+export default {
   name: 'BuyTLDModal',
   extends: BaseModal,
   components: {
@@ -49,17 +49,15 @@ export default {
       this.buyTopLevelDomain(this.tldValue)
     },
     buyTopLevelDomain (topLevelDomain) {
-     
-     this.loader = this.$loading.show({
+      this.loader = this.$loading.show({
         container: this.fullPage ? null : this.$refs.formContainer
       })
 
       this.$store.getters.jnsInstance().BuyTLD(topLevelDomain)
         .then(response => {
-          if(response.Success && response.Result[0].event === 'TopDomainRegistered')
-            this.$notification.success(`Success! Thank you for register a top level domain in Web3!`)
-            this.$emit('handleSearchTLD', { "isAvaliable": false, 'tldSearchValue': topLevelDomain })
-            // console.log('buyTopLevelDomain', response)
+          if (response.Success && response.Result[0].event === 'TopDomainRegistered') { this.$notification.success('Success! Thank you for register a top level domain in Web3!') }
+          this.$emit('handleSearchTLD', { isAvaliable: false, tldSearchValue: topLevelDomain })
+          // console.log('buyTopLevelDomain', response)
         })
         .catch((err) => {
           this.$notification.error(err)
@@ -69,7 +67,6 @@ export default {
           this.$refs.modal.closeModal()
           this.loader.hide()
         })
-      
     }
   }
 }

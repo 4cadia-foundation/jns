@@ -1,5 +1,9 @@
 <template>
-  <v-hero-form class="form--domain" :action="action" v-on:searchDomain="handleSearch">
+  <v-hero-form
+    class="form--domain"
+    :action="action"
+    v-on:searchDomain="handleSearch"
+  >
     <div class="field_wrapper field--domain">
       <v-input
         placeholderTxt="eg.: janus"
@@ -53,31 +57,33 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('validation', [
-      'getErrorByType'
-    ])
+    ...mapGetters('validation', ['getErrorByType'])
   },
   methods: {
     handleSearch: function (event) {
       if (this.isSearchAvaliable()) {
-         
         this.loader = this.$loading.show({
           container: this.fullPage ? null : this.$refs.formContainer
         })
 
-        this.$store.getters.jnsInstance().IsTldRegistered(this.tld)
+        this.$store.getters
+          .jnsInstance()
+          .IsTldRegistered(this.tld)
           .then(response => {
-            if(response.Success && response.Result[0]){
+            if (response.Success && response.Result[0]) {
               this.isTldAvaliable = !response.Result[0].IsTldRegistered
-              this.$store.getters.jnsInstance().IsDomainRegistered(this.domain, this.tld)
+              this.$store.getters
+                .jnsInstance()
+                .IsDomainRegistered(this.domain, this.tld)
                 .then(response => {
-                  if(response.Success && response.Result[0]){
-                    this.isDomainAvaliable = !response.Result[0].isDomainRegistered
+                  if (response.Success && response.Result[0]) {
+                    this.isDomainAvaliable = !response.Result[0]
+                      .isDomainRegistered
                     this.$emit('handleSearchDomain', {
-                      'isTldAvaliable': this.isTldAvaliable,
-                      'isDomainAvaliable': this.isDomainAvaliable,
-                      'domainValue': this.domain,
-                      'tldValue': this.tld
+                      isTldAvaliable: this.isTldAvaliable,
+                      isDomainAvaliable: this.isDomainAvaliable,
+                      domainValue: this.domain,
+                      tldValue: this.tld
                     })
                   }
                 })
@@ -105,7 +111,7 @@ export default {
     },
     hasInstance () {
       // TODO: Validate JNS errors on initiate Janus Service
-      if (this.$store.getters.jnsInstance()._jnsService != undefined) {
+      if (this.$store.getters.jnsInstance()._jnsService !== undefined) {
         return true
       } else {
         this.$notification.error(this.getErrorByType('BadRequest'))
@@ -113,11 +119,14 @@ export default {
       }
     },
     isEmptyField () {
-      if (this.tld.length == 0) this.$refs.tldInput.fieldIsValid(true, 'EmptyField')
-      if (this.domain.length == 0) this.$refs.domainInput.fieldIsValid(true, 'EmptyField')
+      if (this.tld.length === 0) { this.$refs.tldInput.fieldIsValid(true, 'EmptyField') }
+      if (this.domain.length === 0) { this.$refs.domainInput.fieldIsValid(true, 'EmptyField') }
     },
     formHasExceptions () {
-      return this.$refs.domainInput.hasExceptions || this.$refs.tldInput.hasExceptions
+      return (
+        this.$refs.domainInput.hasExceptions ||
+        this.$refs.tldInput.hasExceptions
+      )
     }
   }
 }
@@ -139,10 +148,10 @@ export default {
   max-width: 40%;
 }
 .form--domain .field_wrapper.field--tld::before {
-  content:"\A";
+  content: '\A';
   width: 10px;
   height: 10px;
-  border-radius:50%;
+  border-radius: 50%;
   background: var(--color-gray-lighter);
   display: block;
   position: absolute;

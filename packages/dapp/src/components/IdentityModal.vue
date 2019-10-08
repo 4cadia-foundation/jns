@@ -79,7 +79,7 @@ export default {
                 .then((network) => {
                   console.log(' handleMetaMask network...', network)
                   // console.log('err', process)
-                  axios.post(process.env.IDENTITY_BASE_URL, {'token': originalCookie})
+                  axios.post(process.env.IDENTITY_BASE_URL, { token: originalCookie })
                     .then((response) => {
                       // console.log(response.data)
                       this.$store.commit('profile/setResponse', response.data)
@@ -108,14 +108,14 @@ export default {
       /* global Civic */
       /* eslint no-undef: "error" */
       console.log(process.env.CIVICID)
-      let civicSip = new Civic({appId: `${process.env.CIVICID}`})
-      civicSip.signup({style: 'popup', scopeRequest: civicSip.ScopeRequests.BASIC_SIGNUP})
+      const civicSip = new Civic({ appId: `${process.env.CIVICID}` })
+      civicSip.signup({ style: 'popup', scopeRequest: civicSip.ScopeRequests.BASIC_SIGNUP })
       civicSip.on('auth-code-received', event => {
         if (event.response) {
           // console.log(event.response)
           this.isLoading = true
-          let originalCookie = event.response
-          axios.post(process.env.IDENTITY_BASE_URL, {'token': event.response})
+          const originalCookie = event.response
+          axios.post(process.env.IDENTITY_BASE_URL, { token: event.response })
             .then((response) => {
               console.log(response.data)
               this.$store.commit('profile/setResponse', response.data)

@@ -16,7 +16,6 @@ Vue.use(VueAxios, axios)
 Vue.config.productionTip = false
 Vue.use(Vuex)
 
-
 Vue.use(VueNotification, {
   timer: 15,
   showCloseIcn: true,
@@ -37,7 +36,6 @@ Vue.use(Loading, {
   color: 'var(--color-primary)',
   backgroundColor: 'var(--color-black)'
 })
-
 
 /* eslint-disable no-new */
 new Vue({

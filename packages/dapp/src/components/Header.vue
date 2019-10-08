@@ -1,12 +1,15 @@
 <template>
   <div class="header">
     <router-link to="/" class="header_logo">
-      <img class="logo" :src="`${this.logo}`">
+      <img class="logo" :src="`${this.logo}`" />
       <span class="title logo">{{ this.title }}</span>
     </router-link>
     <div :class="`header_menu ${this.showMenu ? 'open' : ''}`">
-      <v-menu :menu="this.menu" v-on:handleMenuClick="handleMenuClick"/>
-      <button class="btn--icon menu-hamburguer" @click='toggleShowMenu()'></button>
+      <v-menu :menu="this.menu" v-on:handleMenuClick="handleMenuClick" />
+      <button
+        class="btn--icon menu-hamburguer"
+        @click="toggleShowMenu()"
+      ></button>
       <!-- <identity /> -->
     </div>
   </div>
@@ -14,13 +17,11 @@
 
 <script>
 import contentService from '../api/contentService'
-import Identity from '@/components/Identity'
 import BaseMenu from '@/components/BaseMenu'
 
 export default {
   name: 'Header',
   components: {
-    'identity': Identity,
     'v-menu': BaseMenu
   },
   data () {
@@ -40,7 +41,7 @@ export default {
     }
   },
   mounted: function () {
-    contentService('header').then((response) => {
+    contentService('header').then(response => {
       this.menu = response.data.menu
       this.logo = response.data.logo
       this.title = response.data.title
@@ -50,7 +51,6 @@ export default {
 </script>
 
 <style scoped>
-
 .header {
   padding: 10px 30px;
   display: flex;

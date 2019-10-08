@@ -36,7 +36,6 @@
 import { mapGetters } from 'vuex'
 import contentService from '../api/contentService'
 import Hero from '@/components/Hero'
-import BaseParagraph from '@/components/BaseParagraph'
 import BaseCard from '@/components/BaseCard'
 import FormTLD from '@/components/FormTLD'
 import BuyTLDModal from '@/components/BuyTLDModal'
@@ -54,7 +53,6 @@ export default {
   },
   components: {
     'v-hero': Hero,
-    'v-paragraph': BaseParagraph,
     'v-card': BaseCard,
     'v-form-tld': FormTLD,
     'v-tld-modal': BuyTLDModal

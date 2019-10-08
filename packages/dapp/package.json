@@ -9,10 +9,19 @@
     "unit": "jest --config test/unit/jest.conf.js --coverage",
     "e2e": "node test/e2e/runner.js",
     "test": "yarn run unit && yarn run e2e",
-    "lint": "eslint --ext .js,.vue src test/unit test/e2e/specs",
-    "fix": "yarn run lint -- --fix",
+    "lint": "eslint --ext .js,.vue src/",
+    "lint-fix": "eslint --ext .js,.vue --fix src/",
     "build": "node build/build.js",
-    "deploy": "push-dir --dir=dist --branch=dist --cleanup"
+    "deploy": "push-dir --dir=dist --branch=dist --cleanup",
+    "precommit": "lint-staged"
+  },
+  "engines": {
+    "node": ">= 8.0.0 <12.0.0"
+  },
+  "browserslist": ["> 1%", "last 2 versions", "not ie <= 8"],
+  "lint-staged": {
+    "*.{js,jsx,vue}": ["eslint --fix", "git add"],
+    "*.json": ["prettier --write", "git add"]
   },
   "dependencies": {
     "@4cadia/jns-core": "^2.0.0",
@@ -91,13 +100,5 @@
     "webpack-bundle-analyzer": "^2.9.0",
     "webpack-dev-server": "^2.9.1",
     "webpack-merge": "^4.1.0"
-  },
-  "engines": {
-    "node": ">= 8.0.0 <12.0.0"
-  },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "not ie <= 8"
-  ]
+  }
 }
