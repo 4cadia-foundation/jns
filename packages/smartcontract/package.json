@@ -26,7 +26,7 @@
     "precommit": "lint-staged",
     "_test": "truffle test",
     "pretest": "yarn run ganache-dev 1>&2 &",
-    "test": "yarn run _test || true",
+    "test": "yarn run _test",
     "posttest": "kill `lsof -ti :9545` 1>&2"
   },
   "lint-staged": {
