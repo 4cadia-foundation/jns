@@ -35,6 +35,7 @@
     "*.sol": ["solium --fix --file", "git add"]
   },
   "dependencies": {
+    "date-fns": "^2.4.1",
     "web3": "^1.0.0-beta.55"
   },
   "devDependencies": {

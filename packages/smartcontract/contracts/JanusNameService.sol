@@ -12,7 +12,6 @@ contract JanusNameService {
 
     uint constant DOMAIN_EXPIRATION_DAYS = 365 days;
     uint constant DOMAIN_NAME_MIN_LENGTH = 3;
-    uint constant DOMAIN_RENEW_LIMIT = 730 days;
 
     struct TopDomain {
         string name;
