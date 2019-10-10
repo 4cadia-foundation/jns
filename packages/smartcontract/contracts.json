@@ -94,10 +94,16 @@
         "anonymous": false,
         "inputs": [
           {
-            "indexed": false,
+            "indexed": true,
             "internalType": "string",
-            "name": "_topDomainName",
+            "name": "topDomainName",
             "type": "string"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "owner",
+            "type": "address"
           }
         ],
         "name": "TopDomainRegistered",
@@ -107,15 +113,15 @@
         "anonymous": false,
         "inputs": [
           {
-            "indexed": false,
+            "indexed": true,
             "internalType": "string",
-            "name": "_topDomainName",
+            "name": "topDomainName",
             "type": "string"
           },
           {
-            "indexed": false,
+            "indexed": true,
             "internalType": "address",
-            "name": "_newOwnerAddress",
+            "name": "newOwner",
             "type": "address"
           }
         ],
@@ -126,15 +132,15 @@
         "anonymous": false,
         "inputs": [
           {
-            "indexed": false,
+            "indexed": true,
             "internalType": "string",
-            "name": "_topDomainName",
+            "name": "topDomainName",
             "type": "string"
           },
           {
             "indexed": false,
             "internalType": "uint256",
-            "name": "_newExpire",
+            "name": "newExpire",
             "type": "uint256"
           }
         ],
@@ -145,16 +151,22 @@
         "anonymous": false,
         "inputs": [
           {
-            "indexed": false,
+            "indexed": true,
             "internalType": "string",
-            "name": "_domainName",
+            "name": "domainName",
             "type": "string"
           },
           {
-            "indexed": false,
+            "indexed": true,
             "internalType": "string",
-            "name": "_topDomainName",
+            "name": "topDomainName",
             "type": "string"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "owner",
+            "type": "address"
           }
         ],
         "name": "DomainRegistered",
@@ -164,21 +176,46 @@
         "anonymous": false,
         "inputs": [
           {
-            "indexed": false,
+            "indexed": true,
             "internalType": "string",
-            "name": "_domainName",
+            "name": "domainName",
+            "type": "string"
+          },
+          {
+            "indexed": true,
+            "internalType": "string",
+            "name": "topDomainName",
+            "type": "string"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "newOwner",
+            "type": "address"
+          }
+        ],
+        "name": "DomainOwnershipChanged",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "string",
+            "name": "domainName",
+            "type": "string"
+          },
+          {
+            "indexed": true,
+            "internalType": "string",
+            "name": "topDomainName",
             "type": "string"
           },
           {
             "indexed": false,
             "internalType": "string",
-            "name": "_topDomainName",
-            "type": "string"
-          },
-          {
-            "indexed": false,
-            "internalType": "string",
-            "name": "_storageHash",
+            "name": "storageHash",
             "type": "string"
           }
         ],
@@ -189,21 +226,21 @@
         "anonymous": false,
         "inputs": [
           {
-            "indexed": false,
+            "indexed": true,
             "internalType": "string",
-            "name": "_domainName",
+            "name": "domainName",
             "type": "string"
           },
           {
-            "indexed": false,
+            "indexed": true,
             "internalType": "string",
-            "name": "_topDomainName",
+            "name": "topDomainName",
             "type": "string"
           },
           {
             "indexed": false,
             "internalType": "uint256",
-            "name": "_newExpire",
+            "name": "newExpire",
             "type": "uint256"
           }
         ],
@@ -316,7 +353,7 @@
           },
           {
             "internalType": "address",
-            "name": "_newOwnerAddress",
+            "name": "_newOwner",
             "type": "address"
           }
         ],
@@ -471,6 +508,31 @@
         "outputs": [],
         "payable": true,
         "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [
+          {
+            "internalType": "string",
+            "name": "_domainName",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "_topDomainName",
+            "type": "string"
+          },
+          {
+            "internalType": "address",
+            "name": "_newOwner",
+            "type": "address"
+          }
+        ],
+        "name": "changeDomainOwnership",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
         "type": "function"
       },
       {
@@ -638,7 +700,9 @@
         "type": "function"
       }
     ],
-    "addresses": {}
+    "addresses": {
+      "1234": "0xCfEB869F69431e42cdB54A4F4f105C19C080A601"
+    }
   },
   "Migrations": {
     "abi": [
@@ -709,6 +773,8 @@
         "type": "function"
       }
     ],
-    "addresses": {}
+    "addresses": {
+      "1234": "0xe78A0F7E598Cc8b0Bb87894B0F60dD2a88d6a8Ab"
+    }
   }
 }

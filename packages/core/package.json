@@ -1,6 +1,6 @@
 {
   "name": "@4cadia/jns-core",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Janus Name Service core",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -28,7 +28,7 @@
     "*.json": ["prettier --write", "git add"]
   },
   "dependencies": {
-    "@types/web3": "^1.0.20",
+    "@4cadia/jns-smartcontract": "~0.2.1",
     "chalk": "^2.4.2",
     "clear": "^0.1.0",
     "commander": "^2.20.0",

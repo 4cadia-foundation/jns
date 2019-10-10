@@ -29,7 +29,7 @@
     "*.json": ["prettier --write", "git add"]
   },
   "dependencies": {
-    "@4cadia/jns-core": "^0.1.0",
+    "@4cadia/jns-core": "^0.2.0",
     "@kugatsu/vuenotification": "^1.1.2",
     "axios": "^0.18.0",
     "bootstrap": "^4.3.1",

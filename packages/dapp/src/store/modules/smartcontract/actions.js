@@ -1,4 +1,3 @@
-import smartcontract from '../../../../smartcontract'
 import { JanusNameService } from '@4cadia/jns-core'
 
 export default {
@@ -11,7 +10,7 @@ export default {
     (async () => {
       console.log('Initialize Janus Name Service')
       const w3Provider = storeinstance.instance().givenProvider
-      const jns = new JanusNameService(w3Provider, smartcontract.address)
+      const jns = new JanusNameService(w3Provider)
       commit('setInstanceJNS', () => jns)
       dispatch('setListTopLevelDomain', await jns.ListTLD())
       dispatch('setListDomain', await jns.ListDomain())
