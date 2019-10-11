@@ -11,6 +11,7 @@ import { DomainExistsRequest } from '../../Domain/Entity/DomainExistsRequest';
 import { TopLevelDomain } from '../../Domain/Entity/TopLevelDomain';
 import { ListDomainByOwnerResult } from '../../Domain/Entity/ListDomainByOwnerResult';
 import { RenewDomainRequest } from '../../Domain/Entity/RenewDomainRequest';
+import { RenewTLDRequest } from '../../Domain/Entity/RenewTLDRequest';
 
 @injectable()
 export default class NameService implements INameService {
@@ -63,8 +64,23 @@ export default class NameService implements INameService {
     // return result;
   }
 
-  public async RenewTLD(): Promise<never> {
-    throw new Error('Method not implemented.');
+  public async RenewTLD(request:RenewTLDRequest):Promise<RequestResult> {
+    const response = new RequestResult();
+
+    const tx = await this._smartContract.renewTopDomain(
+      request.TLD
+    );
+
+    const receipt = await tx.wait();
+
+    const events = (receipt as ContractReceipt).events;
+
+    if (events) {
+      response.Success = true;
+      response.Result.push(...events);
+    }
+
+    return response;
   }
 
   public async TransferTLD(): Promise<never> {
