@@ -8,7 +8,6 @@ contract JanusNameService {
     uint constant TOP_DOMAIN_NAME_MIN_LENGTH = 2;
     uint constant TOP_DOMAIN_NAME_MAX_LENGTH = 5;
     uint constant TOP_DOMAIN_EXPIRATION_DAYS = 365 days;
-    uint constant TOP_DOMAIN_RENEW_LIMIT = 730 days;
 
     uint constant DOMAIN_EXPIRATION_DAYS = 365 days;
     uint constant DOMAIN_NAME_MIN_LENGTH = 3;
@@ -101,18 +100,6 @@ contract JanusNameService {
         require(
             topDomains[index].owner == msg.sender,
             'this is not your top domain'
-        );
-        _;
-    }
-
-    modifier isTopDomainDateExpirationValid(
-        string memory _topDomainName
-    )
-    {
-        uint index = topDomainsHashMap[getTopDomainHash(_topDomainName)];
-        require(
-            topDomains[index].expires <= now + TOP_DOMAIN_RENEW_LIMIT,
-            'renew expired date limit exceeded'
         );
         _;
     }
@@ -290,7 +277,6 @@ contract JanusNameService {
     ) public
         isTopDomainRegistered(_topDomainName)
         isTopDomainOwner(_topDomainName)
-        isTopDomainDateExpirationValid(_topDomainName)
       payable
     {
         uint index = topDomainsHashMap[getTopDomainHash(_topDomainName)];

@@ -1,5 +1,6 @@
 const OwnerApp = artifacts.require('../contracts/JanusNameService');
 const Assert = require('truffle-assertions');
+const differenceInCalendarDays = require('date-fns/difference_in_calendar_days');
 
 contract('JanusNameService - 03-renewDomain.test.js', accounts => {
   let contractInstance;
@@ -14,15 +15,15 @@ contract('JanusNameService - 03-renewDomain.test.js', accounts => {
     contractInstance = await OwnerApp.new();
   });
 
-  it('renewTopDomain should be throw if is domain not registered', async () => {
+  it('renewTopDomain should be throw if is tld not registered', async () => {
     const domainName = 'eth';
     await Assert.reverts(
       contractInstance.renewTopDomain(domainName, { from: ownerAddress }),
-      'domain is not registered'
+      'top domain is not registered'
     );
   });
 
-  it('renewTopDomain should be throw if is not domain owner', async () => {
+  it('renewTopDomain should be throw if is not tld owner', async () => {
     const domainName = 'eth';
     const resultRegister = await contractInstance.registerTopDomain(
       domainName,
@@ -53,10 +54,12 @@ contract('JanusNameService - 03-renewDomain.test.js', accounts => {
     const domainName = 'eth';
 
     const domainHash = await contractInstance.getTopDomainHash(domainName);
+
     const resultRegister = await contractInstance.registerTopDomain(
       domainName,
       { from: ownerAddress }
     );
+
     const registeredDomain = await contractInstance.getTopDomainByHash(
       domainHash
     );
@@ -64,34 +67,119 @@ contract('JanusNameService - 03-renewDomain.test.js', accounts => {
     const resultRenew = await contractInstance.renewTopDomain(domainName, {
       from: ownerAddress,
     });
+
     const renewedDomain = await contractInstance.getTopDomainByHash(domainHash);
 
     const registeredDomainExpireDate = new Date(
       registeredDomain.expires * 1000
     );
-    const reneweddDomainExpireDate = new Date(renewedDomain.expires * 1000);
+
+    const renewedDomainExpireDate = new Date(renewedDomain.expires * 1000);
+
+    const daysDifferenceBetweenRegisterAndRenew = differenceInCalendarDays(
+      renewedDomainExpireDate,
+      registeredDomainExpireDate
+    );
 
     Assert.eventEmitted(resultRegister, 'TopDomainRegistered');
     Assert.eventEmitted(resultRenew, 'TopDomainRenewed');
     assert.notEqual(
       registeredDomainExpireDate.getTime(),
-      reneweddDomainExpireDate.getTime(),
+      renewedDomainExpireDate.getTime(),
       'wrong renew date'
+    );
+    assert.equal(
+      daysDifferenceBetweenRegisterAndRenew,
+      365,
+      'wrong difference between register date and expire date'
     );
   });
 
-  it('renewTopDomain should be throw if renew limit date is exceeded', async () => {
+  it('renewTopDomain 3 times success verify expire date', async () => {
     const domainName = 'eth';
 
-    await contractInstance.registerTopDomain(domainName, {
+    const domainHash = await contractInstance.getTopDomainHash(domainName);
+
+    const resultRegister = await contractInstance.registerTopDomain(
+      domainName,
+      { from: ownerAddress }
+    );
+
+    const registeredDomain = await contractInstance.getTopDomainByHash(
+      domainHash
+    );
+
+    const resultRenew1 = await contractInstance.renewTopDomain(domainName, {
       from: ownerAddress,
     });
-    await contractInstance.renewTopDomain(domainName, { from: ownerAddress });
-    await contractInstance.renewTopDomain(domainName, { from: ownerAddress });
 
-    await Assert.reverts(
-      contractInstance.renewTopDomain(domainName, { from: ownerAddress }),
-      'renew expired date limit exceeded'
+    const renewedDomain = await contractInstance.getTopDomainByHash(domainHash);
+
+    const registeredDomainExpireDate = new Date(
+      registeredDomain.expires * 1000
+    );
+
+    const renewedDomainExpireDate = new Date(renewedDomain.expires * 1000);
+
+    const daysDifferenceBetweenRegisterAndFirstRenew = differenceInCalendarDays(
+      renewedDomainExpireDate,
+      registeredDomainExpireDate
+    );
+
+    const resultRenew2 = await contractInstance.renewTopDomain(domainName, {
+      from: ownerAddress,
+    });
+
+    const renewed2Domain = await contractInstance.getTopDomainByHash(
+      domainHash
+    );
+
+    const renewed2DomainExpireDate = new Date(renewed2Domain.expires * 1000);
+
+    const daysDifferenceBetweenRegisterAndSecondRenew = differenceInCalendarDays(
+      renewed2DomainExpireDate,
+      registeredDomainExpireDate
+    );
+
+    const resultRenew3 = await contractInstance.renewTopDomain(domainName, {
+      from: ownerAddress,
+    });
+
+    const renewed3Domain = await contractInstance.getTopDomainByHash(
+      domainHash
+    );
+
+    const renewed3DomainExpireDate = new Date(renewed3Domain.expires * 1000);
+
+    const daysDifferenceBetweenRegisterAndThirdRenew = differenceInCalendarDays(
+      renewed3DomainExpireDate,
+      registeredDomainExpireDate
+    );
+
+    Assert.eventEmitted(resultRegister, 'TopDomainRegistered');
+    Assert.eventEmitted(resultRenew1, 'TopDomainRenewed');
+    Assert.eventEmitted(resultRenew2, 'TopDomainRenewed');
+    Assert.eventEmitted(resultRenew3, 'TopDomainRenewed');
+    assert.notEqual(
+      registeredDomainExpireDate.getTime(),
+      renewedDomainExpireDate.getTime(),
+      'wrong renew date'
+    );
+    assert.equal(
+      daysDifferenceBetweenRegisterAndFirstRenew,
+      365,
+      'wrong difference between register date and expire date'
+    );
+
+    assert.equal(
+      daysDifferenceBetweenRegisterAndSecondRenew,
+      730,
+      'wrong difference between register date and expire date'
+    );
+    assert.equal(
+      daysDifferenceBetweenRegisterAndThirdRenew,
+      1095,
+      'wrong difference between register date and expire date'
     );
   });
 });
