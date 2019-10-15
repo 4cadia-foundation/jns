@@ -41,7 +41,8 @@
     "vue-loading-overlay": "^3.2.0",
     "vue-router": "^3.0.1",
     "vuex": "^3.1.0",
-    "vuex-web3": "^1.0.2"
+    "vuex-web3": "^1.0.2",
+    "date-fns": "^2.4.1"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",

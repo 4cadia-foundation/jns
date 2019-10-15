@@ -8,6 +8,7 @@ import DomainValidator from './Application/Validator/DomainValidator';
 import { BuyDomainRequest } from './Domain/Entity/BuyDomainRequest';
 import { DomainExistsRequest } from './Domain/Entity/DomainExistsRequest';
 import JanusNameServiceConfig from './Domain/Entity/NameServiceConfig';
+import { RenewTLDRequest } from './Domain/Entity/RenewTLDRequest';
 
 export class JanusNameService {
   public _jnsService: INameService;
@@ -146,5 +147,34 @@ export class JanusNameService {
     }
 
     return result;
+  }
+
+  public async RenewTLD(topLevelDomainName: string): Promise<RequestResult> {
+    topLevelDomainName = topLevelDomainName.toLowerCase();
+
+    const request = new RenewTLDRequest(topLevelDomainName);
+
+    const config = Bootstrapper.Resolve<NameServiceConfig>('NameServiceConfig');
+
+    const validator = new TopLevelDomainValidator(config);
+    const result = new RequestResult();
+
+    const validation = await validator.ValidateRenewTopLevelDomainRequest(
+      request.TLD
+    );
+
+    result.Success = validation.isValid();
+    result.Errors = validation.getFailureMessages();
+
+    if (result.Success) {
+      try {
+        const dealed = await this._jnsService.RenewTLD(request);
+        return dealed;
+      } catch (error) {
+        throw new Error(error);
+      }
+    } else {
+      throw new Error(result.Errors[0].toString());
+    }
   }
 }

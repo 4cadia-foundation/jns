@@ -41,4 +41,22 @@ export default class TopLevelDomainValidator extends AbstractValidator<string> {
 
     return this.validate(tld);
   }
+
+  public async ValidateRenewTopLevelDomainRequest(
+    tld: string
+  ): Promise<ValidationResult> {
+    this.validateIf(i => i)
+      .isNotEmpty()
+      .isNotNull()
+      .withFailureMessage("Top Level Domain can't be empty");
+
+    this.validateIfString(i => i.toString())
+      .isAlphanumeric()
+      .isLowercase()
+      .withFailureMessage(
+        'Top level domain must be alphanumeric characters and lower case'
+      );
+
+    return this.validate(tld);
+  }
 }
