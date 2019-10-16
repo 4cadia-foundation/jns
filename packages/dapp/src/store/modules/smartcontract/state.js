@@ -2,6 +2,6 @@ export default {
   instance: () => ({
     jns: {}
   }),
-  topLevelDomains: {},
-  domains: {}
+  topLevelDomains: [],
+  domains: []
 }

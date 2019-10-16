@@ -57,7 +57,7 @@ export default {
               this.$emit('handleSearchTLD', { isTldAvaliable: this.isTldAvaliable, tldValue: this.tld })
             }
           })
-          .catch(error => this.$notification.error(error))
+          .catch(error => this.$notification.error(error.message))
           .finally(() => this.loader.hide())
       }
     },

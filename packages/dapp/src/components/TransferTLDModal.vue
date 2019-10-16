@@ -14,7 +14,7 @@
         </div>
         <div class="modal-content">
           <div class="modal-row">
-            <v-transfer-tld-form :tld="tld" @tldTransferFinished="closeModal"></v-transfer-tld-form>
+            <v-transfer-tld-form :tld="tld" @tld-transfer-finished="closeModal"></v-transfer-tld-form>
           </div>
         </div>
       </template>

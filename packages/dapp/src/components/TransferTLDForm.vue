@@ -44,6 +44,10 @@
 <script>
 import { mapGetters } from 'vuex'
 import BaseInput from '@/components/BaseInput'
+import { withLoading } from '../utils/decorators'
+import { decorateMethods } from '../utils/decorators/helpers'
+
+const attachLoadingBehavior = decorateMethods(withLoading, ['transferTld'])
 
 export default {
   name: 'TransferTLDForm',
@@ -70,19 +74,15 @@ export default {
       return !this.$refs.newOwnerInput.hasExceptions
     }
   },
-  methods: {
+  methods: attachLoadingBehavior({
     handleSubmit: function () {
       this.$refs.newOwnerInput.handleValidate()
 
       if (this.isValid) {
-        this.transferTLD(this.tld, this.newOwnerAddress)
+        this.transferTld(this.tld, this.newOwnerAddress)
       }
     },
-    async transferTLD (tld, newOwnerAddress) {
-      const loader = this.$loading.show({
-        container: this.fullPage ? null : this.$refs.formContainer
-      })
-
+    async transferTld (tld, newOwnerAddress) {
       try {
         const response = await this.$store.getters
           .jnsInstance()
@@ -97,25 +97,24 @@ export default {
           )
         }
 
-        this.$emit('tldTransfered', {
+        this.$emit('tld-transfer-succeeded', {
           tld,
           newOwnerAddress
         })
       } catch (err) {
         this.$notification.error(err.message)
-        this.$emit('tldTransferFailed', {
+        this.$emit('tld-transfer-failed', {
           tld,
           newOwnerAddress
         })
       } finally {
-        loader.hide()
-        this.$emit('tldTransferFinished', {
+        this.$emit('tld-transfer-finished', {
           tld,
           newOwnerAddress
         })
       }
     }
-  }
+  })
 }
 </script>
 

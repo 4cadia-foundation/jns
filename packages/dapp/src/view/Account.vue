@@ -80,8 +80,8 @@
         @tld-renew-succeeded="loadAll"
       />
       <v-tld-transfer-modal
-        ref="modalTransferTLD"
-        v-on:TLDTransfered="onTLDTransfered"
+        ref="modalTransferTld"
+        @tld-transfer-finished="loadAll"
         :tld="selectedTld.name"
       />
     </div>
@@ -93,14 +93,18 @@ import differenceInCalendarDays from 'date-fns/differenceInCalendarDays'
 import contentService from '../api/contentService'
 import Hero from '@/components/Hero'
 import BaseCard from '@/components/BaseCard'
-import { mapState } from 'vuex'
+import { mapGetters } from 'vuex'
 import ActionDropdown from '@/components/ActionDropdown'
 import BaseActionsMenu from '@/components/BaseActionsMenu'
 import RenewTLDModal from '@/components/RenewTLDModal'
 import TransferTLDModal from '@/components/TransferTLDModal'
+import { onEthereumChanged } from '@/utils/mixins'
+
+const reloadOnChanges = onEthereumChanged('loadAll')
 
 export default {
   name: 'Account',
+  mixins: [reloadOnChanges],
   data () {
     return {
       content: [],
@@ -137,7 +141,7 @@ export default {
             },
             {
               title: 'Transfer',
-              handler: 'transferTLD',
+              handler: 'transferTld',
               callToAction: 'cardAction'
             }
           ]
@@ -173,14 +177,14 @@ export default {
           this.cardActions = this.availableActions.find(
             el => el.type === 'tld'
           ).actions
-          return this.listTopLevelDomains
+          return this.topLevelDomains
         case 'domain':
           // TODO: refactor this
           // eslint-disable-next-line vue/no-side-effects-in-computed-properties
           this.cardActions = this.availableActions.find(
             el => el.type === 'domain'
           ).actions
-          return this.listDomains
+          return this.domains
         // case "subdomain":
         //   this.cardActions = this.availableActions.find(el => el.type == "subdomain").actions
         //   return this.listSubDomains
@@ -192,10 +196,7 @@ export default {
           return undefined
       }
     },
-    ...mapState({
-      listTopLevelDomains: state => state.jns.topLevelDomains,
-      listDomains: state => state.jns.domains
-    })
+    ...mapGetters(['topLevelDomains', 'domains'])
   },
   components: {
     'v-hero': Hero,
@@ -205,11 +206,9 @@ export default {
     'v-renew-tld-modal': RenewTLDModal,
     'v-tld-transfer-modal': TransferTLDModal
   },
-
   filters: {
     moment: date => new Date(date * 1000).toLocaleDateString()
   },
-
   methods: {
     loadAll () {
       this.$store.dispatch('loadAll')
@@ -250,12 +249,9 @@ export default {
       const { action, element } = event
       this[action.handler](element)
     },
-    transferTLD ({ Name, Expires }) {
+    transferTld ({ Name, Expires }) {
       this.selectedTld = { name: Name, expires: Expires }
-      this.$refs.modalTransferTLD.openModal()
-    },
-    onTLDTransfered () {
-      return this.list()
+      this.$refs.modalTransferTld.openModal()
     }
   },
   beforeMount: function () {

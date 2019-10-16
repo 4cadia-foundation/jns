@@ -60,7 +60,7 @@ export default {
           // console.log('buyTopLevelDomain', response)
         })
         .catch((err) => {
-          this.$notification.error(err)
+          this.$notification.error(err.message)
           console.error('buyTopLevelDomain', err)
         })
         .finally(() => {

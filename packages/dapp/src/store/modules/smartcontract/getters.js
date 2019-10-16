@@ -1,5 +1,5 @@
 export default {
-  listTopLevelDomain: state => state.topLevelDomains,
-  listDomain: state => state.domains,
+  topLevelDomains: state => state.topLevelDomains,
+  domains: state => state.domains,
   jnsInstance: state => state.instance
 }
