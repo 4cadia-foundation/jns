@@ -7,7 +7,6 @@ import NameServiceConfig from './Domain/Entity/NameServiceConfig';
 import DomainValidator from './Application/Validator/DomainValidator';
 import { BuyDomainRequest } from './Domain/Entity/BuyDomainRequest';
 import { DomainExistsRequest } from './Domain/Entity/DomainExistsRequest';
-import JanusNameServiceConfig from './Domain/Entity/NameServiceConfig';
 import { RenewTLDRequest } from './Domain/Entity/RenewTLDRequest';
 
 export class JanusNameService {
