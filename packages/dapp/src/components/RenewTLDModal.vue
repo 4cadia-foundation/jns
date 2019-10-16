@@ -55,6 +55,7 @@ export default {
         .then(response => {
           if (response.Success && response.Result[0].event === 'TopDomainRenewed') {
             this.$notification.success('Success! TLD renewed!')
+            this.$emit('tld-renew-succeeded', { tld: topLevelDomain })
           }
         })
         .catch((err) => {

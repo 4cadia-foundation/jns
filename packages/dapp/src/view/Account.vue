@@ -74,7 +74,9 @@
       </ul>
     </div>
     <div class="modal-tld">
-      <v-renew-tld-modal ref="modalRenewTLD" :tld="selectedTld.name"  />
+      <v-renew-tld-modal ref="modalRenewTLD"
+      :tld="selectedTld.name"
+      @tld-renew-succeeded="reloadDomainsAndTlds"  />
     </div>
   </div>
 </template>
@@ -202,7 +204,7 @@ export default {
 
   methods: {
     loadAll () {
-
+      this.$store.dispatch('loadAll')
     },
     checkStatus: function (due) {
       const now = new Date()
@@ -237,6 +239,9 @@ export default {
     handleRenewTLD ({ Name, Expires }) {
       this.selectedTld = { name: Name, expires: Expires }
       this.$refs.modalRenewTLD.openModal()
+    },
+    reloadDomainsAndTlds () {
+      this.$store.dispatch('loadAll')
     }
   },
   beforeMount: function () {

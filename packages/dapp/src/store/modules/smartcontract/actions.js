@@ -1,22 +1,41 @@
 import { JanusNameService } from '@4cadia/jns-core'
 
 export default {
-  resolveJanusNameService ({ dispatch, commit, rootState }) {
-    Promise.resolve(dispatch('initWeb3')).then(() => {
-      dispatch('newJanusNameService', rootState.w3)
-    })
+  async resolveJanusNameService ({ dispatch, commit, rootState }) {
+    await dispatch('initWeb3')
+    dispatch('newJanusNameService', rootState.w3)
   },
-  newJanusNameService ({ commit, dispatch }, storeinstance) {
-    (async () => {
-      console.log('Initialize Janus Name Service')
-      const w3Provider = storeinstance.instance().givenProvider
-      const jns = new JanusNameService(w3Provider)
-      commit('setInstanceJNS', () => jns)
-      dispatch('setListTopLevelDomain', await jns.ListTLD())
-      dispatch('setListDomain', await jns.ListDomain())
-    })()
+  async newJanusNameService ({ commit, dispatch }, storeinstance) {
+    const w3Provider = storeinstance.instance().givenProvider
+    commit('setInstanceJNS', () => new JanusNameService(w3Provider))
+
+    await dispatch('loadAll')
   },
-  setListTopLevelDomain: ({ commit }, list) =>
-    commit('setTopLevelDomainList', list.Result),
-  setListDomain: ({ commit }, list) => commit('setDomainList', list.Result)
+  async loadAll ({ dispatch }) {
+    console.log('loadAll')
+    await dispatch('loadTldList')
+    await dispatch('loadDomainList')
+  },
+  async loadTldList ({ commit, rootState }) {
+    const jns = rootState.jns.instance()
+
+    try {
+      const tldListResponse = await jns.ListTLD()
+      commit('setTopLevelDomainList', tldListResponse.Result)
+    } catch (err) {
+      console.error(err)
+      commit('setTopLevelDomainList', [])
+    }
+  },
+  async loadDomainList ({ commit, rootState }) {
+    const jns = rootState.jns.instance()
+
+    try {
+      const domainListResponse = await jns.ListDomain()
+      commit('setDomainList', domainListResponse.Result)
+    } catch (err) {
+      console.error(err)
+      commit('setDomainList', [])
+    }
+  }
 }
