@@ -1,7 +1,7 @@
 const OwnerApp = artifacts.require('../contracts/JanusNameService');
 const truffleAssert = require('truffle-assertions');
 
-contract('JanusNameService - 04-changeDomainOwnership.test.js', accounts => {
+contract('JanusNameService - changeTopDomainOwnership', accounts => {
   let contractInstance;
   const ownerAddress = accounts[0];
   const futureOwner = accounts[1];
@@ -104,5 +104,32 @@ contract('JanusNameService - 04-changeDomainOwnership.test.js', accounts => {
 
     assert.deepEqual(ownerDomains.name, []);
     assert.deepEqual(futureOwnerDomains.name, ['eth']);
+  });
+
+  it('changeTopDomainOwnership should properly update topLevelDomain -> ownerIndex index #regression', async () => {
+    const domainNames = ['eth', 'ether'];
+
+    await contractInstance.registerTopDomain(domainNames[0], {
+      from: ownerAddress,
+    });
+    await contractInstance.registerTopDomain(domainNames[1], {
+      from: ownerAddress,
+    });
+    await contractInstance.changeTopDomainOwnership(
+      domainNames[0],
+      futureOwner,
+      { from: ownerAddress }
+    );
+
+    const [transfered, kept] = await Promise.all([
+      // The index 0 is already taken by the contract
+      contractInstance.topDomains(1),
+      contractInstance.topDomains(2),
+    ]);
+
+    assert.deepEqual(transfered.owner, futureOwner);
+    assert.deepEqual(Number(transfered.ownerIndex), 0);
+    assert.deepEqual(kept.owner, ownerAddress);
+    assert.deepEqual(Number(kept.ownerIndex), 0);
   });
 });

@@ -5,6 +5,32 @@
         "constant": true,
         "inputs": [
           {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "name": "topDomainsOwnerMap",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
             "internalType": "string",
             "name": "",
             "type": "string"
@@ -15,6 +41,88 @@
           {
             "internalType": "uint256",
             "name": "",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "name": "topDomains",
+        "outputs": [
+          {
+            "internalType": "string",
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "internalType": "uint256",
+            "name": "expires",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "owner",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "ownerIndex",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "name": "domains",
+        "outputs": [
+          {
+            "internalType": "string",
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "topDomain",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "storageHash",
+            "type": "string"
+          },
+          {
+            "internalType": "uint256",
+            "name": "expires",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "owner",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "ownerIndex",
             "type": "uint256"
           }
         ],
@@ -73,6 +181,27 @@
           }
         ],
         "name": "domainsHashMap",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "",
+            "type": "bytes32"
+          }
+        ],
+        "name": "topDomainsHashMap",
         "outputs": [
           {
             "internalType": "uint256",
@@ -701,7 +830,8 @@
       }
     ],
     "addresses": {
-      "1234": "0xd19Fe8EE56de5EEE2146F0f075584C0daCDD4cdD"
+      "4": "0x93Aa6b7A7749C9F92cF42e4463ba789653883D1B",
+      "1234": "0xAF23ca9d004C26495C89553d829000FB36FCE7F9"
     }
   },
   "Migrations": {
@@ -774,7 +904,8 @@
       }
     ],
     "addresses": {
-      "1234": "0x60C6fb86Ad944538c23C5208c04403Ed6a194dEf"
+      "4": "0x2bD9dA9035d54b6b530dA829Dc4cff7FfD9aCd3C",
+      "1234": "0x557858779C6C5240B05005bCbd60dD06fBcCF479"
     }
   }
 }

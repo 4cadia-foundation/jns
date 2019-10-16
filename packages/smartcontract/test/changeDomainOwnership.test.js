@@ -114,4 +114,32 @@ contract('JanusNameService - changeDomainOwnership', accounts => {
     assert.deepEqual(ownerDomains.name, []);
     assert.deepEqual(futureOwnerDomains.name, [domain]);
   });
+
+  it.only('changeDomainOwnership should properly update domain -> ownerIndex index #regression', async () => {
+    const domainNames = ['foo', 'bar'];
+
+    await contractInstance.registerDomain(domainNames[0], tld, '', {
+      from: ownerAddress,
+    });
+    await contractInstance.registerDomain(domainNames[1], tld, '', {
+      from: ownerAddress,
+    });
+    await contractInstance.changeDomainOwnership(
+      domainNames[0],
+      tld,
+      futureOwner,
+      { from: ownerAddress }
+    );
+
+    const [transfered, kept] = await Promise.all([
+      // The index 0 is already taken by the contract
+      contractInstance.domains(1),
+      contractInstance.domains(2),
+    ]);
+
+    assert.deepEqual(transfered.owner, futureOwner);
+    assert.deepEqual(Number(transfered.ownerIndex), 0);
+    assert.deepEqual(kept.owner, ownerAddress);
+    assert.deepEqual(Number(kept.ownerIndex), 0);
+  });
 });
