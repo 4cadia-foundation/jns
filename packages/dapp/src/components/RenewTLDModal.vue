@@ -46,8 +46,6 @@ export default {
       this.renewTopLevelDomain(this.tld)
     },
     renewTopLevelDomain (topLevelDomain) {
-      console.log(this.$store.getters.jnsInstance())
-
       this.loader = this.$loading.show({
         container: this.fullPage ? null : this.$refs.formContainer
       })
