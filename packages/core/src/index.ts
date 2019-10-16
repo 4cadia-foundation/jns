@@ -5,9 +5,11 @@ import { RequestResult } from './Domain/Entity/RequestResult';
 import TopLevelDomainValidator from './Application/Validator/TopLevelDomainValidator';
 import NameServiceConfig from './Domain/Entity/NameServiceConfig';
 import DomainValidator from './Application/Validator/DomainValidator';
+import TransferTopLevelDomainValidator from './Application/Validator/TransferTopLevelDomainValidator';
 import { BuyDomainRequest } from './Domain/Entity/BuyDomainRequest';
 import { DomainExistsRequest } from './Domain/Entity/DomainExistsRequest';
 import { RenewTLDRequest } from './Domain/Entity/RenewTLDRequest';
+import { TransferTopLevelDomainRequest } from './Domain/Entity/TransferTopLevelDomainRequest';
 
 export class JanusNameService {
   public _jnsService: INameService;
@@ -32,12 +34,37 @@ export class JanusNameService {
     result.Errors = validation.getFailureMessages();
 
     if (result.Success) {
-      try {
-        const dealed = await this._jnsService.BuyTLD(topLevelDomainName);
-        return dealed;
-      } catch (error) {
-        throw new Error(error);
-      }
+      return this._jnsService.BuyTLD(topLevelDomainName);
+    } else {
+      throw new Error(result.Errors[0].toString());
+    }
+  }
+
+  public async TransferTLD(
+    tld: string,
+    newOwnerAddress: string
+  ): Promise<RequestResult> {
+    tld = tld.toLowerCase();
+
+    const request: TransferTopLevelDomainRequest = {
+      name: tld,
+      newOwnerAddress,
+    };
+
+    const nameService = Bootstrapper.Resolve<INameService>('INameService');
+
+    const validator = new TransferTopLevelDomainValidator(nameService);
+    const validation = await validator.ValidateTransferTopLevelDomainRequest(
+      request
+    );
+
+    const result = new RequestResult();
+
+    result.Success = validation.isValid();
+    result.Errors = validation.getFailureMessages();
+
+    if (result.Success) {
+      return this._jnsService.TransferTLD(request);
     } else {
       throw new Error(result.Errors[0].toString());
     }
@@ -68,12 +95,8 @@ export class JanusNameService {
     result.Errors = validation.getFailureMessages();
 
     if (result.Success) {
-      try {
-        const dealed = await this._jnsService.BuyDomain(request);
-        return dealed;
-      } catch (error) {
-        throw new Error(error);
-      }
+      const dealed = await this._jnsService.BuyDomain(request);
+      return dealed;
     } else {
       throw new Error(result.Errors[0].toString());
     }

@@ -8,6 +8,7 @@ import { RequestResult } from '../../Domain/Entity/RequestResult';
 import { ContractReceipt } from 'ethers/contract';
 import { BuyDomainRequest } from '../../Domain/Entity/BuyDomainRequest';
 import { DomainExistsRequest } from '../../Domain/Entity/DomainExistsRequest';
+import { TransferTopLevelDomainRequest } from '../../Domain/Entity/TransferTopLevelDomainRequest';
 import { TopLevelDomain } from '../../Domain/Entity/TopLevelDomain';
 import { ListDomainByOwnerResult } from '../../Domain/Entity/ListDomainByOwnerResult';
 import { RenewDomainRequest } from '../../Domain/Entity/RenewDomainRequest';
@@ -81,8 +82,25 @@ export default class NameService implements INameService {
     return response;
   }
 
-  public async TransferTLD(): Promise<never> {
-    throw new Error('Method not implemented.');
+  public async TransferTLD(
+    request: TransferTopLevelDomainRequest
+  ): Promise<RequestResult> {
+    const response = new RequestResult();
+
+    const tx = await this._smartContract.changeTopDomainOwnership(
+      request.name,
+      request.newOwnerAddress
+    );
+    const receipt = await tx.wait();
+
+    const events = (receipt as ContractReceipt).events;
+
+    if (events) {
+      response.Success = true;
+      response.Result.push(...events);
+    }
+
+    return response;
   }
 
   public async ListTLDByOwner(): Promise<TopLevelDomain[]> {
