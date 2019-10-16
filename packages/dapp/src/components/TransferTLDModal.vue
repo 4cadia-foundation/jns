@@ -14,7 +14,12 @@
         </div>
         <div class="modal-content">
           <div class="modal-row">
-            <v-transfer-tld-form :tld="tld" @tld-transfer-finished="closeModal"></v-transfer-tld-form>
+            <v-transfer-tld-form
+              :tld="tld"
+              @tld-transfer-succeeded="notifySuccessfulTransfer"
+              @tld-transfer-finished="closeModal"
+            >
+            </v-transfer-tld-form>
           </div>
         </div>
       </template>
@@ -46,11 +51,14 @@ export default {
     ...mapGetters('validation', ['getErrorByType', 'getExceptionByType'])
   },
   methods: {
-    openModal: function () {
+    openModal () {
       this.$refs.modal.openModal()
     },
-    closeModal: function () {
+    closeModal () {
       this.$refs.modal.closeModal()
+    },
+    notifySuccessfulTransfer (payload) {
+      this.$emit('tld-transfer-succeeded', payload)
     }
   }
 }

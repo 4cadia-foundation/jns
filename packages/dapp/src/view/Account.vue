@@ -13,7 +13,7 @@
         :actions="menuTabs"
         listClasses="tabs"
         :activeTab="activeTab"
-        v-on:accountTabAction="handleTabChange"
+        @accountTabAction="handleTabChange"
       />
     </div>
     <div class="list-domains">
@@ -52,7 +52,7 @@
               <div class="actions">
                 <v-action-dropdown
                   ref="actionDropdown"
-                  v-on:cardAction="handleActions"
+                  @cardAction="handleActions"
                   title="actions"
                   :element="item"
                   :actions="cardActions"
@@ -77,11 +77,11 @@
       <v-renew-tld-modal
         ref="modalRenewTLD"
         :tld="selectedTld.name"
-        @tld-renew-succeeded="loadAll"
+        @tld-renew-succeeded="reloadDomainsAndTlds"
       />
       <v-tld-transfer-modal
         ref="modalTransferTld"
-        @tld-transfer-finished="loadAll"
+        @tld-transfer-succeeded="reloadDomainsAndTlds"
         :tld="selectedTld.name"
       />
     </div>
@@ -100,7 +100,7 @@ import RenewTLDModal from '@/components/RenewTLDModal'
 import TransferTLDModal from '@/components/TransferTLDModal'
 import { onEthereumChanged } from '@/utils/mixins'
 
-const reloadOnChanges = onEthereumChanged('loadAll')
+const reloadOnChanges = onEthereumChanged('reloadDomainsAndTlds')
 
 export default {
   name: 'Account',
@@ -210,9 +210,6 @@ export default {
     moment: date => new Date(date * 1000).toLocaleDateString()
   },
   methods: {
-    loadAll () {
-      this.$store.dispatch('loadAll')
-    },
     checkStatus: function (due) {
       const now = new Date()
       const expires = new Date(due * 1000)
@@ -252,6 +249,9 @@ export default {
     transferTld ({ Name, Expires }) {
       this.selectedTld = { name: Name, expires: Expires }
       this.$refs.modalTransferTld.openModal()
+    },
+    reloadDomainsAndTlds () {
+      this.$store.dispatch('loadAll')
     }
   },
   beforeMount: function () {
