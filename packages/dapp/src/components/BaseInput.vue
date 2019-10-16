@@ -1,6 +1,6 @@
 <template>
   <div :class="`field_content content--${inputType} ${isValid}`">
-    <label :for="inputName" :class="`field_label`">{{ inputLabel }}</label>
+    <label :for="inputName" :class="labelClass">{{ inputLabel }}</label>
     <input
       class="field"
       :class="this.isValid"
@@ -11,10 +11,10 @@
       :value="value"
       @input="$emit('input', $event.target.value)"
       v-on:keyup="handleKeyUp"
-    >
+    />
     <div class="errors">
       <li v-for="(exception, index) in this.exceptions" :key="index">
-        <p v-if="exception.show"> {{ exception.message }} </p>
+        <p v-if="exception.show">{{ exception.message }}</p>
       </li>
     </div>
   </div>
@@ -108,6 +108,10 @@ export default {
     },
     value: {
       required: true
+    },
+    labelClass: {
+      default: 'field_label',
+      type: String
     }
   },
   mounted () {
@@ -176,8 +180,8 @@ export default {
 .field:-webkit-autofill,
 .field:-webkit-autofill:hover,
 .field:-webkit-autofill:focus,
-.field:-webkit-autofill:active  {
-    -webkit-box-shadow: 0 0 0 30px white inset !important;
-    -webkit-text-fill-color: black !important;
+.field:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px white inset !important;
+  -webkit-text-fill-color: black !important;
 }
 </style>

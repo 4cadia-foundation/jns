@@ -1,5 +1,5 @@
 <template>
-  <ul :class="`menu menu-actions ${listClasses}`">
+  <ul :class="`menu-actions ${listClasses}`">
     <li class="menu-item" v-for="(action, index) in this.actions" :key="index">
       <button
         v-on:click="handleClick(element, action)"

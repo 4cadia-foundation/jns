@@ -47,6 +47,13 @@
     filter: brightness(80%);
 }
 
+.btn--disabled,
+.btn--disabled:hover {
+  background-color: var(--color-gray-lighter);
+  cursor: not-allowed;
+  filter: initial;
+}
+
 .btn--outline {
     background: none;
     border: 1px solid var(--color-primary);

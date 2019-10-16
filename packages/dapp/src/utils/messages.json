@@ -3,11 +3,11 @@
   "errors": [
     {
       "type": "Forbidden",
-      "text": "An error happened during your search. Try again later." 
+      "text": "An error happened during your search. Try again later."
     },
     {
       "type": "BadRequest",
-      "text": "Search failed due to technical problems. Try again later." 
+      "text": "Search failed due to technical problems. Try again later."
     },
     {
       "type": "NotFound",
@@ -15,53 +15,57 @@
     },
     {
       "type": "InstallMetamask",
-      "text": "We couldn't find Metamask in your browser. Please install it first." 
+      "text": "We couldn't find Metamask in your browser. Please install it first."
     }
   ],
   "exceptions": [
     {
       "type": "EmptyReturn",
-      "text": "Janus haven’t found any content about { keyword }. Try search for something different." 
+      "text": "Janus haven’t found any content about { keyword }. Try search for something different."
     },
     {
       "type": "EmptyField",
-      "text": "Field is empty! Type something to search." 
+      "text": "Field is empty! Type something to search."
     },
     {
       "type": "InvalidField",
-      "text": "Field is invalid! Type only alphanumeric characters to search." 
+      "text": "Field is invalid! Type only alphanumeric characters to search."
     },
     {
       "type": "MaxLength",
-      "text": "The field must be a maximum of { keyword } characters. Try lowering or using another word." 
+      "text": "The field must be a maximum of { keyword } characters. Try lowering or using another word."
     },
     {
       "type": "MinLength",
-      "text": "Field must be at least { keyword } characters. Try increasing or use another word." 
+      "text": "Field must be at least { keyword } characters. Try increasing or use another word."
     },
     {
       "type": "OwnedTLD",
-      "text": "This TLD  already has an owner. Do you want to buy a Domain instead?" 
+      "text": "This TLD  already has an owner. Do you want to buy a Domain instead?"
     },
     {
       "type": "OwnedDomain",
-      "text": "This Domain  already has an owner. Change the Domain or TLD name to purchase" 
+      "text": "This Domain  already has an owner. Change the Domain or TLD name to purchase"
     },
     {
       "type": "WarnBuyDomain",
-      "text": "This TLD has no owner. Click the button to buy this TLD first" 
+      "text": "This TLD has no owner. Click the button to buy this TLD first"
     },
     {
       "type": "OwnedTLD",
-      "text": "This TLD  already has an owner. Do you want to buy a Domain instead?" 
+      "text": "This TLD  already has an owner. Do you want to buy a Domain instead?"
     },
     {
       "type": "ExpiratedDomain",
-      "text": "This Domain has expired! Click in Renew to activate it" 
+      "text": "This Domain has expired! Click in Renew to activate it"
     },
     {
       "type": "WarnExpirateDomain",
-      "text": "This Domain is about to expired! Click in Renew to prevent it from disable" 
+      "text": "This Domain is about to expired! Click in Renew to prevent it from disable"
+    },
+    {
+      "type": "InvalidAddress",
+      "text": "This is not a valid Ethereum Address"
     }
   ]
 }

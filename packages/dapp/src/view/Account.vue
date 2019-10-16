@@ -74,22 +74,30 @@
       </ul>
     </div>
     <div class="modal-tld">
-      <v-renew-tld-modal ref="modalRenewTLD"
-      :tld="selectedTld.name"
-      @tld-renew-succeeded="loadAll"  />
+      <v-renew-tld-modal
+        ref="modalRenewTLD"
+        :tld="selectedTld.name"
+        @tld-renew-succeeded="loadAll"
+      />
+      <v-tld-transfer-modal
+        ref="modalTransferTLD"
+        v-on:TLDTransfered="onTLDTransfered"
+        :tld="selectedTld.name"
+      />
     </div>
   </div>
 </template>
 
 <script>
+import differenceInCalendarDays from 'date-fns/differenceInCalendarDays'
 import contentService from '../api/contentService'
 import Hero from '@/components/Hero'
 import BaseCard from '@/components/BaseCard'
 import { mapState } from 'vuex'
 import ActionDropdown from '@/components/ActionDropdown'
 import BaseActionsMenu from '@/components/BaseActionsMenu'
-import differenceInCalendarDays from 'date-fns/differenceInCalendarDays'
 import RenewTLDModal from '@/components/RenewTLDModal'
+import TransferTLDModal from '@/components/TransferTLDModal'
 
 export default {
   name: 'Account',
@@ -109,12 +117,12 @@ export default {
             },
             {
               title: 'Transfer',
-              handler: 'transfer',
+              handler: 'transferDomain',
               callToAction: 'cardAction'
             },
             {
               title: 'Update',
-              handler: 'update',
+              handler: 'updateDomain',
               callToAction: 'cardAction'
             }
           ]
@@ -129,14 +137,13 @@ export default {
             },
             {
               title: 'Transfer',
-              handler: 'transfer',
+              handler: 'transferTLD',
               callToAction: 'cardAction'
             }
           ]
         }
       ],
-      cardActions: [
-      ],
+      cardActions: [],
       menuTabs: [
         {
           title: 'Domain',
@@ -195,7 +202,8 @@ export default {
     'v-card': BaseCard,
     'v-action-dropdown': ActionDropdown,
     'v-actions-menu': BaseActionsMenu,
-    'v-renew-tld-modal': RenewTLDModal
+    'v-renew-tld-modal': RenewTLDModal,
+    'v-tld-transfer-modal': TransferTLDModal
   },
 
   filters: {
@@ -232,13 +240,22 @@ export default {
       this.activeTab = event.action.handler
     },
     handleActions (event) {
-      const {action, element} = event
+      const { action, element } = event
       console.log(action.handler)
       this[action.handler](element)
     },
     handleRenewTLD ({ Name, Expires }) {
       this.selectedTld = { name: Name, expires: Expires }
       this.$refs.modalRenewTLD.openModal()
+      const { action, element } = event
+      this[action.handler](element)
+    },
+    transferTLD ({ Name, Expires }) {
+      this.selectedTld = { name: Name, expires: Expires }
+      this.$refs.modalTransferTLD.openModal()
+    },
+    onTLDTransfered () {
+      return this.list()
     }
   },
   beforeMount: function () {
@@ -248,7 +265,6 @@ export default {
 
     this.$store.dispatch('resolveJanusNameService')
   }
-
 }
 </script>
 
