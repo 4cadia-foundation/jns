@@ -12,7 +12,6 @@ export default {
     await dispatch('loadAll')
   },
   async loadAll ({ dispatch }) {
-    console.log('loadAll')
     await dispatch('loadTldList')
     await dispatch('loadDomainList')
   },
