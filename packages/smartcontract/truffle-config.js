@@ -1,10 +1,10 @@
 const HDWalletProvider = require('@truffle/hdwallet-provider');
 
-const { HDWALLET_MNEMONIC, INFURA_KEY } = process.env;
+const { HDWALLET_MNEMONIC, INFURA_KEY, REPORT_GAS } = process.env;
 
 module.exports = {
   mocha: {
-    reporter: 'eth-gas-reporter',
+    reporter: REPORT_GAS ? 'eth-gas-reporter' : undefined,
   },
   compilers: {
     solc: {
