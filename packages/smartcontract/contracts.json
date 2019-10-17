@@ -831,7 +831,7 @@
     ],
     "addresses": {
       "4": "0x93Aa6b7A7749C9F92cF42e4463ba789653883D1B",
-      "1234": "0xAF23ca9d004C26495C89553d829000FB36FCE7F9"
+      "1234": "0x19B44D7c20cb0D7B3Baf2B03DB457853C49700fF"
     }
   },
   "Migrations": {
@@ -905,7 +905,7 @@
     ],
     "addresses": {
       "4": "0x2bD9dA9035d54b6b530dA829Dc4cff7FfD9aCd3C",
-      "1234": "0x557858779C6C5240B05005bCbd60dD06fBcCF479"
+      "1234": "0x71bf8562838b95475F271fB0FCa7EF83B2241058"
     }
   }
 }
