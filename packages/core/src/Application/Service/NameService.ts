@@ -13,6 +13,7 @@ import { Tld } from '../../Domain/Entity/Tld';
 import { ListDomainByOwnerResult } from '../../Domain/Entity/ListDomainByOwnerResult';
 import { RenewDomainRequest } from '../../Domain/Entity/RenewDomainRequest';
 import { RenewTldRequest } from '../../Domain/Entity/RenewTldRequest';
+import { TransferDomainRequest } from '../../Domain/Entity/TransferDomainRequest';
 
 @injectable()
 export default class NameService implements INameService {
@@ -160,8 +161,29 @@ export default class NameService implements INameService {
     return response;
   }
 
-  public async TransferDomain(): Promise<never> {
-    throw new Error('Method not implemented.');
+  public async TransferDomain(
+    request: TransferDomainRequest
+  ): Promise<RequestResult> {
+    const response = new RequestResult();
+
+    // send transaction to the network
+    const tx = await this._smartContract.changeDomainOwnership(
+      request.domain,
+      request.tld,
+      request.newOwnerAddress
+    );
+    // wait for transaction to be mined
+    const receipt = await tx.wait();
+
+    const events = (receipt as ContractReceipt).events;
+    // const events = ['evt1', 'evt2', 'evt3']
+
+    if (events) {
+      response.Success = true;
+      response.Result = [...events];
+    }
+
+    return response;
   }
 
   public async ListDomainByOwner(): Promise<ListDomainByOwnerResult[]> {
