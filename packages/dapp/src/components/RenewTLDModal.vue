@@ -46,7 +46,7 @@ export default {
       this.renewTopLevelDomain(this.tld)
     },
     renewTopLevelDomain (topLevelDomain) {
-      this.loader = this.$loading.show({
+      const loader = this.loader = this.$loading.show({
         container: this.fullPage ? null : this.$refs.formContainer
       })
       this.$store.getters.jnsInstance().RenewTLD(topLevelDomain)
@@ -62,7 +62,7 @@ export default {
         })
         .finally(() => {
           this.$refs.modal.closeModal()
-          this.loader.hide()
+          loader.hide()
         })
     }
   }

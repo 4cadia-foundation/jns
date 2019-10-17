@@ -64,12 +64,10 @@ export default class NameService implements INameService {
     // return result;
   }
 
-  public async RenewTLD(request:RenewTLDRequest):Promise<RequestResult> {
+  public async RenewTLD(request: RenewTLDRequest): Promise<RequestResult> {
     const response = new RequestResult();
 
-    const tx = await this._smartContract.renewTopDomain(
-      request.TLD
-    );
+    const tx = await this._smartContract.renewTopDomain(request.TLD);
 
     const receipt = await tx.wait();
 
@@ -125,13 +123,12 @@ export default class NameService implements INameService {
     return response;
   }
 
-  public async RenewDomain(request: RenewDomainRequest): Promise<RequestResult> {
+  public async RenewDomain(
+    request: RenewDomainRequest
+  ): Promise<RequestResult> {
     const response = new RequestResult();
 
-    const tx = await this._smartContract.renewDomain(
-      request.Name,
-      request.TLD
-    );
+    const tx = await this._smartContract.renewDomain(request.Name, request.TLD);
 
     const receipt = await tx.wait();
 
