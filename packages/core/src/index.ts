@@ -10,6 +10,7 @@ import { BuyDomainRequest } from './Domain/Entity/BuyDomainRequest';
 import { DomainExistsRequest } from './Domain/Entity/DomainExistsRequest';
 import { RenewTldRequest } from './Domain/Entity/RenewTldRequest';
 import { TransferTldRequest } from './Domain/Entity/TransferTldRequest';
+import { RenewDomainRequest } from './Domain/Entity/RenewDomainRequest';
 
 export class JanusNameService {
   public _jnsService: INameService;
@@ -179,6 +180,36 @@ export class JanusNameService {
     if (result.Success) {
       try {
         const dealed = await this._jnsService.RenewTLD(request);
+        return dealed;
+      } catch (error) {
+        throw new Error(error);
+      }
+    } else {
+      throw new Error(result.Errors[0].toString());
+    }
+  }
+
+  public async RenewDomain(
+    domain: string,
+    tld: string
+  ): Promise<RequestResult> {
+    domain = domain.toLocaleLowerCase();
+    tld = tld.toLocaleLowerCase();
+
+    const request = new RenewDomainRequest(domain, tld);
+
+    const config = Bootstrapper.Resolve<NameServiceConfig>('NameServiceConfig');
+
+    const validator = new DomainValidator(config);
+    const validation = await validator.ValidateRenewDomainRequest(request);
+
+    const result = new RequestResult();
+    result.Success = validation.isValid();
+    result.Errors = validation.getFailureMessages();
+
+    if (result.Success) {
+      try {
+        const dealed = await this._jnsService.RenewDomain(request);
         return dealed;
       } catch (error) {
         throw new Error(error);
