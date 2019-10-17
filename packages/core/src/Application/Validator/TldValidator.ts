@@ -4,7 +4,7 @@ import NameServiceConfig from '../../Domain/Entity/NameServiceConfig';
 import Bootstrapper from '../../Infra/Bootstrapper';
 import INameService from '../Interface/INameService';
 
-export default class TopLevelDomainValidator extends AbstractValidator<string> {
+export default class TldValidator extends AbstractValidator<string> {
   _jnsService: INameService;
 
   constructor(@inject('NameServiceConfig') _jnsconfig: NameServiceConfig) {
@@ -12,9 +12,7 @@ export default class TopLevelDomainValidator extends AbstractValidator<string> {
     this._jnsService = Bootstrapper.Resolve<INameService>('INameService');
   }
 
-  public async ValidateNewTopLevelDomainRequest(
-    tld: string
-  ): Promise<ValidationResult> {
+  public async ValidateBuyTldRequest(tld: string): Promise<ValidationResult> {
     this.validateIf(i => i)
       .isNotEmpty()
       .isNotNull()
@@ -42,9 +40,7 @@ export default class TopLevelDomainValidator extends AbstractValidator<string> {
     return this.validate(tld);
   }
 
-  public async ValidateRenewTopLevelDomainRequest(
-    tld: string
-  ): Promise<ValidationResult> {
+  public async ValidateRenewTldRequest(tld: string): Promise<ValidationResult> {
     this.validateIf(i => i)
       .isNotEmpty()
       .isNotNull()

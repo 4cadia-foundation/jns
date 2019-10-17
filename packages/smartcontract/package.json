@@ -39,7 +39,10 @@
     "web3": "^1.0.0-beta.55"
   },
   "devDependencies": {
+    "@truffle/hdwallet-provider": "^1.0.21",
     "concurrently": "^4.1.2",
+    "deepmerge": "^4.1.1",
+    "eth-gas-reporter": "^0.2.12",
     "ganache-cli": "^6.7.0",
     "shx": "^0.3.2",
     "solc": "~0.5.11",

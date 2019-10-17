@@ -1,4 +1,4 @@
-pragma solidity ^0.5.9;
+pragma solidity ^0.5.11;
 pragma experimental ABIEncoderV2;
 
 contract JanusNameService {
@@ -28,11 +28,11 @@ contract JanusNameService {
         uint ownerIndex;
     }
 
-    TopDomain[] private topDomains;
-    mapping(bytes32 => uint) private topDomainsHashMap;
-    mapping(address => uint[]) private topDomainsOwnerMap;
+    TopDomain[] public topDomains;
+    mapping(bytes32 => uint) public topDomainsHashMap;
+    mapping(address => uint[]) public topDomainsOwnerMap;
 
-    Domain[] private domains;
+    Domain[] public domains;
     mapping(bytes32 => uint) public domainsHashMap;
     mapping(address => uint[]) public domainsOwnerMap;
     mapping(string => uint) public domainsStorageHash;
@@ -258,12 +258,18 @@ contract JanusNameService {
 
         // Delete from current owner
         uint[] storage currentOwnerTopDomainList = topDomainsOwnerMap[currentOwner];
-        uint indexToRemove = topDomains[index].ownerIndex;
-        currentOwnerTopDomainList[indexToRemove] =
+        uint indexToOverwrite = topDomains[index].ownerIndex;
+        currentOwnerTopDomainList[indexToOverwrite] =
             currentOwnerTopDomainList[currentOwnerTopDomainList.length - 1];
         currentOwnerTopDomainList.length--;
 
-        // Update the references to the new owner
+        // Update references to the moved element if needed
+        if (currentOwnerTopDomainList.length > indexToOverwrite) {
+            uint movedIndex = currentOwnerTopDomainList[indexToOverwrite];
+            topDomains[movedIndex].ownerIndex = indexToOverwrite;
+        }
+
+        // Update references to the new owner
         uint[] storage newOwnerTopDomainList = topDomainsOwnerMap[_newOwner];
         newOwnerTopDomainList.push(index);
         topDomains[index].owner = _newOwner;
@@ -394,9 +400,15 @@ contract JanusNameService {
 
         // Delete from current owner
         uint[] storage currentOwnerDomainList = domainsOwnerMap[currentOwner];
-        uint indexToRemove = domains[index].ownerIndex;
-        currentOwnerDomainList[indexToRemove] = currentOwnerDomainList[currentOwnerDomainList.length - 1];
+        uint indexToOverwrite = domains[index].ownerIndex;
+        currentOwnerDomainList[indexToOverwrite] = currentOwnerDomainList[currentOwnerDomainList.length - 1];
         currentOwnerDomainList.length--;
+
+        // Update references to the moved element if needed
+        if (currentOwnerDomainList.length > indexToOverwrite) {
+            uint movedIndex = currentOwnerDomainList[indexToOverwrite];
+            domains[movedIndex].ownerIndex = indexToOverwrite;
+        }
 
         // Update the references to the new owner
         uint[] storage newOwnerDomainList = domainsOwnerMap[_newOwner];
@@ -472,3 +484,4 @@ contract JanusNameService {
         return (domains[index].topDomain, domains[index].name);
     }
 }
+

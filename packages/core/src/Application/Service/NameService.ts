@@ -8,10 +8,11 @@ import { RequestResult } from '../../Domain/Entity/RequestResult';
 import { ContractReceipt } from 'ethers/contract';
 import { BuyDomainRequest } from '../../Domain/Entity/BuyDomainRequest';
 import { DomainExistsRequest } from '../../Domain/Entity/DomainExistsRequest';
-import { TopLevelDomain } from '../../Domain/Entity/TopLevelDomain';
+import { TransferTldRequest } from '../../Domain/Entity/TransferTldRequest';
+import { Tld } from '../../Domain/Entity/Tld';
 import { ListDomainByOwnerResult } from '../../Domain/Entity/ListDomainByOwnerResult';
 import { RenewDomainRequest } from '../../Domain/Entity/RenewDomainRequest';
-import { RenewTLDRequest } from '../../Domain/Entity/RenewTLDRequest';
+import { RenewTldRequest } from '../../Domain/Entity/RenewTldRequest';
 
 @injectable()
 export default class NameService implements INameService {
@@ -35,10 +36,10 @@ export default class NameService implements INameService {
     );
   }
 
-  public async BuyTLD(topLevelDomainName: string): Promise<RequestResult> {
+  public async BuyTLD(tld: string): Promise<RequestResult> {
     const newTLD = new RequestResult();
 
-    const tx = await this._smartContract.registerTopDomain(topLevelDomainName);
+    const tx = await this._smartContract.registerTopDomain(tld);
     const receipt = await tx.wait();
 
     const events = (receipt as ContractReceipt).events;
@@ -50,24 +51,24 @@ export default class NameService implements INameService {
     return newTLD;
   }
 
-  public IsTopDomainRegistered(topLevelDomainName: string): Promise<boolean> {
-    return this._smartContract.topDomainAlreadyRegistered(topLevelDomainName);
+  public IsTopDomainRegistered(tld: string): Promise<boolean> {
+    return this._smartContract.topDomainAlreadyRegistered(tld);
   }
 
   // TODO: this is not sync!!! Check what it should do
-  public IsTopDomainRegisteredSync(topLevelDomainName: string): any {
+  public IsTopDomainRegisteredSync(tld: string): any {
     this._smartContract
-      .topDomainAlreadyRegistered(topLevelDomainName)
+      .topDomainAlreadyRegistered(tld)
       .then((resp: boolean) => {
         return resp as boolean;
       });
     // return result;
   }
 
-  public async RenewTLD(request: RenewTLDRequest): Promise<RequestResult> {
+  public async RenewTLD(request: RenewTldRequest): Promise<RequestResult> {
     const response = new RequestResult();
 
-    const tx = await this._smartContract.renewTopDomain(request.TLD);
+    const tx = await this._smartContract.renewTopDomain(request.tld);
 
     const receipt = await tx.wait();
 
@@ -81,17 +82,34 @@ export default class NameService implements INameService {
     return response;
   }
 
-  public async TransferTLD(): Promise<never> {
-    throw new Error('Method not implemented.');
+  public async TransferTLD(
+    request: TransferTldRequest
+  ): Promise<RequestResult> {
+    const response = new RequestResult();
+
+    const tx = await this._smartContract.changeTopDomainOwnership(
+      request.name,
+      request.newOwnerAddress
+    );
+    const receipt = await tx.wait();
+
+    const events = (receipt as ContractReceipt).events;
+
+    if (events) {
+      response.Success = true;
+      response.Result.push(...events);
+    }
+
+    return response;
   }
 
-  public async ListTLDByOwner(): Promise<TopLevelDomain[]> {
+  public async ListTLDByOwner(): Promise<Tld[]> {
     const listTLDByContract = await this._smartContract.getAllTopDomainsByOwner();
-    const listTopLevelDomains = listTLDByContract[0].map(
+    const listTlds = listTLDByContract[0].map(
       (tld: string, index: number) =>
-        new TopLevelDomain(tld, parseInt(listTLDByContract[1][index], 10))
+        new Tld(tld, parseInt(listTLDByContract[1][index], 10))
     );
-    return listTopLevelDomains;
+    return listTlds;
   }
 
   public async IsDomainRegisteredSync(

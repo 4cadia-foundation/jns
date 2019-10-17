@@ -87,11 +87,11 @@ export default {
                     })
                   }
                 })
-                .catch(error => this.$notification.error(error))
+                .catch(error => this.$notification.error(error.message))
                 .finally(() => this.loader.hide())
             }
           })
-          .catch(error => this.$notification.error(error))
+          .catch(error => this.$notification.error(error.message))
           .finally(() => this.loader.hide())
       }
     },

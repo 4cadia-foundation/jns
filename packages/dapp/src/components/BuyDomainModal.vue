@@ -120,7 +120,7 @@ export default {
           // console.log('BuyDomain', newDomain)
         })
         .catch(err => {
-          this.$notification.error(err)
+          this.$notification.error(err.message)
           console.error('BuyDomain', err)
         })
         .finally(() => {
