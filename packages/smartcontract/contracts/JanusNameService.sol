@@ -8,16 +8,15 @@ contract JanusNameService {
     uint constant TOP_DOMAIN_NAME_MIN_LENGTH = 2;
     uint constant TOP_DOMAIN_NAME_MAX_LENGTH = 5;
     uint constant TOP_DOMAIN_EXPIRATION_DAYS = 365 days;
-    uint constant TOP_DOMAIN_RENEW_LIMIT = 730 days;
 
     uint constant DOMAIN_EXPIRATION_DAYS = 365 days;
     uint constant DOMAIN_NAME_MIN_LENGTH = 3;
-    uint constant DOMAIN_RENEW_LIMIT = 730 days;
 
     struct TopDomain {
         string name;
         uint expires;
         address owner;
+        uint ownerIndex;
     }
 
     struct Domain {
@@ -26,6 +25,7 @@ contract JanusNameService {
         string storageHash;
         uint expires;
         address owner;
+        uint ownerIndex;
     }
 
     TopDomain[] private topDomains;
@@ -39,8 +39,8 @@ contract JanusNameService {
 
     constructor () public{
         contractOwner = msg.sender;
-        topDomains.push(TopDomain('', 0, address(0x0)));
-        domains.push(Domain('', '', '', 0, address(0x0)));
+        topDomains.push(TopDomain('', 0, address(0x0), 0));
+        domains.push(Domain('', '', '', 0, address(0x0), 0));
     }
 
     function kill() external {
@@ -104,18 +104,6 @@ contract JanusNameService {
         _;
     }
 
-    modifier isTopDomainDateExpirationValid(
-        string memory _topDomainName
-    )
-    {
-        uint index = topDomainsHashMap[getTopDomainHash(_topDomainName)];
-        require(
-            topDomains[index].expires <= now + TOP_DOMAIN_RENEW_LIMIT,
-            'renew expired date limit exceeded'
-        );
-        _;
-    }
-
     modifier isDomainNameMinLengthValid(
         string memory _domainName
     )
@@ -165,34 +153,42 @@ contract JanusNameService {
     }
 
     event TopDomainRegistered(
-        string _topDomainName
+        string indexed topDomainName,
+        address indexed owner
     );
 
     event TopDomainOwnershipChanged(
-        string _topDomainName,
-        address _newOwnerAddress
+        string indexed topDomainName,
+        address indexed newOwner
     );
 
     event TopDomainRenewed(
-        string _topDomainName,
-        uint _newExpire
+        string indexed topDomainName,
+        uint newExpire
     );
 
     event DomainRegistered(
-        string _domainName,
-        string _topDomainName
+        string indexed domainName,
+        string indexed topDomainName,
+        address indexed owner
+    );
+
+    event DomainOwnershipChanged(
+        string indexed domainName,
+        string indexed topDomainName,
+        address indexed newOwner
     );
 
     event DomainStorageHashUpdated(
-        string _domainName,
-        string _topDomainName,
-        string _storageHash
+        string indexed domainName,
+        string indexed topDomainName,
+        string storageHash
     );
 
     event DomainRenewed(
-        string _domainName,
-        string _topDomainName,
-        uint _newExpire
+        string indexed domainName,
+        string indexed topDomainName,
+        uint newExpire
     );
 
     function registerTopDomain(
@@ -206,7 +202,8 @@ contract JanusNameService {
         TopDomain memory newTopDomain = TopDomain({
             name: _topDomainName,
             expires: now + TOP_DOMAIN_EXPIRATION_DAYS,
-            owner: msg.sender
+            owner: msg.sender,
+            ownerIndex: topDomainsOwnerMap[msg.sender].length
         });
 
         topDomains.push(newTopDomain);
@@ -216,7 +213,7 @@ contract JanusNameService {
         topDomainsHashMap[getTopDomainHash(_topDomainName)] = topDomainsIndex;
         topDomainsOwnerMap[newTopDomain.owner].push(topDomainsIndex);
 
-        emit TopDomainRegistered(_topDomainName);
+        emit TopDomainRegistered(_topDomainName, msg.sender);
     }
 
     function getAllTopDomainsByOwner() public view returns (string[] memory name, uint[] memory expires)
@@ -250,15 +247,29 @@ contract JanusNameService {
 
     function changeTopDomainOwnership(
         string memory _topDomainName,
-        address _newOwnerAddress
+        address _newOwner
     ) public
         isTopDomainRegistered(_topDomainName)
         isTopDomainOwner(_topDomainName)
       payable
     {
         uint index = topDomainsHashMap[getTopDomainHash(_topDomainName)];
-        topDomains[index].owner = _newOwnerAddress;
-        emit TopDomainOwnershipChanged(_topDomainName, _newOwnerAddress);
+        address currentOwner = topDomains[index].owner;
+
+        // Delete from current owner
+        uint[] storage currentOwnerTopDomainList = topDomainsOwnerMap[currentOwner];
+        uint indexToRemove = topDomains[index].ownerIndex;
+        currentOwnerTopDomainList[indexToRemove] =
+            currentOwnerTopDomainList[currentOwnerTopDomainList.length - 1];
+        currentOwnerTopDomainList.length--;
+
+        // Update the references to the new owner
+        uint[] storage newOwnerTopDomainList = topDomainsOwnerMap[_newOwner];
+        newOwnerTopDomainList.push(index);
+        topDomains[index].owner = _newOwner;
+        topDomains[index].ownerIndex = newOwnerTopDomainList.length - 1;
+
+        emit TopDomainOwnershipChanged(_topDomainName, _newOwner);
     }
 
     function renewTopDomain(
@@ -266,7 +277,6 @@ contract JanusNameService {
     ) public
         isTopDomainRegistered(_topDomainName)
         isTopDomainOwner(_topDomainName)
-        isTopDomainDateExpirationValid(_topDomainName)
       payable
     {
         uint index = topDomainsHashMap[getTopDomainHash(_topDomainName)];
@@ -303,23 +313,27 @@ contract JanusNameService {
       payable
     {
         bytes32 domainCompleteHash = getCompleteDomainHash(_domainName, _topDomainName);
+        uint[] storage ownerDomainList = domainsOwnerMap[msg.sender];
+
+        uint ownerDomainListIndex = ownerDomainList.length;
+        uint domainsIndex = domains.length;
+
+        domainsHashMap[domainCompleteHash] = domainsIndex;
+        domainsStorageHash[_storageHash] = domainsIndex;
 
         Domain memory newDomain = Domain({
             name: _domainName,
             topDomain: _topDomainName,
             storageHash: _storageHash,
             expires: now + DOMAIN_EXPIRATION_DAYS,
-            owner: msg.sender
+            owner: msg.sender,
+            ownerIndex: ownerDomainListIndex
         });
 
         domains.push(newDomain);
-        uint domainsIndex = domains.length - 1;
+        ownerDomainList.push(domainsIndex);
 
-        domainsHashMap[domainCompleteHash] = domainsIndex;
-        domainsOwnerMap[newDomain.owner].push(domainsIndex);
-        domainsStorageHash[newDomain.storageHash] = domainsIndex;
-
-        emit DomainRegistered(_domainName, _topDomainName);
+        emit DomainRegistered(_domainName, _topDomainName, msg.sender);
     }
 
     function getStorageHashByDomain(
@@ -365,6 +379,32 @@ contract JanusNameService {
         domains[index].expires = newExpireDate;
 
         emit DomainRenewed(_domainName, _topDomainName, newExpireDate);
+    }
+
+    function changeDomainOwnership(
+        string memory _domainName,
+        string memory _topDomainName,
+        address _newOwner
+    ) public
+        isDomainRegistered(_domainName, _topDomainName)
+        isDomainOwner(_domainName, _topDomainName)
+    {
+        uint index = domainsHashMap[getCompleteDomainHash(_domainName, _topDomainName)];
+        address currentOwner = domains[index].owner;
+
+        // Delete from current owner
+        uint[] storage currentOwnerDomainList = domainsOwnerMap[currentOwner];
+        uint indexToRemove = domains[index].ownerIndex;
+        currentOwnerDomainList[indexToRemove] = currentOwnerDomainList[currentOwnerDomainList.length - 1];
+        currentOwnerDomainList.length--;
+
+        // Update the references to the new owner
+        uint[] storage newOwnerDomainList = domainsOwnerMap[_newOwner];
+        newOwnerDomainList.push(index);
+        domains[index].owner = _newOwner;
+        domains[index].ownerIndex = newOwnerDomainList.length - 1;
+
+        emit DomainOwnershipChanged(_domainName, _topDomainName, _newOwner);
     }
 
     function getDomainByHash(

@@ -73,6 +73,11 @@
         </li>
       </ul>
     </div>
+    <div class="modal-tld">
+      <v-renew-tld-modal ref="modalRenewTLD"
+      :tld="selectedTld.name"
+      @tld-renew-succeeded="loadAll"  />
+    </div>
   </div>
 </template>
 
@@ -83,6 +88,8 @@ import BaseCard from '@/components/BaseCard'
 import { mapState } from 'vuex'
 import ActionDropdown from '@/components/ActionDropdown'
 import BaseActionsMenu from '@/components/BaseActionsMenu'
+import differenceInCalendarDays from 'date-fns/differenceInCalendarDays'
+import RenewTLDModal from '@/components/RenewTLDModal'
 
 export default {
   name: 'Account',
@@ -95,6 +102,11 @@ export default {
         {
           type: 'domain',
           actions: [
+            {
+              title: 'Renew',
+              handler: 'renew',
+              callToAction: 'cardAction'
+            },
             {
               title: 'Transfer',
               handler: 'transfer',
@@ -111,6 +123,11 @@ export default {
           type: 'tld',
           actions: [
             {
+              title: 'Renew',
+              handler: 'handleRenewTLD',
+              callToAction: 'cardAction'
+            },
+            {
               title: 'Transfer',
               handler: 'transfer',
               callToAction: 'cardAction'
@@ -118,7 +135,8 @@ export default {
           ]
         }
       ],
-      cardActions: [],
+      cardActions: [
+      ],
       menuTabs: [
         {
           title: 'Domain',
@@ -135,7 +153,8 @@ export default {
         //   handler: "subdomain",
         //   callToAction: "accountTabAction"
         // }
-      ]
+      ],
+      selectedTld: {}
     }
   },
   computed: {
@@ -175,7 +194,8 @@ export default {
     'v-hero': Hero,
     'v-card': BaseCard,
     'v-action-dropdown': ActionDropdown,
-    'v-actions-menu': BaseActionsMenu
+    'v-actions-menu': BaseActionsMenu,
+    'v-renew-tld-modal': RenewTLDModal
   },
 
   filters: {
@@ -183,20 +203,23 @@ export default {
   },
 
   methods: {
+    loadAll () {
+      this.$store.dispatch('loadAll')
+    },
     checkStatus: function (due) {
       const now = new Date()
       const expires = new Date(due * 1000)
 
       let differenceDate = 0
+
       let status = 'alert'
+
       if (expires > now) {
-        differenceDate = (expires.getFullYear() - now.getFullYear()) * 12
-        differenceDate -= now.getMonth()
-        differenceDate += expires.getMonth()
+        differenceDate = differenceInCalendarDays(expires, now)
 
         if (differenceDate <= 0) {
           status = 'alert'
-        } else if (differenceDate === 1) {
+        } else if (differenceDate > 0 && differenceDate <= 30) {
           status = 'warn'
         } else {
           status = 'success'
@@ -209,7 +232,13 @@ export default {
       this.activeTab = event.action.handler
     },
     handleActions (event) {
-      // console.log(event.action.callToAction, event)
+      const {action, element} = event
+      console.log(action.handler)
+      this[action.handler](element)
+    },
+    handleRenewTLD ({ Name, Expires }) {
+      this.selectedTld = { name: Name, expires: Expires }
+      this.$refs.modalRenewTLD.openModal()
     }
   },
   beforeMount: function () {
@@ -219,6 +248,7 @@ export default {
 
     this.$store.dispatch('resolveJanusNameService')
   }
+
 }
 </script>
 

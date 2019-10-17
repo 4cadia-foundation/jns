@@ -1,5 +1,5 @@
 const OwnerApp = artifacts.require('../contracts/JanusNameService');
-const Assert = require('truffle-assertions');
+const truffleAssert = require('truffle-assertions');
 
 contract('JanusNameService - 04-changeDomainOwnership.test.js', accounts => {
   let contractInstance;
@@ -17,7 +17,7 @@ contract('JanusNameService - 04-changeDomainOwnership.test.js', accounts => {
   it('changeTopDomainOwnership should be throw if domain is not registered', async () => {
     const domainName = 'eth';
 
-    await Assert.reverts(
+    await truffleAssert.reverts(
       contractInstance.changeTopDomainOwnership(domainName, futureOwner, {
         from: ownerAddress,
       }),
@@ -33,8 +33,8 @@ contract('JanusNameService - 04-changeDomainOwnership.test.js', accounts => {
       { from: ownerAddress }
     );
 
-    Assert.eventEmitted(resultRegister, 'TopDomainRegistered');
-    await Assert.reverts(
+    truffleAssert.eventEmitted(resultRegister, 'TopDomainRegistered');
+    await truffleAssert.reverts(
       contractInstance.changeTopDomainOwnership(domainName, futureOwner, {
         from: futureOwner,
       }),
@@ -54,8 +54,8 @@ contract('JanusNameService - 04-changeDomainOwnership.test.js', accounts => {
       { from: ownerAddress }
     );
 
-    Assert.eventEmitted(resultRegister, 'TopDomainRegistered');
-    Assert.eventEmitted(
+    truffleAssert.eventEmitted(resultRegister, 'TopDomainRegistered');
+    truffleAssert.eventEmitted(
       resultChangeDomainOwnership,
       'TopDomainOwnershipChanged'
     );
@@ -77,11 +77,32 @@ contract('JanusNameService - 04-changeDomainOwnership.test.js', accounts => {
       domainHash
     );
 
-    Assert.eventEmitted(resultRegister, 'TopDomainRegistered');
-    Assert.eventEmitted(
+    truffleAssert.eventEmitted(resultRegister, 'TopDomainRegistered');
+    truffleAssert.eventEmitted(
       resultChangeDomainOwnership,
       'TopDomainOwnershipChanged'
     );
     assert.equal(futureOwner, changedDomainOwnership.owner, 'wrong owner');
+  });
+
+  it('changeTopDomainOwnership reflects changes in getAllTopDomainsByUsers', async () => {
+    const domainName = 'eth';
+
+    await contractInstance.registerTopDomain(domainName, {
+      from: ownerAddress,
+    });
+    await contractInstance.changeTopDomainOwnership(domainName, futureOwner, {
+      from: ownerAddress,
+    });
+
+    const ownerDomains = await contractInstance.getAllTopDomainsByOwner({
+      from: ownerAddress,
+    });
+    const futureOwnerDomains = await contractInstance.getAllTopDomainsByOwner({
+      from: futureOwner,
+    });
+
+    assert.deepEqual(ownerDomains.name, []);
+    assert.deepEqual(futureOwnerDomains.name, ['eth']);
   });
 });
