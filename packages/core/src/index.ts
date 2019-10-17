@@ -2,14 +2,14 @@ import Bootstrapper from './Infra/Bootstrapper';
 import INameService from './Application/Interface/INameService';
 import { Web3Provider } from 'ethers/providers';
 import { RequestResult } from './Domain/Entity/RequestResult';
-import TopLevelDomainValidator from './Application/Validator/TopLevelDomainValidator';
+import TldValidator from './Application/Validator/TldValidator';
 import NameServiceConfig from './Domain/Entity/NameServiceConfig';
 import DomainValidator from './Application/Validator/DomainValidator';
-import TransferTopLevelDomainValidator from './Application/Validator/TransferTopLevelDomainValidator';
+import TransferTldValidator from './Application/Validator/TransferTldValidator';
 import { BuyDomainRequest } from './Domain/Entity/BuyDomainRequest';
 import { DomainExistsRequest } from './Domain/Entity/DomainExistsRequest';
-import { RenewTLDRequest } from './Domain/Entity/RenewTLDRequest';
-import { TransferTopLevelDomainRequest } from './Domain/Entity/TransferTopLevelDomainRequest';
+import { RenewTldRequest } from './Domain/Entity/RenewTldRequest';
+import { TransferTldRequest } from './Domain/Entity/TransferTldRequest';
 
 export class JanusNameService {
   public _jnsService: INameService;
@@ -19,22 +19,20 @@ export class JanusNameService {
     this._jnsService = Bootstrapper.Resolve<INameService>('INameService');
   }
 
-  public async BuyTLD(topLevelDomainName: string): Promise<RequestResult> {
-    topLevelDomainName = topLevelDomainName.toLowerCase();
+  public async BuyTLD(tld: string): Promise<RequestResult> {
+    tld = tld.toLowerCase();
     const config = Bootstrapper.Resolve<NameServiceConfig>('NameServiceConfig');
 
-    const validator = new TopLevelDomainValidator(config);
+    const validator = new TldValidator(config);
     const result = new RequestResult();
 
-    const validation = await validator.ValidateNewTopLevelDomainRequest(
-      topLevelDomainName
-    );
+    const validation = await validator.ValidateBuyTldRequest(tld);
 
     result.Success = validation.isValid();
     result.Errors = validation.getFailureMessages();
 
     if (result.Success) {
-      return this._jnsService.BuyTLD(topLevelDomainName);
+      return this._jnsService.BuyTLD(tld);
     } else {
       throw new Error(result.Errors[0].toString());
     }
@@ -46,17 +44,15 @@ export class JanusNameService {
   ): Promise<RequestResult> {
     tld = tld.toLowerCase();
 
-    const request: TransferTopLevelDomainRequest = {
+    const request: TransferTldRequest = {
       name: tld,
       newOwnerAddress,
     };
 
     const nameService = Bootstrapper.Resolve<INameService>('INameService');
 
-    const validator = new TransferTopLevelDomainValidator(nameService);
-    const validation = await validator.ValidateTransferTopLevelDomainRequest(
-      request
-    );
+    const validator = new TransferTldValidator(nameService);
+    const validation = await validator.ValidateTransferTldRequest(request);
 
     const result = new RequestResult();
 
@@ -71,18 +67,14 @@ export class JanusNameService {
   }
 
   public async BuyDomain(
-    domainName: string,
-    topLevelDomainName: string,
+    domain: string,
+    tld: string,
     storageHash: string
   ): Promise<RequestResult> {
-    domainName = domainName.toLocaleLowerCase();
-    topLevelDomainName = topLevelDomainName.toLowerCase();
+    domain = domain.toLocaleLowerCase();
+    tld = tld.toLowerCase();
 
-    const request = new BuyDomainRequest(
-      domainName,
-      topLevelDomainName,
-      storageHash
-    );
+    const request = new BuyDomainRequest(domain, tld, storageHash);
 
     const config = Bootstrapper.Resolve<NameServiceConfig>('NameServiceConfig');
 
@@ -134,14 +126,12 @@ export class JanusNameService {
     return result;
   }
 
-  public async IsTldRegistered(
-    topLevelDomainName: string
-  ): Promise<RequestResult> {
+  public async IsTldRegistered(tld: string): Promise<RequestResult> {
     const result = new RequestResult();
 
     try {
       const isTopDomainRegistered = await this._jnsService.IsTopDomainRegistered(
-        topLevelDomainName
+        tld
       );
       result.Success = true;
       result.Result = [{ IsTldRegistered: isTopDomainRegistered }];
@@ -153,14 +143,14 @@ export class JanusNameService {
   }
 
   public async IsDomainRegistered(
-    domainName: string,
-    topLevelDomainName: string
+    domain: string,
+    tld: string
   ): Promise<RequestResult> {
     const result = new RequestResult();
 
     try {
       const isDomainRegistered = await this._jnsService.IsDomainRegisteredSync(
-        new DomainExistsRequest(domainName, topLevelDomainName)
+        new DomainExistsRequest(domain, tld)
       );
       result.Success = true;
       result.Result = [{ isDomainRegistered }];
@@ -171,19 +161,17 @@ export class JanusNameService {
     return result;
   }
 
-  public async RenewTLD(topLevelDomainName: string): Promise<RequestResult> {
-    topLevelDomainName = topLevelDomainName.toLowerCase();
+  public async RenewTLD(tld: string): Promise<RequestResult> {
+    tld = tld.toLowerCase();
 
-    const request = new RenewTLDRequest(topLevelDomainName);
+    const request = new RenewTldRequest(tld);
 
     const config = Bootstrapper.Resolve<NameServiceConfig>('NameServiceConfig');
 
-    const validator = new TopLevelDomainValidator(config);
+    const validator = new TldValidator(config);
     const result = new RequestResult();
 
-    const validation = await validator.ValidateRenewTopLevelDomainRequest(
-      request.TLD
-    );
+    const validation = await validator.ValidateRenewTldRequest(request.tld);
 
     result.Success = validation.isValid();
     result.Errors = validation.getFailureMessages();

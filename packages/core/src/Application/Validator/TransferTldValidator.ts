@@ -1,11 +1,11 @@
 import { AbstractValidator, ValidationResult } from 'fluent-ts-validator';
 import { injectable, inject } from 'tsyringe';
 import INameService from '../Interface/INameService';
-import { TransferTopLevelDomainRequest } from '../../Domain/Entity/TransferTopLevelDomainRequest';
+import { TransferTldRequest } from '../../Domain/Entity/TransferTldRequest';
 
 @injectable()
-export default class TransferTopLevelDomainValidator extends AbstractValidator<
-  TransferTopLevelDomainRequest
+export default class TransferTldValidator extends AbstractValidator<
+  TransferTldRequest
 > {
   _jnsService: INameService;
 
@@ -14,8 +14,8 @@ export default class TransferTopLevelDomainValidator extends AbstractValidator<
     this._jnsService = _jnsService;
   }
 
-  public async ValidateTransferTopLevelDomainRequest(
-    request: TransferTopLevelDomainRequest
+  public async ValidateTransferTldRequest(
+    request: TransferTldRequest
   ): Promise<ValidationResult> {
     this.validateIf(({ name }) => name)
       .isNotEmpty()

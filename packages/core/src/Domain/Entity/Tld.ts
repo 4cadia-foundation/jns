@@ -1,4 +1,4 @@
-export class TopLevelDomain {
+export class Tld {
   public Name: string;
   public Expires: number;
 
