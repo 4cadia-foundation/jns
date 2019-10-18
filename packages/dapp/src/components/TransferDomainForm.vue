@@ -1,6 +1,6 @@
 <template>
-  <form @submit.prevent="handleSubmit" ref="transferForm">
-    <h4>TLD:</h4>
+  <form @submit.prevent="handleSubmit">
+    <h4>Domain:</h4>
     <div class="row-wrapper">
       <img
         class="row-content row-content--icon"
@@ -8,7 +8,7 @@
         width="21px"
         height="21px"
       />
-      <span class="row-content row-content--data">{{ tld }}</span>
+      <span class="row-content row-content--data">{{ domain }}.{{ tld }}</span>
     </div>
     <div class="row-wrapper">
       <div class="field_wrapper field--tld">
@@ -16,7 +16,7 @@
           ref="newOwnerInput"
           placeholderTxt="eg.: 0x0000000000000000000000000000000000000000"
           inputType="text"
-          inputName="tld"
+          inputName="newOwnerAddress"
           inputLabel="New owner address: "
           labelClass=""
           v-model="newOwnerAddress"
@@ -35,19 +35,13 @@
         isValid ? 'btn--success' : 'btn--disabled',
       ]"
       :disabled="!isValid"
-    >
-      Confirm Transaction
-    </button>
+      >Confirm Transaction</button>
   </form>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 import BaseInput from '@/components/BaseInput'
-import { withLoading } from '../utils/decorators'
-import { decorateMethods } from '../utils/decorators/helpers'
-
-const attachLoadingBehavior = decorateMethods(withLoading, ['transferTld'])
 
 export default {
   name: 'TransferTLDForm',
@@ -55,7 +49,8 @@ export default {
     'v-input': BaseInput
   },
   props: {
-    tld: String
+    tld: String,
+    domain: String
   },
   data: () => ({
     newOwnerAddress: '',
@@ -74,48 +69,47 @@ export default {
       return !this.$refs.newOwnerInput.hasExceptions
     }
   },
-  methods: attachLoadingBehavior({
-    handleSubmit: function () {
-      console.log('Aqui <<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>', this.isValid)
+  methods: {
+    handleSubmit () {
       this.$refs.newOwnerInput.handleValidate()
 
       if (this.isValid) {
-        this.transferTld(this.tld, this.newOwnerAddress)
+        this.transferDomain(this.domain, this.tld, this.newOwnerAddress)
       }
     },
-    async transferTld (tld, newOwnerAddress) {
+    async transferDomain (domain, tld, newOwnerAddress) {
       try {
-        const response = await this.$store.getters
-          .jnsInstance()
-          .TransferTLD(tld, newOwnerAddress)
+        const response = await this.$store.getters.jnsInstance().TransferDomain(domain, tld, newOwnerAddress)
 
         if (
           response.Success &&
-          response.Result[0].event === 'TopDomainOwnershipChanged'
+        response.Result[0].event === 'DomainOwnershipChanged'
         ) {
-          this.$notification.success(
-            `Successfully transfered the TLD ${tld} to ${newOwnerAddress}`
-          )
-        }
+          this.$notification.success(`Successfully transfered domain ${domain}.${tld} to user ${newOwnerAddress}`)
 
-        this.$emit('tld-transfer-succeeded', {
-          tld,
-          newOwnerAddress
-        })
+          this.$emit('domain-transfer-succeeded', {
+            domain,
+            tld,
+            newOwnerAddress
+          })
+        }
       } catch (err) {
         this.$notification.error(err.message)
-        this.$emit('tld-transfer-failed', {
+
+        this.$emit('domain-transfer-failed', {
+          domain,
           tld,
           newOwnerAddress
         })
       } finally {
-        this.$emit('tld-transfer-finished', {
+        this.$emit('domain-transfer-finished', {
+          domain,
           tld,
           newOwnerAddress
         })
       }
     }
-  })
+  }
 }
 </script>
 

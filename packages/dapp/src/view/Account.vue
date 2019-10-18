@@ -94,19 +94,28 @@
         :tld="selectedTld.name"
       />
     </div>
+    <div class="modal-domain">
+      <v-domain-transfer-modal
+        ref="modalTransferDomain"
+        @domain-transfer-succeeded="reloadDomainsAndTlds"
+        :tld="selectedDomain.tld"
+        :domain="selectedDomain.name"
+      />
+    </div>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import differenceInCalendarDays from 'date-fns/differenceInCalendarDays'
-import contentService from '../api/contentService'
+import contentService from '@/api/contentService'
 import Hero from '@/components/Hero'
 import BaseCard from '@/components/BaseCard'
-import { mapGetters } from 'vuex'
 import ActionDropdown from '@/components/ActionDropdown'
 import BaseActionsMenu from '@/components/BaseActionsMenu'
 import RenewTLDModal from '@/components/RenewTLDModal'
 import TransferTLDModal from '@/components/TransferTLDModal'
+import TransferDomainModal from '@/components/TransferDomainModal'
 import { onEthereumChanged } from '@/utils/mixins'
 import RenewDomainModal from '@/components/RenewDomainModal'
 
@@ -115,6 +124,16 @@ const reloadOnChanges = onEthereumChanged('reloadDomainsAndTlds')
 export default {
   name: 'Account',
   mixins: [reloadOnChanges],
+  components: {
+    'v-hero': Hero,
+    'v-card': BaseCard,
+    'v-action-dropdown': ActionDropdown,
+    'v-actions-menu': BaseActionsMenu,
+    'v-renew-tld-modal': RenewTLDModal,
+    'v-tld-transfer-modal': TransferTLDModal,
+    'v-domain-transfer-modal': TransferDomainModal,
+    'v-renew-domain-modal': RenewDomainModal
+  },
   data () {
     return {
       content: [],
@@ -131,7 +150,7 @@ export default {
             },
             {
               title: 'Transfer',
-              handler: 'transferDomain',
+              handler: 'handleTransferDomain',
               callToAction: 'cardAction'
             },
             {
@@ -209,15 +228,6 @@ export default {
     },
     ...mapGetters(['topLevelDomains', 'domains'])
   },
-  components: {
-    'v-hero': Hero,
-    'v-card': BaseCard,
-    'v-action-dropdown': ActionDropdown,
-    'v-actions-menu': BaseActionsMenu,
-    'v-renew-tld-modal': RenewTLDModal,
-    'v-tld-transfer-modal': TransferTLDModal,
-    'v-renew-domain-modal': RenewDomainModal
-  },
   filters: {
     moment: date => new Date(date * 1000).toLocaleDateString()
   },
@@ -264,6 +274,10 @@ export default {
     handleTransferTld ({ Name, Expires }) {
       this.selectedTld = { name: Name, expires: Expires }
       this.$refs.modalTransferTld.openModal()
+    },
+    handleTransferDomain ({ Name, TLD }) {
+      this.selectedDomain = { name: Name, tld: TLD }
+      this.$refs.modalTransferDomain.openModal()
     },
     reloadDomainsAndTlds () {
       this.$store.dispatch('loadAll')
