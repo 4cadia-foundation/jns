@@ -76,6 +76,7 @@ export default {
   },
   methods: attachLoadingBehavior({
     handleSubmit: function () {
+      console.log('Aqui <<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>', this.isValid)
       this.$refs.newOwnerInput.handleValidate()
 
       if (this.isValid) {

@@ -130,9 +130,9 @@ export default {
     'v-action-dropdown': ActionDropdown,
     'v-actions-menu': BaseActionsMenu,
     'v-renew-tld-modal': RenewTLDModal,
+    'v-renew-domain-modal': RenewDomainModal,
     'v-tld-transfer-modal': TransferTLDModal,
-    'v-domain-transfer-modal': TransferDomainModal,
-    'v-renew-domain-modal': RenewDomainModal
+    'v-domain-transfer-modal': TransferDomainModal
   },
   data () {
     return {
