@@ -1,7 +1,12 @@
 <template>
   <div class="container container--account">
     <div class="row row--full">
-      <v-hero v-if="content.list_hero" :hero="content.list_hero" float="right" classes="colapsed"></v-hero>
+      <v-hero
+        v-if="content.list_hero"
+        :hero="content.list_hero"
+        float="right"
+        classes="colapsed"
+      ></v-hero>
     </div>
     <div class="tab-menu">
       <v-actions-menu
@@ -15,12 +20,16 @@
       <ul class="list">
         <div v-if="!list[0] && activeTab == 'domain'">
           <h3>You don't have any domain. Try buying one first!</h3>
-          <router-link to="/domain" class="btn btn--link btn--hero">get your new domain</router-link>
+          <router-link to="/domain" class="btn btn--link btn--hero"
+            >get your new domain</router-link
+          >
         </div>
 
         <div v-if="!list[0] && activeTab == 'tld'">
           <h3>You don't have any Top Level Domain. Try buying one first!</h3>
-          <router-link to="/tld" class="btn btn--link btn--hero">get your new TLD</router-link>
+          <router-link to="/tld" class="btn btn--link btn--hero"
+            >get your new TLD</router-link
+          >
         </div>
 
         <li class="item" v-for="(item, index) in this.list" :key="index">
@@ -54,8 +63,12 @@
             </template>
 
             <template v-slot:footer>
-              <p v-if="checkStatus(item.Expires) == 'alert'">This domain is expired</p>
-              <p v-if="checkStatus(item.Expires) == 'warn'">This domain is close to expire</p>
+              <p v-if="checkStatus(item.Expires) == 'alert'">
+                This domain is expired
+              </p>
+              <p v-if="checkStatus(item.Expires) == 'warn'">
+                This domain is close to expire
+              </p>
             </template>
           </v-card>
         </li>
@@ -138,7 +151,7 @@ export default {
             },
             {
               title: 'Transfer',
-              handler: 'transferTld',
+              handler: 'handleTransferTld',
               callToAction: 'cardAction'
             }
           ]
@@ -244,11 +257,11 @@ export default {
       const { action, element } = event
       this[action.handler](element)
     },
-    handleRenewDomain ({Name, TLD}) {
-      this.selectedDomain = {domain: Name, tld: TLD}
+    handleRenewDomain ({ Name, TLD }) {
+      this.selectedDomain = { domain: Name, tld: TLD }
       this.$refs.modalRenewDomain.openModal()
     },
-    transferTld ({ Name, Expires }) {
+    handleTransferTld ({ Name, Expires }) {
       this.selectedTld = { name: Name, expires: Expires }
       this.$refs.modalTransferTld.openModal()
     },
