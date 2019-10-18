@@ -10,7 +10,7 @@ import { BuyDomainRequest } from '../../Domain/Entity/BuyDomainRequest';
 import { DomainExistsRequest } from '../../Domain/Entity/DomainExistsRequest';
 import { TransferTldRequest } from '../../Domain/Entity/TransferTldRequest';
 import { Tld } from '../../Domain/Entity/Tld';
-import { ListDomainByOwnerResult } from '../../Domain/Entity/ListDomainByOwnerResult';
+import { Domain } from '../../Domain/Entity/Domain';
 import { RenewDomainRequest } from '../../Domain/Entity/RenewDomainRequest';
 import { RenewTldRequest } from '../../Domain/Entity/RenewTldRequest';
 import { TransferDomainRequest } from '../../Domain/Entity/TransferDomainRequest';
@@ -186,16 +186,11 @@ export default class NameService implements INameService {
     return response;
   }
 
-  public async ListDomainByOwner(): Promise<ListDomainByOwnerResult[]> {
+  public async ListDomainByOwner(): Promise<Domain[]> {
     const tx = await this._smartContract.getAllDomainsByOwner();
     const result = tx[0].map(
       (name: string, index: number) =>
-        new ListDomainByOwnerResult(
-          name,
-          tx[1][index],
-          tx[2][index],
-          parseInt(tx[3][index], 10)
-        )
+        new Domain(name, tx[1][index], tx[2][index], parseInt(tx[3][index], 10))
     );
     return result;
   }
