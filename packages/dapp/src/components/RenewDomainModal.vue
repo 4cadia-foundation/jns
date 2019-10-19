@@ -46,25 +46,25 @@ export default {
     handleConfirm: function () {
       this.renewDomain(this.domain, this.tld)
     },
-    renewDomain (domain, topLevelDomain) {
+    async renewDomain (domain, topLevelDomain) {
       const loader = this.loader = this.$loading.show({
         container: this.fullPage ? null : this.$refs.formContainer
       })
-      this.$store.getters.jnsInstance().RenewDomain(domain, topLevelDomain)
-        .then(response => {
-          if (response.Success && response.Result[0].event === 'DomainRenewed') {
-            this.$notification.success('Success! Domain renewed!')
-            this.$emit('domain-renew-succeeded', { tld: topLevelDomain })
-          }
-        })
-        .catch((err) => {
-          this.$notification.error(err)
-          console.error('renewDomain', err)
-        })
-        .finally(() => {
-          this.$refs.modal.closeModal()
-          loader.hide()
-        })
+
+      try {
+        const response = await this.$store.getters.jnsInstance().RenewDomain(domain, topLevelDomain)
+
+        if (response.Success && response.Result[0].event === 'DomainRenewed') {
+          this.$notification.success('Success! Domain renewed!')
+          this.$emit('domain-renew-succeeded', { tld: topLevelDomain })
+        }
+      } catch (err) {
+        this.$notification.error(err)
+        console.error('renewDomain', err)
+      } finally {
+        this.$refs.modal.closeModal()
+        loader.hide()
+      }
     }
   }
 }
