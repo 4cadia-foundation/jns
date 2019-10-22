@@ -2,9 +2,7 @@ import Bootstrapper from './Infra/Bootstrapper';
 import INameService from './Application/Interface/INameService';
 import { Web3Provider } from 'ethers/providers';
 import { RequestResult } from './Domain/Entity/RequestResult';
-import TldValidator from './Application/Validator/BuyTldValidator';
 import NameServiceConfig from './Domain/Entity/NameServiceConfig';
-import DomainValidator from './Application/Validator/BuyDomainValidator';
 import TransferTldValidator from './Application/Validator/TransferTldValidator';
 import { BuyDomainRequest } from './Domain/Entity/BuyDomainRequest';
 import { DomainExistsRequest } from './Domain/Entity/DomainExistsRequest';
@@ -67,7 +65,7 @@ export class JanusNameService {
     if (result.Success) {
       return this._jnsService.TransferTLD(request);
     } else {
-      throw new Error(result.Errors[0].toString());
+      throw new Error(result.Errors[0]);
     }
   }
 
@@ -95,7 +93,7 @@ export class JanusNameService {
       const dealed = await this._jnsService.BuyDomain(request);
       return dealed;
     } else {
-      throw new Error(result.Errors[0].toString());
+      throw new Error(result.Errors[0]);
     }
   }
 
@@ -189,7 +187,7 @@ export class JanusNameService {
         throw new Error(error);
       }
     } else {
-      throw new Error(result.Errors[0].toString());
+      throw new Error(result.Errors[0]);
     }
   }
 
@@ -219,7 +217,7 @@ export class JanusNameService {
         throw new Error(error);
       }
     } else {
-      throw new Error(result.Errors[0].toString());
+      throw new Error(result.Errors[0]);
     }
   }
 }
