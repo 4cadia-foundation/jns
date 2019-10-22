@@ -1,7 +1,7 @@
-import axios from 'axios'
+import axios from 'axios';
 
-function contentService (contentName) {
-  return axios.get(`./static/content/${contentName}.json`)
+function contentService(contentName) {
+  return axios.get(`./static/content/${contentName}.json`);
 }
 
-export default contentService
+export default contentService;

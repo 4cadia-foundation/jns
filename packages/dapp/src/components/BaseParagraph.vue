@@ -1,8 +1,8 @@
 <template>
   <div class="paragraph">
-    <h2 class="subtitle" v-if="paragraph.title" v-html="paragraph.title"></h2>
+    <h2 v-if="paragraph.title" v-html="paragraph.title" class="subtitle"></h2>
     <div class="content">
-      <div class="text" v-if="paragraph.text" v-html="paragraph.text"></div>
+      <div v-if="paragraph.text" v-html="paragraph.text" class="text"></div>
       <slot></slot>
     </div>
   </div>
@@ -11,17 +11,17 @@
 <script>
 export default {
   name: 'BaseParagraph',
-  data () {
-    return {}
-  },
   props: {
     paragraph: {
-      type: Object
-    }
+      type: Object,
+      required: true,
+    },
   },
-  mounted () {
-  }
-}
+  data() {
+    return {};
+  },
+  mounted() {},
+};
 </script>
 <style>
 .paragraph {
@@ -31,7 +31,7 @@ export default {
   align-items: center;
   text-align: left;
 }
-.text{
+.text {
   /* text-align: left; */
 }
 @media (min-width: 1920px) {

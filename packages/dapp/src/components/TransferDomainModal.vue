@@ -29,41 +29,45 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import BaseModal from '@/components/BaseModal'
-import BaseInput from '@/components/BaseInput'
-import TransferDomainForm from '@/components/TransferDomainForm'
+import { mapGetters } from 'vuex';
+import BaseModal from '@/components/BaseModal';
+import TransferDomainForm from '@/components/TransferDomainForm';
 
 export default {
   name: 'TransferDomainModal',
-  extends: BaseModal,
   components: {
     'v-modal': BaseModal,
-    'v-input': BaseInput,
-    'v-transfer-domain-form': TransferDomainForm
+    'v-transfer-domain-form': TransferDomainForm,
   },
+  extends: BaseModal,
   props: {
-    tld: String,
-    domain: String
+    tld: {
+      type: String,
+      default: '',
+    },
+    domain: {
+      type: String,
+      default: '',
+    },
   },
   data: () => ({
-    newOwnerAddress: ''
+    newOwnerAddress: '',
   }),
   computed: {
-    ...mapGetters('validation', ['getErrorByType', 'getExceptionByType'])
+    ...mapGetters('validation', ['getErrorByType', 'getExceptionByType']),
   },
   methods: {
-    openModal () {
-      this.$refs.modal.openModal()
+    openModal() {
+      this.$refs.modal.openModal();
     },
-    closeModal () {
-      this.$refs.modal.closeModal()
+    closeModal() {
+      this.$refs.modal.closeModal();
     },
-    notifySuccessfulTransfer (payload) {
-      this.$emit('domain-transfer-succeeded', payload)
-    }
-  }
-}
+    notifySuccessfulTransfer(payload) {
+      this.$emit('domain-transfer-succeeded', payload);
+    },
+  },
+};
 </script>
 
 <style>

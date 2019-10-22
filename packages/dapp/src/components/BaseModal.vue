@@ -1,18 +1,17 @@
 <template>
   <div class="v-modal">
-    <transition name="modal" v-if="showModal">
+    <transition v-if="showModal" name="modal">
       <div class="modal-mask">
         <div class="modal-wrapper">
           <div class="modal-container">
-
             <div class="modal-header">
               <slot name="header"></slot>
-              <button class="btn--icon btn--close" @click="closeModal"></button>
+              <button @click="closeModal" class="btn--icon btn--close"></button>
             </div>
 
             <div class="modal-body">
               <slot name="body"></slot>
-              <loader v-if="this.isLoading"></loader>
+              <loader v-if="isLoading"></loader>
             </div>
 
             <div class="modal-footer">
@@ -26,37 +25,35 @@
 </template>
 
 <script>
-import BaseLoader from '@/components/BaseLoader'
+import BaseLoader from '@/components/BaseLoader';
 
 export default {
   name: 'BaseModal',
-  data () {
+  components: {
+    loader: BaseLoader,
+  },
+  props: {},
+  data() {
     return {
       showModal: false,
-      isLoading: false
-    }
+      isLoading: false,
+    };
   },
-  props: {
-  },
-  components: {
-    loader: BaseLoader
-  },
-  computed: {
+  computed: {},
+  mounted: function() {
+    this.$root.$on('openModal', () => {
+      this.openModal();
+    });
   },
   methods: {
-    closeModal: function () {
-      this.showModal = false
+    closeModal: function() {
+      this.showModal = false;
     },
-    openModal: function () {
-      this.showModal = true
-    }
+    openModal: function() {
+      this.showModal = true;
+    },
   },
-  mounted: function () {
-    this.$root.$on('openModal', () => {
-      this.openModal()
-    })
-  }
-}
+};
 </script>
 
 <style>
@@ -67,9 +64,9 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, .5);
+  background-color: rgba(0, 0, 0, 0.5);
   display: table;
-  transition: opacity .3s ease;
+  transition: opacity 0.3s ease;
 }
 
 .modal-wrapper {
@@ -81,11 +78,11 @@ export default {
   width: 20vw;
   min-width: 300px;
   margin: 0 auto;
-  padding: 2% 2% 4% 2% ;
+  padding: 2% 2% 4% 2%;
   background-color: #fff;
   border-radius: 2px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
-  transition: all .3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
+  transition: all 0.3s ease;
 }
 
 .modal-header {
@@ -96,7 +93,7 @@ export default {
 
 .modal-header h3 {
   margin: 0;
-  color: #5436D6;
+  color: #5436d6;
 }
 
 .modal-body {
@@ -121,10 +118,10 @@ export default {
 .modal-button {
   width: 220px;
   height: 44px;
-  font-family:'Montserrat', Helvetica, Arial, sans-serif;
+  font-family: 'Montserrat', Helvetica, Arial, sans-serif;
   font-size: 12pt;
   font-weight: 700;
-  color: #FFFFFF;
+  color: #ffffff;
   border-radius: 33px;
   border: 0;
   border: none;
@@ -138,7 +135,7 @@ export default {
   background: none;
   box-shadow: none;
   border: none;
-  padding: 0 8px 0 ;
+  padding: 0 8px 0;
   cursor: pointer;
   font-weight: 800;
 }
@@ -158,7 +155,7 @@ export default {
 
 .button-disabled {
   cursor: not-allowed;
-  opacity: .2;
+  opacity: 0.2;
 }
 
 /* Media Mobile */

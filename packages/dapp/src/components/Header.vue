@@ -1,14 +1,14 @@
 <template>
   <div class="header">
     <router-link to="/" class="header_logo">
-      <img class="logo" :src="`${this.logo}`" />
-      <span class="title logo">{{ this.title }}</span>
+      <img :src="`${logo}`" class="logo" />
+      <span class="title logo">{{ title }}</span>
     </router-link>
-    <div :class="`header_menu ${this.showMenu ? 'open' : ''}`">
-      <v-menu :menu="this.menu" v-on:handleMenuClick="handleMenuClick" />
+    <div :class="`header_menu ${showMenu ? 'open' : ''}`">
+      <v-menu :menu="menu" v-on:handleMenuClick="handleMenuClick" />
       <button
-        class="btn--icon menu-hamburguer"
         @click="toggleShowMenu()"
+        class="btn--icon menu-hamburguer"
       ></button>
       <!-- <identity /> -->
     </div>
@@ -16,38 +16,38 @@
 </template>
 
 <script>
-import contentService from '../api/contentService'
-import BaseMenu from '@/components/BaseMenu'
+import contentService from '../api/contentService';
+import BaseMenu from '@/components/BaseMenu';
 
 export default {
   name: 'Header',
   components: {
-    'v-menu': BaseMenu
+    'v-menu': BaseMenu,
   },
-  data () {
+  data() {
     return {
       showMenu: false,
       menu: [],
       logo: '',
-      title: ''
-    }
+      title: '',
+    };
+  },
+  mounted: function() {
+    contentService('header').then(response => {
+      this.menu = response.data.menu;
+      this.logo = response.data.logo;
+      this.title = response.data.title;
+    });
   },
   methods: {
-    toggleShowMenu: function (value) {
-      this.showMenu = !this.showMenu
+    toggleShowMenu: function(value) {
+      this.showMenu = !this.showMenu;
     },
-    handleMenuClick: function (link) {
-      if (this.showMenu) this.toggleShowMenu()
-    }
+    handleMenuClick: function(link) {
+      if (this.showMenu) this.toggleShowMenu();
+    },
   },
-  mounted: function () {
-    contentService('header').then(response => {
-      this.menu = response.data.menu
-      this.logo = response.data.logo
-      this.title = response.data.title
-    })
-  }
-}
+};
 </script>
 
 <style scoped>

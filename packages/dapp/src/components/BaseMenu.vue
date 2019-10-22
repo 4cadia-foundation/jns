@@ -1,41 +1,41 @@
 <template>
   <ul class="menu">
-    <li class="menu-item actions" v-for="(link, index) in this.menu" :key="index">
+    <li v-for="(link, index) in menu" :key="index" class="menu-item actions">
       <router-link v-if="link.path" :to="link.path">
-        <span v-on:click="handleMenuClick(link)">{{link.title}}</span>
+        <span v-on:click="handleMenuClick(link)">{{ link.title }}</span>
       </router-link>
-      <a target="_blank" v-else-if="link.href" :href="link.href">
-        <span v-on:click="handleMenuClick(link)">{{link.title}}</span>
+      <a v-else-if="link.href" :href="link.href" target="_blank">
+        <span v-on:click="handleMenuClick(link)">{{ link.title }}</span>
       </a>
-      <v-dropdown-menu v-else-if="link.sublinks" :dropdown="link"/>
-      <span v-else v-on:click="handleMenuClick(link)">{{link.title}}</span>
+      <v-dropdown-menu v-else-if="link.sublinks" :dropdown="link" />
+      <span v-else v-on:click="handleMenuClick(link)">{{ link.title }}</span>
     </li>
   </ul>
 </template>
 
 <script>
-import BaseDropdown from '@/components/BaseDropdown'
+import BaseDropdown from '@/components/BaseDropdown';
 
 export default {
   name: 'BaseMenu',
   components: {
-    'v-dropdown-menu': BaseDropdown
-  },
-  data () {
-    return {
-    }
-  },
-  methods: {
-    handleMenuClick: function (link) {
-      this.$emit('handleMenuClick', { link: link })
-    }
+    'v-dropdown-menu': BaseDropdown,
   },
   props: {
     menu: {
-      type: Array
-    }
-  }
-}
+      type: Array,
+      default: () => [],
+    },
+  },
+  data() {
+    return {};
+  },
+  methods: {
+    handleMenuClick: function(link) {
+      this.$emit('handleMenuClick', { link: link });
+    },
+  },
+};
 </script>
 
 <style>
@@ -72,7 +72,7 @@ export default {
     right: -70vw;
     padding: 60px 0;
     display: block;
-    transition: all linear .3s;
+    transition: all linear 0.3s;
   }
   .menu-item {
     margin-right: 10px;

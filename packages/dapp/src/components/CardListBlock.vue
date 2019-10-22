@@ -1,16 +1,21 @@
 <template>
   <div class="list-cards">
-    <h2 class="list-title">{{list.title}}</h2>
+    <h2 class="list-title">{{ list.title }}</h2>
     <ul class="list">
-      <li class="item" :style="`width:${width}%`" v-for="(item, index) in list.data" :key="index">
+      <li
+        :style="`width:${width}%`"
+        v-for="(item, index) in list.data"
+        :key="index"
+        class="item"
+      >
         <v-card ref="card" :cardType="cardStyle">
           <template v-slot:header>
-            <img class="item_icon" v-if="item.icon" :src="item.icon">
-            <h3 class="title" v-html="item.title || capitalize"></h3>
+            <img v-if="item.icon" :src="item.icon" class="item_icon" />
+            <h3 v-html="item.title || capitalize" class="title"></h3>
           </template>
 
           <template v-slot:body>
-            <p class="text" v-html="item.text"></p>
+            <p v-html="item.text" class="text"></p>
           </template>
         </v-card>
       </li>
@@ -19,34 +24,35 @@
 </template>
 
 <script>
-import BaseCard from '@/components/BaseCard'
+import BaseCard from '@/components/BaseCard';
 
 export default {
   name: 'CardListBlock',
-  data () {
-    return {
-      width: 100 / (this.list.data.length) - 2
-    }
-  },
   filters: {
     capitalize: item => {
-      return item.toUpperCase()
-    }
+      return item.toUpperCase();
+    },
+  },
+  components: {
+    'v-card': BaseCard,
   },
   props: {
     list: {
-      type: Object
+      type: Object,
+      required: true,
     },
     cardStyle: {
-      type: String
-    }
+      type: String,
+      required: true,
+    },
   },
-  components: {
-    'v-card': BaseCard
+  data() {
+    return {
+      width: 100 / this.list.data.length - 2,
+    };
   },
-  mounted () {
-  }
-}
+  mounted() {},
+};
 </script>
 <style scoped>
 .list {

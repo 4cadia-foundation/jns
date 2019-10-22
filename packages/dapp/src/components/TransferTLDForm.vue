@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="handleSubmit" ref="transferForm">
+  <form ref="transferForm" @submit.prevent="handleSubmit">
     <h4>TLD:</h4>
     <div class="row-wrapper">
       <img
@@ -14,27 +14,27 @@
       <div class="field_wrapper field--tld">
         <v-input
           ref="newOwnerInput"
-          placeholderTxt="eg.: 0x0000000000000000000000000000000000000000"
-          inputType="text"
-          inputName="tld"
-          inputLabel="New owner address: "
-          labelClass=""
           v-model="newOwnerAddress"
           :required="true"
           :alphaNumeric="true"
+          placeholder-txt="eg.: 0x0000000000000000000000000000000000000000"
+          input-type="text"
+          input-name="tld"
+          input-label="New owner address: "
+          label-class=""
           maxlength="42"
           minlength="42"
         />
       </div>
     </div>
     <button
-      type="submit"
       :class="[
         'btn',
         'btn-confirm',
         isValid ? 'btn--success' : 'btn--disabled',
       ]"
       :disabled="!isValid"
+      type="submit"
     >
       Confirm Transaction
     </button>
@@ -42,52 +42,55 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import BaseInput from '@/components/BaseInput'
-import { withLoading } from '../utils/decorators'
-import { decorateMethods } from '../utils/decorators/helpers'
+import { mapGetters } from 'vuex';
+import BaseInput from '@/components/BaseInput';
+import { withLoading } from '../utils/decorators';
+import { decorateMethods } from '../utils/decorators/helpers';
 
-const attachLoadingBehavior = decorateMethods(withLoading, ['transferTld'])
+const attachLoadingBehavior = decorateMethods(withLoading, ['transferTld']);
 
 export default {
   name: 'TransferTLDForm',
   components: {
-    'v-input': BaseInput
+    'v-input': BaseInput,
   },
   props: {
-    tld: String
+    tld: {
+      type: String,
+      required: true,
+    },
   },
   data: () => ({
     newOwnerAddress: '',
-    isMounted: false
+    isMounted: false,
   }),
-  mounted () {
-    this.isMounted = true
-  },
   computed: {
     ...mapGetters('validation', ['getErrorByType', 'getExceptionByType']),
-    isValid () {
+    isValid() {
       if (!this.isMounted) {
-        return false
+        return false;
       }
 
-      return !this.$refs.newOwnerInput.hasExceptions
-    }
+      return !this.$refs.newOwnerInput.hasExceptions;
+    },
+  },
+  mounted() {
+    this.isMounted = true;
   },
   methods: attachLoadingBehavior({
-    handleSubmit: function () {
-      console.log('Aqui <<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>', this.isValid)
-      this.$refs.newOwnerInput.handleValidate()
+    handleSubmit: function() {
+      console.log('Aqui <<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>', this.isValid);
+      this.$refs.newOwnerInput.handleValidate();
 
       if (this.isValid) {
-        this.transferTld(this.tld, this.newOwnerAddress)
+        this.transferTld(this.tld, this.newOwnerAddress);
       }
     },
-    async transferTld (tld, newOwnerAddress) {
+    async transferTld(tld, newOwnerAddress) {
       try {
         const response = await this.$store.getters
           .jnsInstance()
-          .TransferTLD(tld, newOwnerAddress)
+          .TransferTLD(tld, newOwnerAddress);
 
         if (
           response.Success &&
@@ -95,28 +98,28 @@ export default {
         ) {
           this.$notification.success(
             `Successfully transfered the TLD ${tld} to ${newOwnerAddress}`
-          )
+          );
         }
 
         this.$emit('tld-transfer-succeeded', {
           tld,
-          newOwnerAddress
-        })
+          newOwnerAddress,
+        });
       } catch (err) {
-        this.$notification.error(err.message)
+        this.$notification.error(err.message);
         this.$emit('tld-transfer-failed', {
           tld,
-          newOwnerAddress
-        })
+          newOwnerAddress,
+        });
       } finally {
         this.$emit('tld-transfer-finished', {
           tld,
-          newOwnerAddress
-        })
+          newOwnerAddress,
+        });
       }
-    }
-  })
-}
+    },
+  }),
+};
 </script>
 
 <style>

@@ -1,44 +1,48 @@
 <template>
-  <div :class="`hero float--${float} ${classes}`" >
+  <div :class="`hero float--${float} ${classes}`">
     <div class="hero_content">
       <div class="content content--text">
-        <h1 class="title" v-if="hero.title" v-html="hero.title"></h1>
-        <div class="text subtitle" v-if="hero.text" v-html="hero.text"></div>
+        <h1 v-if="hero.title" v-html="hero.title" class="title"></h1>
+        <div v-if="hero.text" v-html="hero.text" class="text subtitle"></div>
       </div>
-      <div class="content content--image" v-if="hero.image">
-        <img :src="hero.image" alt="">
+      <div v-if="hero.image" class="content content--image">
+        <img :src="hero.image" alt="" />
       </div>
       <div class="content content--slot">
         <slot></slot>
       </div>
     </div>
-    <img class="hero_background" src="../../static/images/hero.png" alt="background color">
+    <img
+      class="hero_background"
+      src="../../static/images/hero.png"
+      alt="background color"
+    />
   </div>
 </template>
 
 <script>
 export default {
   name: 'Hero',
-  data () {
-    return {
-    }
-  },
   props: {
     hero: {
-      type: Object
+      type: Object,
+      required: true,
     },
     float: {
-      type: String
+      type: String,
+      default: 'left',
     },
     classes: {
-      type: String
-    }
+      type: String,
+      default: '',
+    },
   },
-  mounted () {
+  data() {
+    return {};
   },
-  methods: {
-  }
-}
+  mounted() {},
+  methods: {},
+};
 </script>
 <style scoped>
 .hero {
@@ -50,7 +54,7 @@ export default {
 
 .hero.colapsed {
   min-height: auto;
-  transition: all linear .1s;
+  transition: all linear 0.1s;
 }
 
 .hero.colapsed .hero_background {

@@ -42,22 +42,22 @@
           <div class="modal-row">
             <h4>Insert your IPFS Hash:</h4>
             <v-input
-              placeholderTxt="eg.: QmYbs8fHzYaXufL5gMyWB1XgnvbLRSqv9bb58LJHX3ziVv"
-              inputType="text"
-              inputName="IpfsHash"
-              minlength="46"
-              maxlength="46"
+              ref="IpfsHashInput"
               v-model="IpfsHash"
               :required="true"
               :alphaNumeric="true"
-              ref="IpfsHashInput"
+              placeholder-txt="eg.: QmYbs8fHzYaXufL5gMyWB1XgnvbLRSqv9bb58LJHX3ziVv"
+              input-type="text"
+              input-name="IpfsHash"
+              minlength="46"
+              maxlength="46"
             />
           </div>
         </div>
       </template>
 
       <template v-slot:footer>
-        <button class="btn btn--success btn-confirm" @click="handleConfirm">
+        <button @click="handleConfirm" class="btn btn--success btn-confirm">
           Confirm Transaction
         </button>
       </template>
@@ -66,40 +66,43 @@
 </template>
 
 <script>
-import BaseModal from '@/components/BaseModal'
-import BaseInput from '@/components/BaseInput'
+import BaseModal from '@/components/BaseModal';
+import BaseInput from '@/components/BaseInput';
 
 export default {
   name: 'BuyDomainModal',
-  data () {
-    return {
-      IpfsHash: ''
-    }
-  },
   components: {
     'v-modal': BaseModal,
-    'v-input': BaseInput
+    'v-input': BaseInput,
   },
-  computed: {},
   props: {
     domainValue: {
-      type: String
+      type: String,
+      default: '',
     },
     tldValue: {
-      type: String
-    }
+      type: String,
+      default: '',
+    },
   },
+  data() {
+    return {
+      IpfsHash: '',
+    };
+  },
+  computed: {},
+  mounted: function() {},
   methods: {
-    openModal: function () {
-      this.$refs.confirmBuyModal.openModal()
+    openModal: function() {
+      this.$refs.confirmBuyModal.openModal();
     },
-    handleConfirm: function () {
-      this.buyDomain(this.domainValue, this.tldValue, this.IpfsHash)
+    handleConfirm: function() {
+      this.buyDomain(this.domainValue, this.tldValue, this.IpfsHash);
     },
-    buyDomain (domain, tld, storageHash) {
+    buyDomain(domain, tld, storageHash) {
       this.loader = this.$loading.show({
-        container: this.fullPage ? null : this.$refs.formContainer
-      })
+        container: this.fullPage ? null : this.$refs.formContainer,
+      });
 
       this.$store.getters
         .jnsInstance()
@@ -111,26 +114,25 @@ export default {
           ) {
             this.$notification.success(
               'Success! Thank you for register a domain in Web3!'
-            )
+            );
           }
           this.$emit('handleSearchTLD', {
             isAvaliable: false,
-            tldSearchValue: tld
-          })
+            tldSearchValue: tld,
+          });
           // console.log('BuyDomain', newDomain)
         })
         .catch(err => {
-          this.$notification.error(err.message)
-          console.error('BuyDomain', err)
+          this.$notification.error(err.message);
+          console.error('BuyDomain', err);
         })
         .finally(() => {
-          this.$refs.confirmBuyModal.closeModal()
-          this.loader.hide()
-        })
-    }
+          this.$refs.confirmBuyModal.closeModal();
+          this.loader.hide();
+        });
+    },
   },
-  mounted: function () {}
-}
+};
 </script>
 
 <style>

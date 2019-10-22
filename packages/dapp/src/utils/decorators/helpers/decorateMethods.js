@@ -2,7 +2,7 @@ const getOwnMethodNames = obj =>
   Object.entries(obj).reduce(
     (acc, [key, value]) => (typeof value === 'function' ? [...acc, key] : acc),
     []
-  )
+  );
 
 /**
  * Creates an object "enhancer" function.
@@ -13,10 +13,10 @@ const getOwnMethodNames = obj =>
  * @returns {Function} function that when called will decorate `methods`
  * from the object passed  as parameter with the given `decorator` function
  */
-export default function decorateMethods (decorator, methods) {
+export default function decorateMethods(decorator, methods) {
   return obj => {
     if (!Array.isArray(methods)) {
-      methods = getOwnMethodNames(obj)
+      methods = getOwnMethodNames(obj);
     }
 
     return methods.reduce(
@@ -25,6 +25,6 @@ export default function decorateMethods (decorator, methods) {
           ? Object.assign(acc, { [methodName]: decorator(obj[methodName]) })
           : acc,
       { ...obj }
-    )
-  }
+    );
+  };
 }

@@ -1,10 +1,25 @@
 <template>
   <div class="submenu dropdown">
-    <a class="dropdown-toggle" href="#" role="button" aria-haspopup="true" aria-expanded="false">{{ dropdown.title }}</a>
+    <a
+      class="dropdown-toggle"
+      href="#"
+      role="button"
+      aria-haspopup="true"
+      aria-expanded="false"
+      >{{ dropdown.title }}</a
+    >
     <ul class="dropdown-menu shadow">
-      <li class="dropdown-item" v-for="(link, index) in dropdown.sublinks" :key="index">
-        <router-link v-if="link.path" :to="link.path">{{ link.title }}</router-link>
-        <a target="_blank" v-else-if="link.href" :href="link.href">{{ link.title }}</a>
+      <li
+        v-for="(link, index) in dropdown.sublinks"
+        :key="index"
+        class="dropdown-item"
+      >
+        <router-link v-if="link.path" :to="link.path">{{
+          link.title
+        }}</router-link>
+        <a v-else-if="link.href" :href="link.href" target="_blank">{{
+          link.title
+        }}</a>
       </li>
     </ul>
   </div>
@@ -13,22 +28,19 @@
 <script>
 export default {
   name: 'BaseDropdown',
-  components: {
-  },
-  data () {
-    return {
-    }
-  },
-  methods: {
-  },
+  components: {},
   props: {
     dropdown: {
-      type: Object
-    }
+      type: Object,
+      default: () => ({}),
+    },
   },
-  mounted: function () {
-  }
-}
+  data() {
+    return {};
+  },
+  mounted: function() {},
+  methods: {},
+};
 </script>
 
 <style>
@@ -41,7 +53,7 @@ export default {
 .dropdown:hover .btn--outline {
   color: white;
   background: var(--color-primary);
-  transition: all ease-out .3s;
+  transition: all ease-out 0.3s;
 }
 .dropdown-menu {
   position: absolute;

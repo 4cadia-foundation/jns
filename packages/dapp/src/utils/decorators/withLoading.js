@@ -1,4 +1,4 @@
-import { createDecorator } from './helpers'
+import { createDecorator } from './helpers';
 
 /**
  * Wraps a Vue component method call with loading behavior using `vue-loading-overlay`.
@@ -12,8 +12,8 @@ import { createDecorator } from './helpers'
  * @return {AsyncFunction} the wrapped method.
  * @throws {Error} if `vue-loading-overlay` was not previously include by Vue.
  */
-function withLoading (method) {
-  return async function withLoadingWrapper (...args) {
+function withLoading(method) {
+  return async function withLoadingWrapper(...args) {
     if (!this.$loading) {
       throw new Error(`vue-loading-overlay was not included by Vue.
 Please add the following to your main file:
@@ -21,21 +21,19 @@ Please add the following to your main file:
   import Loading from 'vue-loading-overlay'
   Vue.use(Loading, {
     // ...options
-  })`)
+  })`);
     }
 
     const loader = this.$loading.show({
-      container: this.fullPage ? null : this.$refs.loadingContainer
-    })
+      container: this.fullPage ? null : this.$refs.loadingContainer,
+    });
 
     try {
-      return await method.apply(this, args)
-    } catch (err) {
-      throw err
+      return await method.apply(this, args);
     } finally {
-      loader.hide()
+      loader.hide();
     }
-  }
+  };
 }
 
-export default createDecorator(withLoading)
+export default createDecorator(withLoading);

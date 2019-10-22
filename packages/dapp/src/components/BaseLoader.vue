@@ -7,11 +7,9 @@
 <script>
 export default {
   name: 'BaseLoader',
-  components: {
-  },
-  props: {
-  }
-}
+  components: {},
+  props: {},
+};
 </script>
 
 <style scoped>
@@ -31,9 +29,9 @@ export default {
   font-size: 10px;
   position: relative;
   text-indent: -9999em;
-  border-top: 5px solid rgba(83,167,250, 0.2);
-  border-right: 5px solid rgba(83,167,250, 0.2);
-  border-bottom: 5px solid rgba(83,167,250, 0.2);
+  border-top: 5px solid rgba(83, 167, 250, 0.2);
+  border-right: 5px solid rgba(83, 167, 250, 0.2);
+  border-bottom: 5px solid rgba(83, 167, 250, 0.2);
   border-left: 5px solid var(--color-primary);
   -webkit-transform: translateZ(0);
   -ms-transform: translateZ(0);
