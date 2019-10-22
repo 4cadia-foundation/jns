@@ -247,8 +247,6 @@ export default {
     handleRenewDomain ({Name, TLD}) {
       this.selectedDomain = {domain: Name, tld: TLD}
       this.$refs.modalRenewDomain.openModal()
-      const {action, element} = event
-      this[action.handler](element)
     },
     transferTld ({ Name, Expires }) {
       this.selectedTld = { name: Name, expires: Expires }
