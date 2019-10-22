@@ -25,10 +25,9 @@ export default class DomainValidator extends AbstractValidator<
       .withFailureMessage("Top Level Domain can't be empty");
 
     this.validateIfString(i => i.TLD.toString())
-      .hasMinLength(2)
-      .hasMaxLength(5)
+      .hasMinLength(1)
       .withFailureMessage(
-        'Top level Domain must be between two and five characters'
+        'Top level Domain must be greater than one character'
       );
 
     this.validateIfString(i => i.TLD.toString())
@@ -44,8 +43,8 @@ export default class DomainValidator extends AbstractValidator<
       .withFailureMessage("Domain can't be empty");
 
     this.validateIfString(i => i.Name.toString())
-      .hasMinLength(3)
-      .withFailureMessage('Domain must be greater than three characters');
+      .hasMinLength(1)
+      .withFailureMessage('Domain must be greater than one character');
 
     this.validateIfString(i => i.Name.toString())
       .isAlphanumeric()

@@ -19,10 +19,10 @@ export default class TldValidator extends AbstractValidator<string> {
       .withFailureMessage("Top Level Domain can't be empty");
 
     this.validateIfString(i => i.toString())
-      .hasMinLength(2)
-      .hasMaxLength(5)
+      .hasMinLength(1)
+      .hasMaxLength(18)
       .withFailureMessage(
-        'Top level Domain must be between two and five characters'
+        'Top level Domain must be between one and eighteen characters'
       );
 
     this.validateIfString(i => i.toString())

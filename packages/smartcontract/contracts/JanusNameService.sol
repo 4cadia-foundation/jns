@@ -5,12 +5,12 @@ contract JanusNameService {
 
     address payable public contractOwner;
 
-    uint constant TOP_DOMAIN_NAME_MIN_LENGTH = 2;
-    uint constant TOP_DOMAIN_NAME_MAX_LENGTH = 5;
+    uint constant TOP_DOMAIN_NAME_MIN_LENGTH = 1;
+    uint constant TOP_DOMAIN_NAME_MAX_LENGTH = 18;
     uint constant TOP_DOMAIN_EXPIRATION_DAYS = 365 days;
 
     uint constant DOMAIN_EXPIRATION_DAYS = 365 days;
-    uint constant DOMAIN_NAME_MIN_LENGTH = 3;
+    uint constant DOMAIN_NAME_MIN_LENGTH = 1;
 
     struct TopDomain {
         string name;
