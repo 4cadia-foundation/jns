@@ -210,12 +210,8 @@ export class JanusNameService {
     result.Errors = validation.getFailureMessages();
 
     if (result.Success) {
-      try {
-        const dealed = await this._jnsService.RenewDomain(request);
-        return dealed;
-      } catch (error) {
-        throw new Error(error);
-      }
+      const dealed = await this._jnsService.RenewDomain(request);
+      return dealed;
     } else {
       throw new Error(result.Errors[0]);
     }
