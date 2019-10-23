@@ -1,5 +1,6 @@
 'use strict';
 const path = require('path');
+const webpack = require('webpack');
 const utils = require('./utils');
 const config = require('../config');
 const vueLoaderConfig = require('./vue-loader.conf');
@@ -7,6 +8,8 @@ const vueLoaderConfig = require('./vue-loader.conf');
 function resolve(dir) {
   return path.join(__dirname, '..', dir);
 }
+
+const supportedLocales = ['en', 'pt'];
 
 module.exports = {
   context: path.resolve(__dirname, '../'),
@@ -70,6 +73,12 @@ module.exports = {
       },
     ],
   },
+  plugins: [
+    new webpack.ContextReplacementPlugin(
+      /date-fns[/\\]/,
+      new RegExp(`[/\\\\](${supportedLocales.join('|')})[/\\\\]`)
+    ),
+  ],
   node: {
     // prevent webpack from injecting useless setImmediate polyfill because Vue
     // source contains it (although only uses it if it's native).
