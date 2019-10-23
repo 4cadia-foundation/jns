@@ -6,7 +6,7 @@ import Bootstrapper from '../../Infra/Bootstrapper';
 import { BuyDomainRequest } from '../../Domain/Entity/BuyDomainRequest';
 import { DomainExistsRequest } from '../../Domain/Entity/DomainExistsRequest';
 
-export default class DomainValidator extends AbstractValidator<
+export default class BuyDomainValidator extends AbstractValidator<
   BuyDomainRequest
 > {
   _jnsService: INameService;
@@ -16,7 +16,7 @@ export default class DomainValidator extends AbstractValidator<
     this._jnsService = Bootstrapper.Resolve<INameService>('INameService');
   }
 
-  public async ValidateNewDomainRequest(
+  public async ValidateBuyDomainRequest(
     request: BuyDomainRequest
   ): Promise<ValidationResult> {
     this.validateIf(a => a.TLD)

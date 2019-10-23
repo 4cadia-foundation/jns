@@ -2,14 +2,17 @@ import Bootstrapper from './Infra/Bootstrapper';
 import INameService from './Application/Interface/INameService';
 import { Web3Provider } from 'ethers/providers';
 import { RequestResult } from './Domain/Entity/RequestResult';
-import TldValidator from './Application/Validator/TldValidator';
 import NameServiceConfig from './Domain/Entity/NameServiceConfig';
-import DomainValidator from './Application/Validator/DomainValidator';
 import TransferTldValidator from './Application/Validator/TransferTldValidator';
 import { BuyDomainRequest } from './Domain/Entity/BuyDomainRequest';
 import { DomainExistsRequest } from './Domain/Entity/DomainExistsRequest';
 import { RenewTldRequest } from './Domain/Entity/RenewTldRequest';
 import { TransferTldRequest } from './Domain/Entity/TransferTldRequest';
+import { RenewDomainRequest } from './Domain/Entity/RenewDomainRequest';
+import BuyTldValidator from './Application/Validator/BuyTldValidator';
+import BuyDomainValidator from './Application/Validator/BuyDomainValidator';
+import RenewTldValidator from './Application/Validator/RenewTldValidator';
+import RenewDomainValidator from './Application/Validator/RenewDomainValidator';
 
 export class JanusNameService {
   public _jnsService: INameService;
@@ -23,7 +26,7 @@ export class JanusNameService {
     tld = tld.toLowerCase();
     const config = Bootstrapper.Resolve<NameServiceConfig>('NameServiceConfig');
 
-    const validator = new TldValidator(config);
+    const validator = new BuyTldValidator(config);
     const result = new RequestResult();
 
     const validation = await validator.ValidateBuyTldRequest(tld);
@@ -62,7 +65,7 @@ export class JanusNameService {
     if (result.Success) {
       return this._jnsService.TransferTLD(request);
     } else {
-      throw new Error(result.Errors[0].toString());
+      throw new Error(result.Errors[0]);
     }
   }
 
@@ -78,10 +81,10 @@ export class JanusNameService {
 
     const config = Bootstrapper.Resolve<NameServiceConfig>('NameServiceConfig');
 
-    const validator = new DomainValidator(config);
+    const validator = new BuyDomainValidator(config);
     const result = new RequestResult();
 
-    const validation = await validator.ValidateNewDomainRequest(request);
+    const validation = await validator.ValidateBuyDomainRequest(request);
 
     result.Success = validation.isValid();
     result.Errors = validation.getFailureMessages();
@@ -90,7 +93,7 @@ export class JanusNameService {
       const dealed = await this._jnsService.BuyDomain(request);
       return dealed;
     } else {
-      throw new Error(result.Errors[0].toString());
+      throw new Error(result.Errors[0]);
     }
   }
 
@@ -168,7 +171,7 @@ export class JanusNameService {
 
     const config = Bootstrapper.Resolve<NameServiceConfig>('NameServiceConfig');
 
-    const validator = new TldValidator(config);
+    const validator = new RenewTldValidator(config);
     const result = new RequestResult();
 
     const validation = await validator.ValidateRenewTldRequest(request.tld);
@@ -184,7 +187,33 @@ export class JanusNameService {
         throw new Error(error);
       }
     } else {
-      throw new Error(result.Errors[0].toString());
+      throw new Error(result.Errors[0]);
+    }
+  }
+
+  public async RenewDomain(
+    domain: string,
+    tld: string
+  ): Promise<RequestResult> {
+    domain = domain.toLocaleLowerCase();
+    tld = tld.toLocaleLowerCase();
+
+    const request = new RenewDomainRequest(domain, tld);
+
+    const config = Bootstrapper.Resolve<NameServiceConfig>('NameServiceConfig');
+
+    const validator = new RenewDomainValidator(config);
+    const validation = await validator.ValidateRenewDomainRequest(request);
+
+    const result = new RequestResult();
+    result.Success = validation.isValid();
+    result.Errors = validation.getFailureMessages();
+
+    if (result.Success) {
+      const dealed = await this._jnsService.RenewDomain(request);
+      return dealed;
+    } else {
+      throw new Error(result.Errors[0]);
     }
   }
 }

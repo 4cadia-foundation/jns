@@ -4,7 +4,7 @@ import NameServiceConfig from '../../Domain/Entity/NameServiceConfig';
 import Bootstrapper from '../../Infra/Bootstrapper';
 import INameService from '../Interface/INameService';
 
-export default class TldValidator extends AbstractValidator<string> {
+export default class BuyTldValidator extends AbstractValidator<string> {
   _jnsService: INameService;
 
   constructor(@inject('NameServiceConfig') _jnsconfig: NameServiceConfig) {
@@ -36,22 +36,6 @@ export default class TldValidator extends AbstractValidator<string> {
     this.validateIf(() => isExists)
       .isEqualTo(false)
       .withFailureMessage(`Top Level Domain "${tld}" has already registered`);
-
-    return this.validate(tld);
-  }
-
-  public async ValidateRenewTldRequest(tld: string): Promise<ValidationResult> {
-    this.validateIf(i => i)
-      .isNotEmpty()
-      .isNotNull()
-      .withFailureMessage("Top Level Domain can't be empty");
-
-    this.validateIfString(i => i.toString())
-      .isAlphanumeric()
-      .isLowercase()
-      .withFailureMessage(
-        'Top level domain must be alphanumeric characters and lower case'
-      );
 
     return this.validate(tld);
   }
