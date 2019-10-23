@@ -4,15 +4,17 @@ import { Web3Provider } from 'ethers/providers';
 import { RequestResult } from './Domain/Entity/RequestResult';
 import NameServiceConfig from './Domain/Entity/NameServiceConfig';
 import TransferTldValidator from './Application/Validator/TransferTldValidator';
+import TransferDomainValidator from './Application/Validator/TransferDomainValidator';
+import BuyTldValidator from './Application/Validator/BuyTldValidator';
+import BuyDomainValidator from './Application/Validator/BuyDomainValidator';
+import RenewTldValidator from './Application/Validator/RenewTldValidator';
+import RenewDomainValidator from './Application/Validator/RenewDomainValidator';
 import { BuyDomainRequest } from './Domain/Entity/BuyDomainRequest';
 import { DomainExistsRequest } from './Domain/Entity/DomainExistsRequest';
 import { RenewTldRequest } from './Domain/Entity/RenewTldRequest';
 import { TransferTldRequest } from './Domain/Entity/TransferTldRequest';
 import { RenewDomainRequest } from './Domain/Entity/RenewDomainRequest';
-import BuyTldValidator from './Application/Validator/BuyTldValidator';
-import BuyDomainValidator from './Application/Validator/BuyDomainValidator';
-import RenewTldValidator from './Application/Validator/RenewTldValidator';
-import RenewDomainValidator from './Application/Validator/RenewDomainValidator';
+import { TransferDomainRequest } from './Domain/Entity/TransferDomainRequest';
 
 export class JanusNameService {
   public _jnsService: INameService;
@@ -95,6 +97,36 @@ export class JanusNameService {
     } else {
       throw new Error(result.Errors[0]);
     }
+  }
+
+  public async TransferDomain(
+    domain: string,
+    tld: string,
+    newOwnerAddress: string
+  ): Promise<RequestResult> {
+    domain = domain.toLowerCase();
+    tld = tld.toLowerCase();
+
+    const request: TransferDomainRequest = {
+      domain,
+      tld,
+      newOwnerAddress,
+    };
+
+    const config = Bootstrapper.Resolve<NameServiceConfig>('NameServiceConfig');
+
+    const validator = new TransferDomainValidator(config);
+    const validation = await validator.ValidateTransferDomainRequest(request);
+
+    const result = new RequestResult();
+    result.Success = validation.isValid();
+    result.Errors = validation.getFailureMessages();
+
+    if (result.Success) {
+      return this._jnsService.TransferDomain(request);
+    }
+
+    return result;
   }
 
   public async ListDomain(): Promise<RequestResult> {

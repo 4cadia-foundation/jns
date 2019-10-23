@@ -1,4 +1,4 @@
-export class ListDomainByOwnerResult {
+export class Domain {
   constructor(
     public Name: string,
     public TLD: string,

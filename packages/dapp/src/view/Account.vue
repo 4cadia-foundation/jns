@@ -1,7 +1,12 @@
 <template>
   <div class="container container--account">
     <div class="row row--full">
-      <v-hero v-if="content.list_hero" :hero="content.list_hero" float="right" classes="colapsed"></v-hero>
+      <v-hero
+        v-if="content.list_hero"
+        :hero="content.list_hero"
+        float="right"
+        classes="colapsed"
+      ></v-hero>
     </div>
     <div class="tab-menu">
       <v-actions-menu
@@ -15,12 +20,16 @@
       <ul class="list">
         <div v-if="!list[0] && activeTab == 'domain'">
           <h3>You don't have any domain. Try buying one first!</h3>
-          <router-link to="/domain" class="btn btn--link btn--hero">get your new domain</router-link>
+          <router-link to="/domain" class="btn btn--link btn--hero"
+            >get your new domain</router-link
+          >
         </div>
 
         <div v-if="!list[0] && activeTab == 'tld'">
           <h3>You don't have any Top Level Domain. Try buying one first!</h3>
-          <router-link to="/tld" class="btn btn--link btn--hero">get your new TLD</router-link>
+          <router-link to="/tld" class="btn btn--link btn--hero"
+            >get your new TLD</router-link
+          >
         </div>
 
         <li class="item" v-for="(item, index) in this.list" :key="index">
@@ -54,8 +63,12 @@
             </template>
 
             <template v-slot:footer>
-              <p v-if="checkStatus(item.Expires) == 'alert'">This domain is expired</p>
-              <p v-if="checkStatus(item.Expires) == 'warn'">This domain is close to expire</p>
+              <p v-if="checkStatus(item.Expires) == 'alert'">
+                This domain is expired
+              </p>
+              <p v-if="checkStatus(item.Expires) == 'warn'">
+                This domain is close to expire
+              </p>
             </template>
           </v-card>
         </li>
@@ -81,19 +94,28 @@
         :tld="selectedTld.name"
       />
     </div>
+    <div class="modal-domain">
+      <v-domain-transfer-modal
+        ref="modalTransferDomain"
+        @domain-transfer-succeeded="reloadDomainsAndTlds"
+        :tld="selectedDomain.tld"
+        :domain="selectedDomain.name"
+      />
+    </div>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import differenceInCalendarDays from 'date-fns/differenceInCalendarDays'
-import contentService from '../api/contentService'
+import contentService from '@/api/contentService'
 import Hero from '@/components/Hero'
 import BaseCard from '@/components/BaseCard'
-import { mapGetters } from 'vuex'
 import ActionDropdown from '@/components/ActionDropdown'
 import BaseActionsMenu from '@/components/BaseActionsMenu'
 import RenewTLDModal from '@/components/RenewTLDModal'
 import TransferTLDModal from '@/components/TransferTLDModal'
+import TransferDomainModal from '@/components/TransferDomainModal'
 import { onEthereumChanged } from '@/utils/mixins'
 import RenewDomainModal from '@/components/RenewDomainModal'
 
@@ -102,6 +124,16 @@ const reloadOnChanges = onEthereumChanged('reloadDomainsAndTlds')
 export default {
   name: 'Account',
   mixins: [reloadOnChanges],
+  components: {
+    'v-hero': Hero,
+    'v-card': BaseCard,
+    'v-action-dropdown': ActionDropdown,
+    'v-actions-menu': BaseActionsMenu,
+    'v-renew-tld-modal': RenewTLDModal,
+    'v-tld-transfer-modal': TransferTLDModal,
+    'v-domain-transfer-modal': TransferDomainModal,
+    'v-renew-domain-modal': RenewDomainModal
+  },
   data () {
     return {
       content: [],
@@ -118,7 +150,7 @@ export default {
             },
             {
               title: 'Transfer',
-              handler: 'transferDomain',
+              handler: 'handleTransferDomain',
               callToAction: 'cardAction'
             },
             {
@@ -138,7 +170,7 @@ export default {
             },
             {
               title: 'Transfer',
-              handler: 'transferTld',
+              handler: 'handleTransferTld',
               callToAction: 'cardAction'
             }
           ]
@@ -196,15 +228,6 @@ export default {
     },
     ...mapGetters(['topLevelDomains', 'domains'])
   },
-  components: {
-    'v-hero': Hero,
-    'v-card': BaseCard,
-    'v-action-dropdown': ActionDropdown,
-    'v-actions-menu': BaseActionsMenu,
-    'v-renew-tld-modal': RenewTLDModal,
-    'v-tld-transfer-modal': TransferTLDModal,
-    'v-renew-domain-modal': RenewDomainModal
-  },
   filters: {
     moment: date => new Date(date * 1000).toLocaleDateString()
   },
@@ -244,13 +267,17 @@ export default {
       const { action, element } = event
       this[action.handler](element)
     },
-    handleRenewDomain ({Name, TLD}) {
-      this.selectedDomain = {domain: Name, tld: TLD}
+    handleRenewDomain ({ Name, TLD }) {
+      this.selectedDomain = { domain: Name, tld: TLD }
       this.$refs.modalRenewDomain.openModal()
     },
-    transferTld ({ Name, Expires }) {
+    handleTransferTld ({ Name, Expires }) {
       this.selectedTld = { name: Name, expires: Expires }
       this.$refs.modalTransferTld.openModal()
+    },
+    handleTransferDomain ({ Name, TLD }) {
+      this.selectedDomain = { name: Name, tld: TLD }
+      this.$refs.modalTransferDomain.openModal()
     },
     reloadDomainsAndTlds () {
       this.$store.dispatch('loadAll')
