@@ -1,5 +1,5 @@
 <template>
-  <form class="form form--hero shadow--dark" @submit.prevent="handleSubmit">
+  <form @submit.prevent="handleSubmit" class="form form--hero shadow--dark">
     <div class="form_content form_content--body">
       <slot></slot>
     </div>
@@ -13,22 +13,23 @@
 export default {
   name: 'FormHero',
   components: {},
-  data () {
-    return {}
-  },
   props: {
     action: {
-      type: Object
-    }
+      type: Object,
+      required: true,
+    },
+  },
+  data() {
+    return {};
   },
   computed: {},
+  mounted() {},
   methods: {
-    handleSubmit: function (event) {
-      this.$emit(this.action.handler, { action: this.action, event: event })
-    }
+    handleSubmit: function(event) {
+      this.$emit(this.action.handler, { action: this.action, event: event });
+    },
   },
-  mounted () {}
-}
+};
 </script>
 
 <style>

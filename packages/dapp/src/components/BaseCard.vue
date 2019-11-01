@@ -1,5 +1,5 @@
 <template>
-  <div :class="`card shadow ${this.cardType}`">
+  <div :class="`card shadow ${cardType}`">
     <div v-if="this.$slots.header" class="card_content card_header">
       <slot name="header"></slot>
     </div>
@@ -15,25 +15,23 @@
 <script>
 export default {
   name: 'BaseCard',
-  data () {
-    return {
-    }
-  },
   filters: {
     capitalize: item => {
-      return item.toUpperCase()
-    }
+      return item.toUpperCase();
+    },
   },
+  components: {},
   props: {
     cardType: {
-      type: String
-    }
+      type: String,
+      required: true,
+    },
   },
-  components: {
+  data() {
+    return {};
   },
-  mounted () {
-  }
-}
+  mounted() {},
+};
 </script>
 
 <style>

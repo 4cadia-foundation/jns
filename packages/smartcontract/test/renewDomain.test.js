@@ -1,6 +1,6 @@
 const OwnerApp = artifacts.require('../contracts/JanusNameService');
 const Assert = require('truffle-assertions');
-const differenceInCalendarDays = require('date-fns/difference_in_calendar_days');
+const { differenceInCalendarDays } = require('date-fns');
 
 contract('JanusNameService - 06-renewDomain.test.js', accounts => {
   let contractInstance;

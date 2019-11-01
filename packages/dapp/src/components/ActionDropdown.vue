@@ -11,43 +11,46 @@
 </template>
 
 <script>
-import BaseDropdown from '@/components/BaseDropdown'
-import BaseActionsMenu from '@/components/BaseActionsMenu'
+import BaseDropdown from '@/components/BaseDropdown';
+import BaseActionsMenu from '@/components/BaseActionsMenu';
 export default {
   name: 'ActionDropdown',
-  extends: BaseDropdown,
   components: {
-    'v-actions-menu': BaseActionsMenu
+    'v-actions-menu': BaseActionsMenu,
   },
-  data () {
-    return {
-    }
-  },
-  methods: {
-    handleEmit: function (data) {
-      this.$emit(this.callToAction, data)
-    }
-  },
+  extends: BaseDropdown,
   props: {
     title: {
-      type: String
+      required: true,
+      type: String,
     },
     element: {
-      type: Object
+      required: true,
+      type: Object,
     },
     actions: {
-      type: Array
+      required: true,
+      type: Array,
     },
     callToAction: {
-      type: String
-    }
+      required: true,
+      type: String,
+    },
   },
-  mounted: function () {
-    this.$refs.actions.$on(this.callToAction, (data) => {
-      this.handleEmit(data)
-    })
-  }
-}
+  data() {
+    return {};
+  },
+  mounted: function() {
+    this.$refs.actions.$on(this.callToAction, data => {
+      this.handleEmit(data);
+    });
+  },
+  methods: {
+    handleEmit: function(data) {
+      this.$emit(this.callToAction, data);
+    },
+  },
+};
 </script>
 
 <style>

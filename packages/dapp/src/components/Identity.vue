@@ -1,55 +1,62 @@
 <template>
   <div class="identity">
-    <identity-modal ref="identityModal"/>
-    <button type="submit" :class="`identity-icon menu-toggle ${ isAuthenticated ? 'authenticated' : ''}`"></button>
+    <identity-modal ref="identityModal" />
+    <button
+      :class="
+        `identity-icon menu-toggle ${isAuthenticated ? 'authenticated' : ''}`
+      "
+      type="submit"
+    ></button>
     <div class="identity-menu dropdown-menu shadow">
-      <div class="dropdown-content" v-if="isAuthenticated">
-        <button class="dropdown-item" @click="handleProfile()"> Profile </button>
-        <button class="dropdown-item" @click="handleSignOut()"> Sign Out </button>
+      <div v-if="isAuthenticated" class="dropdown-content">
+        <button @click="handleProfile()" class="dropdown-item">Profile</button>
+        <button @click="handleSignOut()" class="dropdown-item">Sign Out</button>
       </div>
-      <div class="dropdown-content" v-else>
-        <button class="dropdown-item" @click="handleOpenModalAuth()"> Sign In </button>
+      <div v-else class="dropdown-content">
+        <button @click="handleOpenModalAuth()" class="dropdown-item">
+          Sign In
+        </button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex'
-import IdentityModal from '@/components/IdentityModal'
+import { mapState } from 'vuex';
+import IdentityModal from '@/components/IdentityModal';
 
 export default {
   name: 'Identity',
   components: {
-    'identity-modal': IdentityModal
+    'identity-modal': IdentityModal,
+  },
+  data() {
+    return {
+      enableIdentity: process.env.IDENTITY,
+      signIn: false,
+    };
   },
   computed: {
     ...mapState({
       activeAccount: state => state.web3.account,
-      isAuthenticated: state => state.profile.authenticated
-    })
-  },
-  data () {
-    return {
-      enableIdentity: process.env.IDENTITY,
-      signIn: false
-    }
+      isAuthenticated: state => state.profile.authenticated,
+    }),
   },
   methods: {
-    handleProfile: function () {
-      this.$router.push({ name: 'Profile' })
+    handleProfile: function() {
+      this.$router.push({ name: 'Profile' });
     },
-    handleOpenModalAuth: function () {
-      this.$refs.identityModal.openModal()
+    handleOpenModalAuth: function() {
+      this.$refs.identityModal.openModal();
     },
-    handleSignOut: function () {
-      document.cookie = 'janusToken='
-      this.$store.commit('profile/setAuthentication', false)
-      this.$store.commit('profile/setResponse', [])
-      this.$router.push({ name: 'Home' })
-    }
-  }
-}
+    handleSignOut: function() {
+      document.cookie = 'janusToken=';
+      this.$store.commit('profile/setAuthentication', false);
+      this.$store.commit('profile/setResponse', []);
+      this.$router.push({ name: 'Home' });
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -75,7 +82,7 @@ export default {
   border: none;
   padding: 0;
   font-size: 0;
-  background: url("../assets/images/account.png");
+  background: url('../assets/images/account.png');
   filter: grayscale(100%);
   vertical-align: middle;
 }
@@ -87,7 +94,7 @@ export default {
   border: none;
   display: block;
   cursor: pointer;
-  font-family:'Montserrat', Helvetica, Arial, sans-serif;
+  font-family: 'Montserrat', Helvetica, Arial, sans-serif;
   background-color: #ffffff;
   font-size: 1em;
 }

@@ -1,6 +1,6 @@
 <template>
   <ul :class="`menu-actions ${listClasses}`">
-    <li class="menu-item" v-for="(action, index) in this.actions" :key="index">
+    <li v-for="(action, index) in actions" :key="index" class="menu-item">
       <button
         v-on:click="handleClick(element, action)"
         :class="`btn btn--clear ${checkActiveTab(action.handler)}`"
@@ -12,42 +12,46 @@
 </template>
 
 <script>
-import BaseMenu from '@/components/BaseMenu'
+import BaseMenu from '@/components/BaseMenu';
 
 export default {
   name: 'BaseActionsMenu',
-  extends: BaseMenu,
   components: {},
-  data () {
-    return {}
-  },
-  methods: {
-    handleClick: function (element, action) {
-      const emitValue = {}
-      emitValue.action = action
-      emitValue.element = element
-      this.$emit(action.callToAction, emitValue)
-    },
-    checkActiveTab (tab) {
-      return tab === this.activeTab ? 'active-tab' : ''
-    }
-  },
+  extends: BaseMenu,
   props: {
     actions: {
-      type: Array
+      type: Array,
+      required: true,
     },
     element: {
-      type: Object
+      type: Object,
+      default: () => ({}),
     },
     listClasses: {
-      type: String
+      type: String,
+      default: '',
     },
     activeTab: {
-      type: String
-    }
+      type: String,
+      default: '',
+    },
   },
-  mounted: function () {}
-}
+  data() {
+    return {};
+  },
+  mounted: function() {},
+  methods: {
+    handleClick: function(element, action) {
+      const emitValue = {};
+      emitValue.action = action;
+      emitValue.element = element;
+      this.$emit(action.callToAction, emitValue);
+    },
+    checkActiveTab(tab) {
+      return tab === this.activeTab ? 'active-tab' : '';
+    },
+  },
+};
 </script>
 
 <style lang="css">

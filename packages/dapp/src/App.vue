@@ -1,30 +1,29 @@
 <template>
   <div id="app">
     <!-- <v-modal ref="modal"></v-modal> -->
-    <v-header/>
+    <v-header />
     <div class="main">
       <transition name="fade">
-        <router-view/>
+        <router-view />
       </transition>
     </div>
   </div>
 </template>
 
 <script>
-
-import Header from '@/components/Header'
+import Header from '@/components/Header';
 
 export default {
   name: 'App',
 
   components: {
-    'v-header': Header
+    'v-header': Header,
   },
 
-  created () {
-    this.$store.dispatch('resolveJanusNameService')
-  }
-}
+  created() {
+    this.$store.dispatch('resolveJanusNameService');
+  },
+};
 </script>
 
 <style>

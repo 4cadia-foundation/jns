@@ -14,103 +14,115 @@
       <div class="field_wrapper field--tld">
         <v-input
           ref="newOwnerInput"
-          placeholderTxt="eg.: 0x0000000000000000000000000000000000000000"
-          inputType="text"
-          inputName="newOwnerAddress"
-          inputLabel="New owner address: "
-          labelClass=""
           v-model="newOwnerAddress"
           :required="true"
           :alphaNumeric="true"
+          placeholder-txt="eg.: 0x0000000000000000000000000000000000000000"
+          input-type="text"
+          input-name="newOwnerAddress"
+          input-label="New owner address: "
+          label-class=""
           maxlength="42"
           minlength="42"
         />
       </div>
     </div>
     <button
-      type="submit"
       :class="[
         'btn',
         'btn-confirm',
         isValid ? 'btn--success' : 'btn--disabled',
       ]"
       :disabled="!isValid"
-      >Confirm Transaction</button>
+      type="submit"
+    >
+      Confirm Transaction
+    </button>
   </form>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import BaseInput from '@/components/BaseInput'
+import { mapGetters } from 'vuex';
+import BaseInput from '@/components/BaseInput';
 
 export default {
   name: 'TransferTLDForm',
   components: {
-    'v-input': BaseInput
+    'v-input': BaseInput,
   },
   props: {
-    tld: String,
-    domain: String
+    tld: {
+      type: String,
+      default: '',
+    },
+    domain: {
+      type: String,
+      default: '',
+    },
   },
   data: () => ({
     newOwnerAddress: '',
-    isMounted: false
+    isMounted: false,
   }),
-  mounted () {
-    this.isMounted = true
-  },
   computed: {
     ...mapGetters('validation', ['getErrorByType', 'getExceptionByType']),
-    isValid () {
+    isValid() {
       if (!this.isMounted) {
-        return false
+        return false;
       }
 
-      return !this.$refs.newOwnerInput.hasExceptions
-    }
+      return !this.$refs.newOwnerInput.hasExceptions;
+    },
+  },
+  mounted() {
+    this.isMounted = true;
   },
   methods: {
-    handleSubmit () {
-      this.$refs.newOwnerInput.handleValidate()
+    handleSubmit() {
+      this.$refs.newOwnerInput.handleValidate();
 
       if (this.isValid) {
-        this.transferDomain(this.domain, this.tld, this.newOwnerAddress)
+        this.transferDomain(this.domain, this.tld, this.newOwnerAddress);
       }
     },
-    async transferDomain (domain, tld, newOwnerAddress) {
+    async transferDomain(domain, tld, newOwnerAddress) {
       try {
-        const response = await this.$store.getters.jnsInstance().TransferDomain(domain, tld, newOwnerAddress)
+        const response = await this.$store.getters
+          .jnsInstance()
+          .TransferDomain(domain, tld, newOwnerAddress);
 
         if (
           response.Success &&
-        response.Result[0].event === 'DomainOwnershipChanged'
+          response.Result[0].event === 'DomainOwnershipChanged'
         ) {
-          this.$notification.success(`Successfully transfered domain ${domain}.${tld} to user ${newOwnerAddress}`)
+          this.$notification.success(
+            `Successfully transfered domain ${domain}.${tld} to user ${newOwnerAddress}`
+          );
 
           this.$emit('domain-transfer-succeeded', {
             domain,
             tld,
-            newOwnerAddress
-          })
+            newOwnerAddress,
+          });
         }
       } catch (err) {
-        this.$notification.error(err.message)
+        this.$notification.error(err.message);
 
         this.$emit('domain-transfer-failed', {
           domain,
           tld,
-          newOwnerAddress
-        })
+          newOwnerAddress,
+        });
       } finally {
         this.$emit('domain-transfer-finished', {
           domain,
           tld,
-          newOwnerAddress
-        })
+          newOwnerAddress,
+        });
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style>

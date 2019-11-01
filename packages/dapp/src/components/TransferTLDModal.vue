@@ -28,40 +28,41 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import BaseModal from '@/components/BaseModal'
-import BaseInput from '@/components/BaseInput'
-import TransferTLDForm from '@/components/TransferTLDForm'
+import { mapGetters } from 'vuex';
+import BaseModal from '@/components/BaseModal';
+import TransferTLDForm from '@/components/TransferTLDForm';
 
 export default {
   name: 'BuyTLDModal',
-  extends: BaseModal,
   components: {
     'v-modal': BaseModal,
-    'v-input': BaseInput,
-    'v-transfer-tld-form': TransferTLDForm
+    'v-transfer-tld-form': TransferTLDForm,
   },
+  extends: BaseModal,
   props: {
-    tld: String
+    tld: {
+      type: String,
+      default: '',
+    },
   },
   data: () => ({
-    newOwnerAddress: ''
+    newOwnerAddress: '',
   }),
   computed: {
-    ...mapGetters('validation', ['getErrorByType', 'getExceptionByType'])
+    ...mapGetters('validation', ['getErrorByType', 'getExceptionByType']),
   },
   methods: {
-    openModal () {
-      this.$refs.modal.openModal()
+    openModal() {
+      this.$refs.modal.openModal();
     },
-    closeModal () {
-      this.$refs.modal.closeModal()
+    closeModal() {
+      this.$refs.modal.closeModal();
     },
-    notifySuccessfulTransfer (payload) {
-      this.$emit('tld-transfer-succeeded', payload)
-    }
-  }
-}
+    notifySuccessfulTransfer(payload) {
+      this.$emit('tld-transfer-succeeded', payload);
+    },
+  },
+};
 </script>
 
 <style>

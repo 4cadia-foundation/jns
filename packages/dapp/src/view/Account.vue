@@ -11,9 +11,9 @@
     <div class="tab-menu">
       <v-actions-menu
         :actions="menuTabs"
-        listClasses="tabs"
         :activeTab="activeTab"
         @accountTabAction="handleTabChange"
+        list-classes="tabs"
       />
     </div>
     <div class="list-domains">
@@ -32,16 +32,19 @@
           >
         </div>
 
-        <li class="item" v-for="(item, index) in this.list" :key="index">
-          <v-card ref="card" cardType="full" :class="checkStatus(item.Expires)">
+        <li v-for="(item, index) in list" :key="index" class="item">
+          <v-card
+            ref="card"
+            :class="checkStatus(item.Expires)"
+            card-type="full"
+          >
             <template v-slot:header>
               <div class="title">
                 <h3 class="name inline">{{ item.Name }}</h3>
-                <h3 class="tld inline" v-if="item.TLD">.{{ item.TLD }}</h3>
+                <h3 v-if="item.TLD" class="tld inline">.{{ item.TLD }}</h3>
               </div>
-              <p class="hash" v-if="item.StorageHash">
-                <strong>IPFS Hash:</strong>
-                {{ item.StorageHash }}
+              <p v-if="item.StorageHash" class="hash">
+                <strong>IPFS Hash:</strong> {{ item.StorageHash }}
               </p>
             </template>
 
@@ -54,10 +57,10 @@
                 <v-action-dropdown
                   ref="actionDropdown"
                   @cardAction="handleActions"
-                  title="actions"
                   :element="item"
                   :actions="cardActions"
-                  callToAction="cardAction"
+                  title="actions"
+                  call-to-action="cardAction"
                 />
               </div>
             </template>
@@ -106,35 +109,38 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import differenceInCalendarDays from 'date-fns/differenceInCalendarDays'
-import contentService from '@/api/contentService'
-import Hero from '@/components/Hero'
-import BaseCard from '@/components/BaseCard'
-import ActionDropdown from '@/components/ActionDropdown'
-import BaseActionsMenu from '@/components/BaseActionsMenu'
-import RenewTLDModal from '@/components/RenewTLDModal'
-import TransferTLDModal from '@/components/TransferTLDModal'
-import TransferDomainModal from '@/components/TransferDomainModal'
-import { onEthereumChanged } from '@/utils/mixins'
-import RenewDomainModal from '@/components/RenewDomainModal'
+import { mapGetters } from 'vuex';
+import differenceInCalendarDays from 'date-fns/differenceInCalendarDays';
+import contentService from '@/api/contentService';
+import Hero from '@/components/Hero';
+import BaseCard from '@/components/BaseCard';
+import ActionDropdown from '@/components/ActionDropdown';
+import BaseActionsMenu from '@/components/BaseActionsMenu';
+import RenewTLDModal from '@/components/RenewTLDModal';
+import TransferTLDModal from '@/components/TransferTLDModal';
+import TransferDomainModal from '@/components/TransferDomainModal';
+import RenewDomainModal from '@/components/RenewDomainModal';
+import { onEthereumChanged } from '@/utils/mixins';
 
-const reloadOnChanges = onEthereumChanged('reloadDomainsAndTlds')
+const reloadOnChanges = onEthereumChanged('reloadDomainsAndTlds');
 
 export default {
   name: 'Account',
-  mixins: [reloadOnChanges],
   components: {
     'v-hero': Hero,
     'v-card': BaseCard,
     'v-action-dropdown': ActionDropdown,
     'v-actions-menu': BaseActionsMenu,
     'v-renew-tld-modal': RenewTLDModal,
+    'v-renew-domain-modal': RenewDomainModal,
     'v-tld-transfer-modal': TransferTLDModal,
     'v-domain-transfer-modal': TransferDomainModal,
-    'v-renew-domain-modal': RenewDomainModal
   },
-  data () {
+  filters: {
+    moment: date => new Date(date * 1000).toLocaleDateString(),
+  },
+  mixins: [reloadOnChanges],
+  data() {
     return {
       content: [],
       activeTab: 'domain',
@@ -146,48 +152,48 @@ export default {
             {
               title: 'Renew',
               handler: 'handleRenewDomain',
-              callToAction: 'cardAction'
+              callToAction: 'cardAction',
             },
             {
               title: 'Transfer',
               handler: 'handleTransferDomain',
-              callToAction: 'cardAction'
+              callToAction: 'cardAction',
             },
             {
               title: 'Update',
               handler: 'updateDomain',
-              callToAction: 'cardAction'
-            }
-          ]
+              callToAction: 'cardAction',
+            },
+          ],
         },
         {
           type: 'tld',
           actions: [
             {
               title: 'Renew',
-              handler: 'handleRenewTLD',
-              callToAction: 'cardAction'
+              handler: 'handleRenewTld',
+              callToAction: 'cardAction',
             },
             {
               title: 'Transfer',
               handler: 'handleTransferTld',
-              callToAction: 'cardAction'
-            }
-          ]
-        }
+              callToAction: 'cardAction',
+            },
+          ],
+        },
       ],
       cardActions: [],
       menuTabs: [
         {
           title: 'Domain',
           handler: 'domain',
-          callToAction: 'accountTabAction'
+          callToAction: 'accountTabAction',
         },
         {
           title: 'TLD',
           handler: 'tld',
-          callToAction: 'accountTabAction'
-        }
+          callToAction: 'accountTabAction',
+        },
         // ,
         // { title: "Subdomain",
         //   handler: "subdomain",
@@ -195,26 +201,26 @@ export default {
         // }
       ],
       selectedTld: {},
-      selectedDomain: {}
-    }
+      selectedDomain: {},
+    };
   },
   computed: {
-    list () {
+    list() {
       switch (this.activeTab) {
         case 'tld':
           // TODO: refactor this
           // eslint-disable-next-line vue/no-side-effects-in-computed-properties
           this.cardActions = this.availableActions.find(
             el => el.type === 'tld'
-          ).actions
-          return this.topLevelDomains
+          ).actions;
+          return this.topLevelDomains;
         case 'domain':
           // TODO: refactor this
           // eslint-disable-next-line vue/no-side-effects-in-computed-properties
           this.cardActions = this.availableActions.find(
             el => el.type === 'domain'
-          ).actions
-          return this.domains
+          ).actions;
+          return this.domains;
         // case "subdomain":
         //   this.cardActions = this.availableActions.find(el => el.type == "subdomain").actions
         //   return this.listSubDomains
@@ -222,75 +228,70 @@ export default {
         default:
           console.warn(
             "We couldn't find any " + event.action.handler + ' on our database'
-          )
-          return undefined
+          );
+          return undefined;
       }
     },
-    ...mapGetters(['topLevelDomains', 'domains'])
+    ...mapGetters(['topLevelDomains', 'domains']),
   },
-  filters: {
-    moment: date => new Date(date * 1000).toLocaleDateString()
+  beforeMount: function() {
+    contentService('account').then(response => {
+      this.content = response.data;
+    });
+
+    this.$store.dispatch('resolveJanusNameService');
   },
   methods: {
-    checkStatus: function (due) {
-      const now = new Date()
-      const expires = new Date(due * 1000)
+    checkStatus: function(due) {
+      const now = new Date();
+      const expires = new Date(due * 1000);
 
-      let differenceDate = 0
+      let differenceDate = 0;
 
-      let status = 'alert'
+      let status = 'alert';
 
       if (expires > now) {
-        differenceDate = differenceInCalendarDays(expires, now)
+        differenceDate = differenceInCalendarDays(expires, now);
 
         if (differenceDate <= 0) {
-          status = 'alert'
+          status = 'alert';
         } else if (differenceDate > 0 && differenceDate <= 30) {
-          status = 'warn'
+          status = 'warn';
         } else {
-          status = 'success'
+          status = 'success';
         }
       }
 
-      return status
+      return status;
     },
-    handleTabChange (event) {
-      this.activeTab = event.action.handler
+    handleTabChange(event) {
+      this.activeTab = event.action.handler;
     },
-    handleActions (event) {
-      const { action, element } = event
-      this[action.handler](element)
+    handleActions(event) {
+      const { action, element } = event;
+      this[action.handler](element);
     },
-    handleRenewTLD ({ Name, Expires }) {
-      this.selectedTld = { name: Name, expires: Expires }
-      this.$refs.modalRenewTLD.openModal()
-      const { action, element } = event
-      this[action.handler](element)
+    handleRenewTld({ Name, Expires }) {
+      this.selectedTld = { name: Name, expires: Expires };
+      this.$refs.modalRenewTLD.openModal();
     },
-    handleRenewDomain ({ Name, TLD }) {
-      this.selectedDomain = { domain: Name, tld: TLD }
-      this.$refs.modalRenewDomain.openModal()
+    handleRenewDomain({ Name, TLD }) {
+      this.selectedDomain = { domain: Name, tld: TLD };
+      this.$refs.modalRenewDomain.openModal();
     },
-    handleTransferTld ({ Name, Expires }) {
-      this.selectedTld = { name: Name, expires: Expires }
-      this.$refs.modalTransferTld.openModal()
+    handleTransferTld({ Name, Expires }) {
+      this.selectedTld = { name: Name, expires: Expires };
+      this.$refs.modalTransferTld.openModal();
     },
-    handleTransferDomain ({ Name, TLD }) {
-      this.selectedDomain = { name: Name, tld: TLD }
-      this.$refs.modalTransferDomain.openModal()
+    handleTransferDomain({ Name, TLD }) {
+      this.selectedDomain = { name: Name, tld: TLD };
+      this.$refs.modalTransferDomain.openModal();
     },
-    reloadDomainsAndTlds () {
-      this.$store.dispatch('loadAll')
-    }
+    reloadDomainsAndTlds() {
+      this.$store.dispatch('loadAll');
+    },
   },
-  beforeMount: function () {
-    contentService('account').then(response => {
-      this.content = response.data
-    })
-
-    this.$store.dispatch('resolveJanusNameService')
-  }
-}
+};
 </script>
 
 <style scoped>

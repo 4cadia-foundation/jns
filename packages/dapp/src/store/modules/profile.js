@@ -4,43 +4,42 @@ const state = {
   data: [],
   response: [],
   authenticated: false,
-  metamaskStatus: false
-}
+  metamaskStatus: false,
+};
 
 // getters
-const getters = {
-}
+const getters = {};
 
 // actions
-const actions = {}
+const actions = {};
 
 // mutations
 const mutations = {
-  setUserId (state, userId) {
-    state.userId = userId
+  setUserId(state, userId) {
+    state.userId = userId;
   },
-  setData (state, data) {
-    state.data = data
+  setData(state, data) {
+    state.data = data;
   },
-  setAuthentication (state, authenticated) {
-    state.authenticated = authenticated
+  setAuthentication(state, authenticated) {
+    state.authenticated = authenticated;
   },
-  setResponse (state, response) {
-    state.response = response
-    state.userId = response.userId
-    state.data = response.data
+  setResponse(state, response) {
+    state.response = response;
+    state.userId = response.userId;
+    state.data = response.data;
     if (response.userId !== undefined && response.userId.length > 0) {
-      state.authenticated = true
+      state.authenticated = true;
     } else {
-      state.authenticated = false
+      state.authenticated = false;
     }
-  }
-}
+  },
+};
 
 export default {
   namespaced: true,
   state,
   getters,
   actions,
-  mutations
-}
+  mutations,
+};

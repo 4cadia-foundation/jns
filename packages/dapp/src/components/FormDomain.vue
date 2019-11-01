@@ -1,49 +1,49 @@
 <template>
   <v-hero-form
-    class="form--domain"
     :action="action"
     v-on:searchDomain="handleSearch"
+    class="form--domain"
   >
     <div class="field_wrapper field--domain">
       <v-input
-        placeholderTxt="eg.: janus"
-        inputType="text"
-        inputName="domain"
-        inputLabel="Domain Name: "
+        ref="domainInput"
         v-model="domain"
         :required="true"
         :alphaNumeric="true"
-        ref="domainInput"
+        placeholder-txt="eg.: janus"
+        input-type="text"
+        input-name="domain"
+        input-label="Domain Name: "
       />
     </div>
     <div class="field_wrapper field--tld">
       <v-input
-        placeholderTxt="eg.: eth"
-        inputType="text"
-        inputName="tld"
-        inputLabel="Top Level Name: "
-        maxlength="5"
-        minlength="3"
+        ref="tldInput"
         v-model="tld"
         :required="true"
         :alphaNumeric="true"
-        ref="tldInput"
+        placeholder-txt="eg.: eth"
+        input-type="text"
+        input-name="tld"
+        input-label="Top Level Name: "
+        maxlength="5"
+        minlength="3"
       />
     </div>
   </v-hero-form>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import BaseInput from '@/components/BaseInput'
-import FormHero from '@/components/FormHero'
+import { mapGetters } from 'vuex';
+import BaseInput from '@/components/BaseInput';
+import FormHero from '@/components/FormHero';
 export default {
   name: 'FormDomain',
   components: {
     'v-input': BaseInput,
-    'v-hero-form': FormHero
+    'v-hero-form': FormHero,
   },
-  data () {
+  data() {
     return {
       domain: '',
       tld: '',
@@ -51,85 +51,89 @@ export default {
       isTldAvaliable: true,
       action: {
         title: 'Search',
-        handler: 'searchDomain'
+        handler: 'searchDomain',
       },
-      loader: {}
-    }
+      loader: {},
+    };
   },
   computed: {
-    ...mapGetters('validation', ['getErrorByType'])
+    ...mapGetters('validation', ['getErrorByType']),
   },
   methods: {
-    handleSearch: function (event) {
+    handleSearch: function(event) {
       if (this.isSearchAvaliable()) {
         this.loader = this.$loading.show({
-          container: this.fullPage ? null : this.$refs.formContainer
-        })
+          container: this.fullPage ? null : this.$refs.formContainer,
+        });
 
         this.$store.getters
           .jnsInstance()
           .IsTldRegistered(this.tld)
           .then(response => {
             if (response.Success && response.Result[0]) {
-              this.isTldAvaliable = !response.Result[0].IsTldRegistered
+              this.isTldAvaliable = !response.Result[0].IsTldRegistered;
               this.$store.getters
                 .jnsInstance()
                 .IsDomainRegistered(this.domain, this.tld)
                 .then(response => {
                   if (response.Success && response.Result[0]) {
                     this.isDomainAvaliable = !response.Result[0]
-                      .isDomainRegistered
+                      .isDomainRegistered;
                     this.$emit('handleSearchDomain', {
                       isTldAvaliable: this.isTldAvaliable,
                       isDomainAvaliable: this.isDomainAvaliable,
                       domainValue: this.domain,
-                      tldValue: this.tld
-                    })
+                      tldValue: this.tld,
+                    });
                   }
                 })
                 .catch(error => this.$notification.error(error.message))
-                .finally(() => this.loader.hide())
+                .finally(() => this.loader.hide());
             }
           })
           .catch(error => this.$notification.error(error.message))
-          .finally(() => this.loader.hide())
+          .finally(() => this.loader.hide());
       }
     },
-    isSearchAvaliable () {
+    isSearchAvaliable() {
       if (this.hasMetamask() && this.hasInstance()) {
-        this.isEmptyField()
-        return !this.formHasExceptions()
+        this.isEmptyField();
+        return !this.formHasExceptions();
       }
     },
-    hasMetamask () {
+    hasMetamask() {
       if (this.$store.getters.address != null) {
-        return true
+        return true;
       } else {
-        this.$notification.error(this.getErrorByType('InstallMetamask'))
-        return false
+        this.$notification.error(this.getErrorByType('InstallMetamask'));
+        return false;
       }
     },
-    hasInstance () {
+    hasInstance() {
       // TODO: Validate JNS errors on initiate Janus Service
       if (this.$store.getters.jnsInstance()._jnsService !== undefined) {
-        return true
+        return true;
       } else {
-        this.$notification.error(this.getErrorByType('BadRequest'))
-        return false
+        this.$notification.error(this.getErrorByType('BadRequest'));
+        return false;
       }
     },
-    isEmptyField () {
-      if (this.tld.length === 0) { this.$refs.tldInput.fieldIsValid(true, 'EmptyField') }
-      if (this.domain.length === 0) { this.$refs.domainInput.fieldIsValid(true, 'EmptyField') }
+    isEmptyField() {
+      if (this.tld.length === 0) {
+        this.$refs.tldInput.fieldIsValid(true, 'EmptyField');
+      }
+      if (this.domain.length === 0) {
+        this.$refs.domainInput.fieldIsValid(true, 'EmptyField');
+      }
     },
-    formHasExceptions () {
+    formHasExceptions() {
       return (
         this.$refs.domainInput.hasExceptions ||
         this.$refs.tldInput.hasExceptions
-      )
-    }
-  }
-}
+      );
+    },
+  },
+};
 </script>
 
 <style>

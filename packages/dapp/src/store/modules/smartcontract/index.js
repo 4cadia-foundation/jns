@@ -1,7 +1,7 @@
-import state from './state'
-import getters from './getters'
-import mutations from './mutations'
-import actions from './actions'
+import state from './state';
+import getters from './getters';
+import mutations from './mutations';
+import actions from './actions';
 
 export default (store, moduleName = 'JanusNameService') => {
   store.registerModule(moduleName, {
@@ -9,6 +9,6 @@ export default (store, moduleName = 'JanusNameService') => {
     state,
     getters,
     mutations,
-    actions
-  })
-}
+    actions,
+  });
+};

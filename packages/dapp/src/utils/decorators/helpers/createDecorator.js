@@ -5,17 +5,17 @@
  * @param {Function} decoratorFn the decorator function
  * @returns {Function} the decorated function with the proper properties
  */
-export default function createDecorator (decoratorFn) {
+export default function createDecorator(decoratorFn) {
   return decorateeFn => {
-    const __decorated__ = decoratorFn(decorateeFn)
+    const __decorated__ = decoratorFn(decorateeFn);
 
-    const decoratorName = decoratorFn.name || '<anonymous>'
-    const decorateeName = decorateeFn.name || '<anonymous>'
+    const decoratorName = decoratorFn.name || '<anonymous>';
+    const decorateeName = decorateeFn.name || '<anonymous>';
 
     Object.defineProperty(__decorated__, 'name', {
-      value: `${decoratorName}(${decorateeName})`
-    })
+      value: `${decoratorName}(${decorateeName})`,
+    });
 
-    return __decorated__
-  }
+    return __decorated__;
+  };
 }
