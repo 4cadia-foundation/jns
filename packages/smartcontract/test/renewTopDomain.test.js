@@ -79,19 +79,4 @@ contract('JanusNameService - 03-renewDomain.test.js', accounts => {
       'wrong renew date'
     );
   });
-
-  it('renewTopDomain should be throw if renew limit date is exceeded', async () => {
-    const domainName = 'eth';
-
-    await contractInstance.registerTopDomain(domainName, {
-      from: ownerAddress,
-    });
-    await contractInstance.renewTopDomain(domainName, { from: ownerAddress });
-    await contractInstance.renewTopDomain(domainName, { from: ownerAddress });
-
-    await Assert.reverts(
-      contractInstance.renewTopDomain(domainName, { from: ownerAddress }),
-      'renew expired date limit exceeded'
-    );
-  });
 });

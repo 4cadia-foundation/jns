@@ -115,7 +115,7 @@ contract('JanusNameService - changeDomainOwnership', accounts => {
     assert.deepEqual(futureOwnerDomains.name, [domain]);
   });
 
-  it.only('changeDomainOwnership should properly update domain -> ownerIndex index #regression', async () => {
+  it('changeDomainOwnership should properly update domain -> ownerIndex index #regression', async () => {
     const domainNames = ['foo', 'bar'];
 
     await contractInstance.registerDomain(domainNames[0], tld, '', {
