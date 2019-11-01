@@ -21,8 +21,8 @@
     "test:unit": "jest -t '#unit'",
     "test:integration": "jest -t '#integration'"
   },
-  "license": "MIT",
-  "author": "JC Bombardelli",
+  "license": "Unlicense",
+  "author": "JC Bombardelli <jc@4cadia.com>",
   "lint-staged": {
     "*.{js,ts}": ["eslint --fix", "git add"],
     "*.json": ["prettier --write", "git add"]

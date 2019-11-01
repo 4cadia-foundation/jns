@@ -9,7 +9,7 @@
   },
   "keywords": ["jns", "name service", "ethereum", "smart contract"],
   "author": "Rodrigo Oliveira",
-  "license": "ISC",
+  "license": "Unlicense",
   "homepage": "https://bitbucket.org/janusplatform/janus.jns#readme",
   "scripts": {
     "build": "truffle build",

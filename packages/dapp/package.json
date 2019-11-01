@@ -2,8 +2,9 @@
   "name": "@4cadia/jns-dapp",
   "version": "0.1.0",
   "description": "Janus Name Service Dapp",
-  "author": "Rodrigo Oliveira <rodrigo@janusproj.com>",
+  "author": "Rodrigo Oliveira <rodrigo@4cadia.com>",
   "main": "dist/index.js",
+  "license": "Unlicense",
   "private": true,
   "repository": {
     "type": "git",
