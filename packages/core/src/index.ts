@@ -129,36 +129,6 @@ export class JanusNameService {
     return result;
   }
 
-  public async TransferDomain(
-    domain: string,
-    tld: string,
-    newOwnerAddress: string
-  ): Promise<RequestResult> {
-    domain = domain.toLowerCase();
-    tld = tld.toLowerCase();
-
-    const request: TransferDomainRequest = {
-      domain,
-      tld,
-      newOwnerAddress,
-    };
-
-    const config = Bootstrapper.Resolve<NameServiceConfig>('NameServiceConfig');
-
-    const validator = new TransferDomainValidator(config);
-    const validation = await validator.ValidateTransferDomainRequest(request);
-
-    const result = new RequestResult();
-    result.Success = validation.isValid();
-    result.Errors = validation.getFailureMessages();
-
-    if (result.Success) {
-      return this._jnsService.TransferDomain(request);
-    }
-
-    return result;
-  }
-
   public async ListDomain(): Promise<RequestResult> {
     const result = new RequestResult();
 
