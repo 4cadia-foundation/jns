@@ -830,8 +830,8 @@
       }
     ],
     "addresses": {
-      "4": "0x93Aa6b7A7749C9F92cF42e4463ba789653883D1B",
-      "1234": "0xA0c7C6B97E89dB82bcb77F8cce72147C61be548E"
+      "4": "0x3975F6345aF041cd858e9988b71EDC269B32337C",
+      "1234": "0x00fe62338D9e57aF4a7C17e631f44EB38eFC68Db"
     }
   },
   "Migrations": {
@@ -904,8 +904,8 @@
       }
     ],
     "addresses": {
-      "4": "0x2bD9dA9035d54b6b530dA829Dc4cff7FfD9aCd3C",
-      "1234": "0xA73A872eFD768bb23efb24CEeB9e330bcCA259D6"
+      "4": "0xB90a36399320E7052Ad57CBcff9BDf381c314883",
+      "1234": "0x7761D33924bb90129EF56480FC1bD8Da79C8069B"
     }
   }
 }
