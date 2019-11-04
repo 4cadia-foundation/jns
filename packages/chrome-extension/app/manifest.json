@@ -1,0 +1,44 @@
+{
+    "name": "JNS redirect",
+    "version": "0.0.1",
+    "manifest_version": 2,
+    "description": "Janus Name Service redirect",
+    "icons": {
+        "16": "images/icon-16.png",
+        "128": "images/icon-128.png"
+    },
+    "default_locale": "en",
+    "background": {
+        "scripts": [
+            "main.extension.bundle.js"
+        ],
+        "persistent": true
+    },
+    "content_scripts": [{
+        "matches": [
+            "<all_urls>"
+        ],
+        "js": ["content.extension.bundle.js"]
+    }],
+    "permissions": [
+        "clipboardWrite",
+        "unlimitedStorage",
+        "notifications",
+        "tabs",
+        "activeTab",
+        "storage",
+        "webRequest",
+        "webNavigation"
+    ],
+    "browser_action": {
+        "default_icon": {
+            "19": "images/icon-19.png",
+            "38": "images/icon-38.png"
+        },
+        "default_title": "JNS redirect",
+        "default_popup": "index.html"
+    },
+    "web_accessible_resources": [
+        "images/icon-48.png"
+    ]
+}
